@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>hexo g 指令无法创建index.html文件</title>
-    <url>/2022/02/19/hexo-g-%E6%8C%87%E4%BB%A4%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BAindex-html%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="关于-“hexo-g”-指令无法创建-“index-html”-文件的问题"><a href="#关于-“hexo-g”-指令无法创建-“index-html”-文件的问题" class="headerlink" title="关于 “hexo g” 指令无法创建 “index.html” 文件的问题"></a>关于 “hexo g” 指令无法创建 “index.html” 文件的问题</h2>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>BUG</tag>
-        <tag>疑难</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2022/02/19/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -29,5 +17,58 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>hexo g 指令无法创建index.html文件</title>
+    <url>/2022/02/19/hexo-g-%E6%8C%87%E4%BB%A4%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BAindex-html%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<ol>
+<li><strong>背景描述</strong><blockquote>
+<p>笔者新建了项目 <strong><em>“Solituder1969”</em></strong>, 使用 “hexo” 工具搭建博客。在将主题更换为 “next” 、添加了博主图片、首页新增 “tags” 和 “categorites” 分类后，本地4000端口 debug 没有任何问题。之后应该 <strong><em>清理缓存，重新生成，部署到 github</em></strong> 。</p>
+</blockquote>
+</li>
+<li><strong>问题描述</strong><blockquote>
+<p>在第二步中，使用 <strong><em>“hexo generate”</em></strong> 指令，生成的 “public” 文件夹（也即要部署的静态文件夹）里却没有主页 “index.html”，对于 “tags”和”categories” 也没有生成对应的 “.html” 文件，只有初始的 “.md”文件。其结果就是本地再次调用 <strong><em>“hexo s”</em></strong> 指令运行时，只有一个 **_”Cannot get &#x2F;“_**。</p>
+</blockquote>
+</li>
+<li><strong>问题归因</strong></br><br> 3.1 <strong><em>hexo generate</em> 的原理</strong><br> 浏览项目目录，我们发现 <em>hexo</em> 项目的结构是这样的：<blockquote>
+<p>-node_modules<br>-public<br>-scaffolds<br>-source<br>-themes</p>
+</blockquote>
+<p> 可以发现， <em><strong>source</strong></em> 文件夹与 <em><strong>themes</strong></em> 文件夹处于同级目录， <em><strong>public</strong></em> 为生成的静态包， <em><strong>node_modules</strong></em> 为 npm 引入的模块， <em><strong>scaffolds</strong></em> 则提供了”draft”、”page”和”post”三种格式。 </br><br> 根据 “模板引擎”的理论，我们可以简单地认为， <em><strong>source</strong></em> 中存放了我们博客中的数据（标签、文章等）， <em><strong>themes</strong></em> 则为整个博客使用的模板。</br><br> hexo 先遍历 <em><strong>themes</strong></em> 下主题（例如 “next”）的 <em><strong>source</strong></em> 文件，建立索引，随后根据主目录下 <em><strong>source</strong></em> 里存放的文章类型，以 <em><strong>layout</strong></em> 里对应的布局将文章渲染成html文件。</br><br> 至于hexo是如何遍历、如何进行数据填充的，这就涉及到插件 <em><strong>hexo-generator-index</strong></em> 了。它会首先调取 <em><strong>_config.yml</strong></em> 里的参数，然后指定对象需要填充进哪个路径中，最后再通过page变量调取。</br><br> 通过上述的分析，我们知道， <em><strong>“hexo generate”</strong></em> 指令生成主页，一共需要以下四个方面支持：</p>
+<blockquote>
+<p>a. 数据源，原本是什么样子的<br>b. 模板引擎，要生成什么样子的<br>c. 配置文件，a和b中元素是如何对应的，模板的具体细节<br>d. 插件，a和b的对应关系是如何填充的</br></p>
+</blockquote>
+<p> 3.2 <strong>问题诊断</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>数据源</strong></th>
+<th><strong>使用 _</strong>“hexo new hello-world”<strong>_ 指令生成了一篇文章，确保主页不空</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>模板引擎</strong></td>
+<td><strong>套用的是 _</strong>“next”<strong>_ 模板，这是当前比较受欢迎的博客模板</strong></td>
+</tr>
+<tr>
+<td><strong>配置文件</strong></td>
+<td><strong>更改了相关的参数属性，但仅涉及诸如头像、进度条、搜索等功能性相关</strong></td>
+</tr>
+<tr>
+<td><strong>插件</strong></td>
+<td><strong>齐全，没有报错</strong></td>
+</tr>
+</tbody></table>
+</li>
+<li><strong>解决方案</strong><br> 这里就是比较离奇的地方了。笔者在尝试了4个多小时之后，仍旧没有解决这个问题。之后笔者重新利用 <em><strong>hexo init</strong></em> 指令，初始化了一个 <em><strong>text</strong></em> 项目，并将原项目中的 <em><strong>config</strong></em> 文件直接覆盖了过来，安装插件之后，_<strong>test</strong>_  项目经过 <em><strong>clean</strong></em> 后，居然可以 <em><strong>generate</strong></em> 出 <em><strong>index.html</strong></em> 了！</br><br> 原项目与测试项目除了名字之外，其余都是一样的。但原项目就无法生成主页，而测试项目就可以无问题产出结果。不得不说，挺奇妙的……</li>
+<li><strong>问题总结</strong><br> A. 发现了 <em><strong>hexo</strong></em> 构建项目时的一个问题：无法生成默认页；<br> B. 尝试着分析了一下问题的源头，主要来自<strong>数据源</strong>、<strong>模板引擎</strong>、<strong>配置文件</strong>和<strong>插件</strong>四个方面；<br> C. 尝试了4个小时，反复排查了过去，<strong>没有能够解决问题</strong>；<br> D. 重新构建了一个测试项目，并把原工程的相关文件<strong>覆盖</strong>了一遍，可以顺利<strong>运行产出预期结果</strong>；<br> E. 已成功部署，但问题<strong>仍待解决</strong>……</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>BUG</tag>
+        <tag>疑难</tag>
+      </tags>
   </entry>
 </search>
