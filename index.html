@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-05-27 00:52:14 / 修改时间：00:54:34" itemprop="dateCreated datePublished" datetime="2022-05-27T00:52:14+08:00">2022-05-27</time>
+              <time title="创建时间：2022-05-27 00:52:14 / 修改时间：01:27:15" itemprop="dateCreated datePublished" datetime="2022-05-27T00:52:14+08:00">2022-05-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -238,39 +238,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653542484796-45e4206d-c082-46ab-a6a0-077372378008.jpeg"></p>
-<h1 id="二、读书笔记"><a href="#二、读书笔记" class="headerlink" title="二、读书笔记"></a>二、读书笔记</h1><h3 id="2-1-引言部分"><a href="#2-1-引言部分" class="headerlink" title="2.1 引言部分"></a>2.1 引言部分</h3><ol>
-<li><p>机器学习研究的内容，是关于“学习算法”的，即<strong>从“数据”中产生“模型”</strong>的算法。</p>
-</li>
-<li><p>一些专用术语：数据、记录、数据集、示例&#x2F;样本、属性&#x2F;特征、属性值、属性空间&#x2F;样本空间&#x2F;输入空间、特征向量（示例）、维数、训练数据、训练样本、训练集、假设、真实、学习器、标记、样例、标记空间。</p>
-</li>
-<li><p>如果<strong>预测的是离散值，则学习任务称为“分类”</strong>。如果是<strong>连续值，则称为“回归”</strong>。预测任务是希望通过对训练集进行学习，从而建立一个<strong>从输入空间X到输出空间Y的映射</strong>。模型建立起来后，使用其进行预测的行为，称为“测试”。</p>
-</li>
-<li><p><strong>监督学习</strong>：分类和回归。<strong>无监督学习</strong>：聚类。</p>
-</li>
-<li><p>学得模型适用于新样本的能力，就是“<strong>泛化</strong>”能力。训练的目标就是使得模型的泛化能力更强。</p>
-<h3 id="2-2-假设空间"><a href="#2-2-假设空间" class="headerlink" title="2.2 假设空间"></a>2.2 假设空间</h3></li>
-<li><p><strong>归纳</strong>：从特殊到一般，也就是“<strong>泛化</strong>”的步骤。归纳学习也可以分为“狭义”和“广义”，后者指<strong>从样例中学习</strong>，前者要求<strong>从训练数据中学得概念</strong>，前者目前的应用较少，大多是“<strong>黑箱</strong>”型的模型。</p>
-</li>
-<li><p><strong>演绎</strong>：从一般到特殊，也就是“<strong>特化</strong>”的步骤。</p>
-</li>
-<li><p>概念学习中，最基本的是“<strong>布尔概念</strong>”的学习，也就是0&#x2F;1值的目标概念的学习。</p>
-</li>
-<li><p>假设空间与版本空间，前者是所有维度中所有可能值组成的空间，后者是训练集的可能泛化集合。简单理解，版本空间就是软件测试中的“<strong>等价类划分</strong>”。</p>
-<h3 id="2-3-归纳偏好"><a href="#2-3-归纳偏好" class="headerlink" title="2.3 归纳偏好"></a>2.3 归纳偏好</h3></li>
-<li><p>训练集泛化，产生版本空间，而版本空间的存在，必然导致模型的“<strong>选择策略</strong>”问题。“<strong>归纳偏好</strong>”就诞生了。</p>
-</li>
-<li><p>如果没有“偏好”，则模型训练将随机抽取训练集的等效假设，这样对于某些特定的预测，结果可能完全相反，学习便没有了意义。</p>
-</li>
-<li><p><strong>奥卡姆剃刀：若有多个假设与观察一致，则选最简单的那个。</strong>算法的归纳偏好与问题本身是否匹配，这个因素很多时候直接决定了算法的性能。</p>
-</li>
-<li><p>没有免费的午餐（NFL定理）：<strong>如果所有“问题”出现的机会相同、或所有问题同等重要</strong>，则在期望性上，学习算法的期望性能与随机胡猜都差不多。</p>
-</li>
-<li><p>要谈论算法的相对优劣，必须要针对具体的学习问题。</p>
-<h1 id="三、推导复演"><a href="#三、推导复演" class="headerlink" title="三、推导复演"></a>三、推导复演</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494319704-8feb3a85-de44-4413-9a3d-a122928f6ad1.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uf87768d6&margin=%5Bobject%20Object%5D&name=22052501.png&originHeight=388&originWidth=1336&originalType=binary&ratio=1&rotation=0&showTitle=false&size=137737&status=done&style=shadow&taskId=u3495b512-d3ab-4d96-ae6b-2acb913b017&title=" alt="22052501.png"><br><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494332118-c5a5f11b-350c-4225-aa87-27c042d187cb.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=0.5194&from=ui&height=1413&id=u0a894fbe&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u3900f441-bfa5-445e-8818-c09964946c1&title=&width=1381" alt="22052502.png"><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494366516-ded4c6ea-b6fe-4ea7-be83-7d03d6f1542d.png#clientId=u035abb44-eb3a-4&crop=0.033&crop=0.7096&crop=1&crop=1&from=ui&height=1366&id=uae712198&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u0f565a0c-01b7-4b60-8798-e63291b05b3&title=&width=1335" alt="22052502.png"></p>
-<h1 id="四、习题总结"><a href="#四、习题总结" class="headerlink" title="四、习题总结"></a>四、习题总结</h1><h4 id="【问】表1-1中若只包含编号为1和4的两个样例，试给出相应的版本空间。"><a href="#【问】表1-1中若只包含编号为1和4的两个样例，试给出相应的版本空间。" class="headerlink" title="【问】表1.1中若只包含编号为1和4的两个样例，试给出相应的版本空间。"></a>【问】表1.1中若只包含编号为1和4的两个样例，试给出相应的版本空间。</h4><p>【答】如果只剩下编号1和4，则数据集为：</p>
-</li>
+          <meta name="referrer" content="no-referrer" />
+
+<h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653542484796-45e4206d-c082-46ab-a6a0-077372378008.jpeg"></p>
+<h1 id="二、读书笔记"><a href="#二、读书笔记" class="headerlink" title="二、读书笔记"></a>二、读书笔记</h1><h2 id="2-1-引言部分"><a href="#2-1-引言部分" class="headerlink" title="2.1 引言部分"></a>2.1 引言部分</h2><ol>
+<li>机器学习研究的内容，是关于“学习算法”的，即<strong>从“数据”中产生“模型”</strong>的算法。</li>
+<li>一些专用术语：数据、记录、数据集、示例&#x2F;样本、属性&#x2F;特征、属性值、属性空间&#x2F;样本空间&#x2F;输入空间、特征向量（示例）、维数、训练数据、训练样本、训练集、假设、真实、学习器、标记、样例、标记空间。</li>
+<li>如果<strong>预测的是离散值，则学习任务称为“分类”</strong>。如果是<strong>连续值，则称为“回归”</strong>。预测任务是希望通过对训练集进行学习，从而建立一个<strong>从输入空间X到输出空间Y的映射</strong>。模型建立起来后，使用其进行预测的行为，称为“测试”。</li>
+<li><strong>监督学习</strong>：分类和回归。<strong>无监督学习</strong>：聚类。</li>
+<li>学得模型适用于新样本的能力，就是“<strong>泛化</strong>”能力。训练的目标就是使得模型的泛化能力更强。</li>
 </ol>
+<h2 id="2-2-假设空间"><a href="#2-2-假设空间" class="headerlink" title="2.2 假设空间"></a>2.2 假设空间</h2><ol>
+<li><strong>归纳</strong>：从特殊到一般，也就是“<strong>泛化</strong>”的步骤。归纳学习也可以分为“狭义”和“广义”，后者指<strong>从样例中学习</strong>，前者要求<strong>从训练数据中学得概念</strong>，前者目前的应用较少，大多是“<strong>黑箱</strong>”型的模型。</li>
+<li><strong>演绎</strong>：从一般到特殊，也就是“<strong>特化</strong>”的步骤。</li>
+<li>概念学习中，最基本的是“<strong>布尔概念</strong>”的学习，也就是0&#x2F;1值的目标概念的学习。</li>
+<li>假设空间与版本空间，前者是所有维度中所有可能值组成的空间，后者是训练集的可能泛化集合。简单理解，版本空间就是软件测试中的“<strong>等价类划分</strong>”。</li>
+</ol>
+<h2 id="2-3-归纳偏好"><a href="#2-3-归纳偏好" class="headerlink" title="2.3 归纳偏好"></a>2.3 归纳偏好</h2><ol>
+<li>训练集泛化，产生版本空间，而版本空间的存在，必然导致模型的“<strong>选择策略</strong>”问题。“<strong>归纳偏好</strong>”就诞生了。</li>
+<li>如果没有“偏好”，则模型训练将随机抽取训练集的等效假设，这样对于某些特定的预测，结果可能完全相反，学习便没有了意义。</li>
+<li><strong>奥卡姆剃刀：若有多个假设与观察一致，则选最简单的那个。</strong>算法的归纳偏好与问题本身是否匹配，这个因素很多时候直接决定了算法的性能。</li>
+<li>没有免费的午餐（NFL定理）：<strong>如果所有“问题”出现的机会相同、或所有问题同等重要</strong>，则在期望性上，学习算法的期望性能与随机胡猜都差不多。</li>
+<li>要谈论算法的相对优劣，必须要针对具体的学习问题。</li>
+</ol>
+<h1 id="三、推导复演"><a href="#三、推导复演" class="headerlink" title="三、推导复演"></a>三、推导复演</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494319704-8feb3a85-de44-4413-9a3d-a122928f6ad1.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uf87768d6&margin=%5Bobject%20Object%5D&name=22052501.png&originHeight=388&originWidth=1336&originalType=binary&ratio=1&rotation=0&showTitle=false&size=137737&status=done&style=shadow&taskId=u3495b512-d3ab-4d96-ae6b-2acb913b017&title=" alt="22052501.png"><br><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494332118-c5a5f11b-350c-4225-aa87-27c042d187cb.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=0.5194&from=ui&height=1413&id=u0a894fbe&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u3900f441-bfa5-445e-8818-c09964946c1&title=&width=1381" alt="22052502.png"><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494366516-ded4c6ea-b6fe-4ea7-be83-7d03d6f1542d.png#clientId=u035abb44-eb3a-4&crop=0.033&crop=0.7096&crop=1&crop=1&from=ui&height=1366&id=uae712198&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u0f565a0c-01b7-4b60-8798-e63291b05b3&title=&width=1335" alt="22052502.png"></p>
+<h1 id="四、习题总结"><a href="#四、习题总结" class="headerlink" title="四、习题总结"></a>四、习题总结</h1><p><strong>【问】表1.1中若只包含编号为1和4的两个样例，试给出相应的版本空间。</strong><br>【答】如果只剩下编号1和4，则数据集为：</p>
 <table>
 <thead>
 <tr>
@@ -297,10 +289,10 @@
 </tr>
 </tbody></table>
 <p>编号1可以泛化出来的假设空间一共有2<em>2</em>2&#x3D;8种，其中囊括了编号4的有1种（<em>，</em>，*），因此版本空间一共有7种。我们用G表示青绿，用W表示蜷缩，用Z表示浊响，则版本空间如图所示：<br><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653578522278-03163815-e3e8-4bed-a572-593db3099c4a.jpeg"></p>
-<h4 id="【问】若使用最多包含k个合取式的析合范式来表达表1-1西瓜分类问题的假设空间，试估算有多少种可能的假设。"><a href="#【问】若使用最多包含k个合取式的析合范式来表达表1-1西瓜分类问题的假设空间，试估算有多少种可能的假设。" class="headerlink" title="【问】若使用最多包含k个合取式的析合范式来表达表1.1西瓜分类问题的假设空间，试估算有多少种可能的假设。"></a>【问】若使用最多包含k个合取式的析合范式来表达表1.1西瓜分类问题的假设空间，试估算有多少种可能的假设。</h4><p>【答】（1）“色泽”一共有2种候选项，“根蒂”和“敲声”都有3种候选项。因此，一共有2<em>3</em>3&#x3D;18种不同的瓜。<br>（2）从合取式的角度考虑，一共存在3<em>4</em>4&#x3D;48种不同的合取式。<br>（3）一共有18种瓜，而每个瓜是否在析合范式中，只存在两种可能：是或者不是。因此，所有析合范式加起来的假设数量，不会超过<img src="https://cdn.nlark.com/yuque/__latex/809d1be8d256187d42421020d7252e0a.svg#card=math&code=2%5E%7B18%7D&id=Uuzaz">个（这里的意思是这样的，比如在范式A中，瓜1是好瓜，而在范式B中，瓜1不是好瓜。那么这两个范式就涵盖了瓜1的两种可能情形。以此类推，对于所有的范式，涵盖的可能性最多不超过<img src="https://cdn.nlark.com/yuque/__latex/809d1be8d256187d42421020d7252e0a.svg#card=math&code=2%5E%7B18%7D&id=sN1Gv">种。我们可以据此推断出析合范式包含的合取式的上限数量）。<br>（4）选取 i 个合取式，一共有<img src="https://cdn.nlark.com/yuque/__latex/61a1f654cace3351b465a08645508ada.svg#card=math&code=C_%7B48%7D%5E%7Bi%7D&id=DPQrG">种不同的选取方式，每种选取方式都将决定18种瓜中哪些是好瓜，哪些是坏瓜。换而言之，每种选取方式决定了一个18维的向量的值（这个值仅为0或者1，用来决定这个瓜是不是好的）。<br>（5）因此，判断 i&#x3D;k 时，需要遍历<img src="https://cdn.nlark.com/yuque/__latex/61a1f654cace3351b465a08645508ada.svg#card=math&code=C_%7B48%7D%5E%7Bi%7D&id=vRluD">种可能的情况，并将结果重复（18维向量相等）的筛掉。<br>（6）最终，对于i<img src="https://cdn.nlark.com/yuque/__latex/4fdb8de101fafd808920248b66442580.svg#card=math&code=%5Cle&id=Ai1Ip">k的情况，依次做5的操作，最后再将结果叠加即可。</p>
-<h4 id="【问】若数据包含噪声，则假设空间中有可能不存在与所有训练样本都一致的假设。在此情形下，设计一种归纳偏好用于假设选择。"><a href="#【问】若数据包含噪声，则假设空间中有可能不存在与所有训练样本都一致的假设。在此情形下，设计一种归纳偏好用于假设选择。" class="headerlink" title="【问】若数据包含噪声，则假设空间中有可能不存在与所有训练样本都一致的假设。在此情形下，设计一种归纳偏好用于假设选择。"></a>【问】若数据包含噪声，则假设空间中有可能不存在与所有训练样本都一致的假设。在此情形下，设计一种归纳偏好用于假设选择。</h4><p>【答】可以选择满足最多样本的假设（贪心），或者设“准确率”&#x3D;（符合假设条件的好瓜数）&#x2F;（符合假设条件的样例数），选择“准确率”最高的。</p>
-<h4 id="【问】本章1-4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量-，则式（1-1）将改为-，试证明“没有免费的午餐定理”仍成立。"><a href="#【问】本章1-4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量-，则式（1-1）将改为-，试证明“没有免费的午餐定理”仍成立。" class="headerlink" title="【问】本章1.4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量 ，则式（1.1）将改为  ，试证明“没有免费的午餐定理”仍成立。"></a>【问】本章1.4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量 ，则式（1.1）将改为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1653583503837-a7a2d131-0d32-4e19-80fa-569eea2ec355.svg#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3bf440b4&margin=%5Bobject%20Object%5D&originHeight=38&originWidth=565&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=uf8d3456f-a878-4f3c-8f82-7358c43dc70&title="> ，试证明“没有免费的午餐定理”仍成立。</h4><p>【答】如图所示：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653583580252-41d9c9ae-5c42-4671-b2db-04c65f96d6c3.png#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=0.9917&crop=1&from=ui&height=549&id=u2748a6ab&margin=%5Bobject%20Object%5D&name=22052601.png&originHeight=553&originWidth=1391&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119083&status=done&style=shadow&taskId=u613304d0-f6ee-484e-891e-fb5d9a02a25&title=&width=1380" alt="22052601.png"></p>
-<h4 id="【问】试述机器学习能在互联网搜索的哪些环节起作用"><a href="#【问】试述机器学习能在互联网搜索的哪些环节起作用" class="headerlink" title="【问】试述机器学习能在互联网搜索的哪些环节起作用"></a>【问】试述机器学习能在互联网搜索的哪些环节起作用</h4><p>【答】做分词解读NLP，进行语义分析；信息匹配；根据用户的搜索历史进行结果的个性化排序。</p>
+<p><strong>【问】若使用最多包含k个合取式的析合范式来表达表1.1西瓜分类问题的假设空间，试估算有多少种可能的假设。</strong><br>【答】（1）“色泽”一共有2种候选项，“根蒂”和“敲声”都有3种候选项。因此，一共有2<em>3</em>3&#x3D;18种不同的瓜。<br>（2）从合取式的角度考虑，一共存在3<em>4</em>4&#x3D;48种不同的合取式。<br>（3）一共有18种瓜，而每个瓜是否在析合范式中，只存在两种可能：是或者不是。因此，所有析合范式加起来的假设数量，不会超过$2^{18}$个（这里的意思是这样的，比如在范式A中，瓜1是好瓜，而在范式B中，瓜1不是好瓜。那么这两个范式就涵盖了瓜1的两种可能情形。以此类推，对于所有的范式，涵盖的可能性最多不超过$2^{18}$种。我们可以据此推断出析合范式包含的合取式的上限数量）。<br>（4）选取 i 个合取式，一共有$C_{48}^{i}$种不同的选取方式，每种选取方式都将决定18种瓜中哪些是好瓜，哪些是坏瓜。换而言之，每种选取方式决定了一个18维的向量的值（这个值仅为0或者1，用来决定这个瓜是不是好的）。<br>（5）因此，判断 i&#x3D;k 时，需要遍历$C_{48}^{i}$种可能的情况，并将结果重复（18维向量相等）的筛掉。<br>（6）最终，对于i$\le$k的情况，依次做5的操作，最后再将结果叠加即可。</p>
+<p><strong>【问】若数据包含噪声，则假设空间中有可能不存在与所有训练样本都一致的假设。在此情形下，设计一种归纳偏好用于假设选择。</strong><br>【答】可以选择满足最多样本的假设（贪心），或者设“准确率”&#x3D;（符合假设条件的好瓜数）&#x2F;（符合假设条件的样例数），选择“准确率”最高的。</p>
+<p><strong>【问】本章1.4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量 ，则式（1.1）将改为 <strong><img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1653583503837-a7a2d131-0d32-4e19-80fa-569eea2ec355.svg#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3bf440b4&margin=%5Bobject%20Object%5D&originHeight=38&originWidth=565&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=uf8d3456f-a878-4f3c-8f82-7358c43dc70&title="></strong> ，试证明“没有免费的午餐定理”仍成立。</strong><br>【答】如图所示：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653583580252-41d9c9ae-5c42-4671-b2db-04c65f96d6c3.png#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=0.9917&crop=1&from=ui&height=549&id=u2748a6ab&margin=%5Bobject%20Object%5D&name=22052601.png&originHeight=553&originWidth=1391&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119083&status=done&style=shadow&taskId=u613304d0-f6ee-484e-891e-fb5d9a02a25&title=&width=1380" alt="22052601.png"></p>
+<p><strong>【问】试述机器学习能在互联网搜索的哪些环节起作用</strong><br>【答】做分词解读NLP，进行语义分析；信息匹配；根据用户的搜索历史进行结果的个性化排序。</p>
 
       
     </div>
