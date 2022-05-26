@@ -20,31 +20,47 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="幸运值为E">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Solituder1969">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="一、思维导图 二、读书笔记2.1 引言部分 机器学习研究的内容，是关于“学习算法”的，即从“数据”中产生“模型”的算法。  一些专用术语：数据、记录、数据集、示例&#x2F;样本、属性&#x2F;特征、属性值、属性空间&#x2F;样本空间&#x2F;输入空间、特征向量（示例）、维数、训练数据、训练样本、训练集、假设、真实、学习器、标记、样例、标记空间。  如果预测的是离散值，则学习任务称为“分类”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习-第一章绪论">
+<meta property="og:url" content="http://example.com/2022/05/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/index.html">
 <meta property="og:site_name" content="Solituder1969">
-<meta property="og:description" content="幸运值为E">
+<meta property="og:description" content="一、思维导图 二、读书笔记2.1 引言部分 机器学习研究的内容，是关于“学习算法”的，即从“数据”中产生“模型”的算法。  一些专用术语：数据、记录、数据集、示例&#x2F;样本、属性&#x2F;特征、属性值、属性空间&#x2F;样本空间&#x2F;输入空间、特征向量（示例）、维数、训练数据、训练样本、训练集、假设、真实、学习器、标记、样例、标记空间。  如果预测的是离散值，则学习任务称为“分类”">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653542484796-45e4206d-c082-46ab-a6a0-077372378008.jpeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494319704-8feb3a85-de44-4413-9a3d-a122928f6ad1.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uf87768d6&margin=%5Bobject%20Object%5D&name=22052501.png&originHeight=388&originWidth=1336&originalType=binary&ratio=1&rotation=0&showTitle=false&size=137737&status=done&style=shadow&taskId=u3495b512-d3ab-4d96-ae6b-2acb913b017&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494332118-c5a5f11b-350c-4225-aa87-27c042d187cb.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=0.5194&from=ui&height=1413&id=u0a894fbe&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u3900f441-bfa5-445e-8818-c09964946c1&title=&width=1381">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494366516-ded4c6ea-b6fe-4ea7-be83-7d03d6f1542d.png#clientId=u035abb44-eb3a-4&crop=0.033&crop=0.7096&crop=1&crop=1&from=ui&height=1366&id=uae712198&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u0f565a0c-01b7-4b60-8798-e63291b05b3&title=&width=1335">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653578522278-03163815-e3e8-4bed-a572-593db3099c4a.jpeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/809d1be8d256187d42421020d7252e0a.svg#card=math&code=2%5E%7B18%7D&id=Uuzaz">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/809d1be8d256187d42421020d7252e0a.svg#card=math&code=2%5E%7B18%7D&id=sN1Gv">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/61a1f654cace3351b465a08645508ada.svg#card=math&code=C_%7B48%7D%5E%7Bi%7D&id=DPQrG">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/61a1f654cace3351b465a08645508ada.svg#card=math&code=C_%7B48%7D%5E%7Bi%7D&id=vRluD">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/4fdb8de101fafd808920248b66442580.svg#card=math&code=%5Cle&id=Ai1Ip">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1653583503837-a7a2d131-0d32-4e19-80fa-569eea2ec355.svg#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3bf440b4&margin=%5Bobject%20Object%5D&originHeight=38&originWidth=565&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=uf8d3456f-a878-4f3c-8f82-7358c43dc70&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653583580252-41d9c9ae-5c42-4671-b2db-04c65f96d6c3.png#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=0.9917&crop=1&from=ui&height=549&id=u2748a6ab&margin=%5Bobject%20Object%5D&name=22052601.png&originHeight=553&originWidth=1391&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119083&status=done&style=shadow&taskId=u613304d0-f6ee-484e-891e-fb5d9a02a25&title=&width=1380">
+<meta property="article:published_time" content="2022-05-26T16:52:14.000Z">
+<meta property="article:modified_time" content="2022-05-26T16:54:34.616Z">
 <meta property="article:author" content="Joshua Jiang">
-<meta property="article:tag" content="Python、Java、SE、Galgame...">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653542484796-45e4206d-c082-46ab-a6a0-077372378008.jpeg">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/05/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Solituder1969</title>
+  <title>机器学习-第一章绪论 | Solituder1969</title>
   
 
 
@@ -184,9 +200,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -202,10 +219,9 @@
       <meta itemprop="name" content="Solituder1969">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/" class="post-title-link" itemprop="url">机器学习-第一章绪论</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          机器学习-第一章绪论
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -238,7 +254,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653542484796-45e4206d-c082-46ab-a6a0-077372378008.jpeg"></p>
+        <h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653542484796-45e4206d-c082-46ab-a6a0-077372378008.jpeg"></p>
 <h1 id="二、读书笔记"><a href="#二、读书笔记" class="headerlink" title="二、读书笔记"></a>二、读书笔记</h1><h3 id="2-1-引言部分"><a href="#2-1-引言部分" class="headerlink" title="2.1 引言部分"></a>2.1 引言部分</h3><ol>
 <li><p>机器学习研究的内容，是关于“学习算法”的，即<strong>从“数据”中产生“模型”</strong>的算法。</p>
 </li>
@@ -302,205 +318,34 @@
 <h4 id="【问】本章1-4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量-，则式（1-1）将改为-，试证明“没有免费的午餐定理”仍成立。"><a href="#【问】本章1-4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量-，则式（1-1）将改为-，试证明“没有免费的午餐定理”仍成立。" class="headerlink" title="【问】本章1.4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量 ，则式（1.1）将改为  ，试证明“没有免费的午餐定理”仍成立。"></a>【问】本章1.4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量 ，则式（1.1）将改为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1653583503837-a7a2d131-0d32-4e19-80fa-569eea2ec355.svg#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3bf440b4&margin=%5Bobject%20Object%5D&originHeight=38&originWidth=565&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=uf8d3456f-a878-4f3c-8f82-7358c43dc70&title="> ，试证明“没有免费的午餐定理”仍成立。</h4><p>【答】如图所示：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653583580252-41d9c9ae-5c42-4671-b2db-04c65f96d6c3.png#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=0.9917&crop=1&from=ui&height=549&id=u2748a6ab&margin=%5Bobject%20Object%5D&name=22052601.png&originHeight=553&originWidth=1391&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119083&status=done&style=shadow&taskId=u613304d0-f6ee-484e-891e-fb5d9a02a25&title=&width=1380" alt="22052601.png"></p>
 <h4 id="【问】试述机器学习能在互联网搜索的哪些环节起作用"><a href="#【问】试述机器学习能在互联网搜索的哪些环节起作用" class="headerlink" title="【问】试述机器学习能在互联网搜索的哪些环节起作用"></a>【问】试述机器学习能在互联网搜索的哪些环节起作用</h4><p>【答】做分词解读NLP，进行语义分析；信息匹配；根据用户的搜索历史进行结果的个性化排序。</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"># 知识总结</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/hexo-g-%E6%8C%87%E4%BB%A4%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BAindex-html%E6%96%87%E4%BB%B6/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Joshua Jiang">
-      <meta itemprop="description" content="幸运值为E">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Solituder1969">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/hexo-g-%E6%8C%87%E4%BB%A4%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BAindex-html%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">hexo g 指令无法创建index.html文件</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-19 14:27:42" itemprop="dateCreated datePublished" datetime="2022-02-19T14:27:42+08:00">2022-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-20 16:27:54" itemprop="dateModified" datetime="2022-02-20T16:27:54+08:00">2022-02-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><strong>背景描述</strong><blockquote>
-<p>笔者新建了项目 <strong><em>“Solituder1969”</em></strong>, 使用 “hexo” 工具搭建博客。在将主题更换为 “next” 、添加了博主图片、首页新增 “tags” 和 “categorites” 分类后，本地4000端口 debug 没有任何问题。之后应该 <strong><em>清理缓存，重新生成，部署到 github</em></strong> 。</p>
-</blockquote>
-</li>
-<li><strong>问题描述</strong><blockquote>
-<p>在第二步中，使用 <strong><em>“hexo generate”</em></strong> 指令，生成的 “public” 文件夹（也即要部署的静态文件夹）里却没有主页 “index.html”，对于 “tags”和”categories” 也没有生成对应的 “.html” 文件，只有初始的 “.md”文件。其结果就是本地再次调用 <strong><em>“hexo s”</em></strong> 指令运行时，只有一个 **_”Cannot get &#x2F;“_**。</p>
-</blockquote>
-</li>
-<li><strong>问题归因</strong></br><br> 3.1 <strong><em>hexo generate</em> 的原理</strong><br> 浏览项目目录，我们发现 <em>hexo</em> 项目的结构是这样的：<blockquote>
-<p>-node_modules<br>-public<br>-scaffolds<br>-source<br>-themes</p>
-</blockquote>
-<p> 可以发现， <em><strong>source</strong></em> 文件夹与 <em><strong>themes</strong></em> 文件夹处于同级目录， <em><strong>public</strong></em> 为生成的静态包， <em><strong>node_modules</strong></em> 为 npm 引入的模块， <em><strong>scaffolds</strong></em> 则提供了”draft”、”page”和”post”三种格式。 </br><br> 根据 “模板引擎”的理论，我们可以简单地认为， <em><strong>source</strong></em> 中存放了我们博客中的数据（标签、文章等）， <em><strong>themes</strong></em> 则为整个博客使用的模板。</br><br> hexo 先遍历 <em><strong>themes</strong></em> 下主题（例如 “next”）的 <em><strong>source</strong></em> 文件，建立索引，随后根据主目录下 <em><strong>source</strong></em> 里存放的文章类型，以 <em><strong>layout</strong></em> 里对应的布局将文章渲染成html文件。</br><br> 至于hexo是如何遍历、如何进行数据填充的，这就涉及到插件 <em><strong>hexo-generator-index</strong></em> 了。它会首先调取 <em><strong>_config.yml</strong></em> 里的参数，然后指定对象需要填充进哪个路径中，最后再通过page变量调取。</br><br> 通过上述的分析，我们知道， <em><strong>“hexo generate”</strong></em> 指令生成主页，一共需要以下四个方面支持：</p>
-<blockquote>
-<p>a. 数据源，原本是什么样子的<br>b. 模板引擎，要生成什么样子的<br>c. 配置文件，a和b中元素是如何对应的，模板的具体细节<br>d. 插件，a和b的对应关系是如何填充的</br></p>
-</blockquote>
-<p> 3.2 <strong>问题诊断</strong></p>
-<table>
-<thead>
-<tr>
-<th><strong>数据源</strong></th>
-<th><strong>使用 _</strong>“hexo new hello-world”<strong>_ 指令生成了一篇文章，确保主页不空</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>模板引擎</strong></td>
-<td><strong>套用的是 _</strong>“next”<strong>_ 模板，这是当前比较受欢迎的博客模板</strong></td>
-</tr>
-<tr>
-<td><strong>配置文件</strong></td>
-<td><strong>更改了相关的参数属性，但仅涉及诸如头像、进度条、搜索等功能性相关</strong></td>
-</tr>
-<tr>
-<td><strong>插件</strong></td>
-<td><strong>齐全，没有报错</strong></td>
-</tr>
-</tbody></table>
-</li>
-<li><strong>解决方案</strong><br> 这里就是比较离奇的地方了。笔者在尝试了4个多小时之后，仍旧没有解决这个问题。之后笔者重新利用 <em><strong>hexo init</strong></em> 指令，初始化了一个 <em><strong>text</strong></em> 项目，并将原项目中的 <em><strong>config</strong></em> 文件直接覆盖了过来，安装插件之后，_<strong>test</strong>_  项目经过 <em><strong>clean</strong></em> 后，居然可以 <em><strong>generate</strong></em> 出 <em><strong>index.html</strong></em> 了！</br><br> 原项目与测试项目除了名字之外，其余都是一样的。但原项目就无法生成主页，而测试项目就可以无问题产出结果。不得不说，挺奇妙的……</li>
-<li><strong>问题总结</strong><br> A. 发现了 <em><strong>hexo</strong></em> 构建项目时的一个问题：无法生成默认页；<br> B. 尝试着分析了一下问题的源头，主要来自<strong>数据源</strong>、<strong>模板引擎</strong>、<strong>配置文件</strong>和<strong>插件</strong>四个方面；<br> C. 尝试了4个小时，反复排查了过去，<strong>没有能够解决问题</strong>；<br> D. 重新构建了一个测试项目，并把原工程的相关文件<strong>覆盖</strong>了一遍，可以顺利<strong>运行产出预期结果</strong>；<br> E. 已成功部署，但问题<strong>仍待解决</strong>……</li>
-</ol>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/19/hexo-g-%E6%8C%87%E4%BB%A4%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BAindex-html%E6%96%87%E4%BB%B6/" rel="prev" title="hexo g 指令无法创建index.html文件">
+      <i class="fa fa-chevron-left"></i> hexo g 指令无法创建index.html文件
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Joshua Jiang">
-      <meta itemprop="description" content="幸运值为E">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Solituder1969">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-19 02:35:15" itemprop="dateCreated datePublished" datetime="2022-02-19T02:35:15+08:00">2022-02-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -553,6 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">一、思维导图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="nav-number">2.</span> <span class="nav-text">二、读书笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%BC%95%E8%A8%80%E9%83%A8%E5%88%86"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 引言部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%81%87%E8%AE%BE%E7%A9%BA%E9%97%B4"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 假设空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%BD%92%E7%BA%B3%E5%81%8F%E5%A5%BD"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 归纳偏好</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8E%A8%E5%AF%BC%E5%A4%8D%E6%BC%94"><span class="nav-number">3.</span> <span class="nav-text">三、推导复演</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%B9%A0%E9%A2%98%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">四、习题总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%97%AE%E3%80%91%E8%A1%A81-1%E4%B8%AD%E8%8B%A5%E5%8F%AA%E5%8C%85%E5%90%AB%E7%BC%96%E5%8F%B7%E4%B8%BA1%E5%92%8C4%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%A0%B7%E4%BE%8B%EF%BC%8C%E8%AF%95%E7%BB%99%E5%87%BA%E7%9B%B8%E5%BA%94%E7%9A%84%E7%89%88%E6%9C%AC%E7%A9%BA%E9%97%B4%E3%80%82"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">【问】表1.1中若只包含编号为1和4的两个样例，试给出相应的版本空间。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%97%AE%E3%80%91%E8%8B%A5%E4%BD%BF%E7%94%A8%E6%9C%80%E5%A4%9A%E5%8C%85%E5%90%ABk%E4%B8%AA%E5%90%88%E5%8F%96%E5%BC%8F%E7%9A%84%E6%9E%90%E5%90%88%E8%8C%83%E5%BC%8F%E6%9D%A5%E8%A1%A8%E8%BE%BE%E8%A1%A81-1%E8%A5%BF%E7%93%9C%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E7%9A%84%E5%81%87%E8%AE%BE%E7%A9%BA%E9%97%B4%EF%BC%8C%E8%AF%95%E4%BC%B0%E7%AE%97%E6%9C%89%E5%A4%9A%E5%B0%91%E7%A7%8D%E5%8F%AF%E8%83%BD%E7%9A%84%E5%81%87%E8%AE%BE%E3%80%82"><span class="nav-number">4.0.0.2.</span> <span class="nav-text">【问】若使用最多包含k个合取式的析合范式来表达表1.1西瓜分类问题的假设空间，试估算有多少种可能的假设。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%97%AE%E3%80%91%E8%8B%A5%E6%95%B0%E6%8D%AE%E5%8C%85%E5%90%AB%E5%99%AA%E5%A3%B0%EF%BC%8C%E5%88%99%E5%81%87%E8%AE%BE%E7%A9%BA%E9%97%B4%E4%B8%AD%E6%9C%89%E5%8F%AF%E8%83%BD%E4%B8%8D%E5%AD%98%E5%9C%A8%E4%B8%8E%E6%89%80%E6%9C%89%E8%AE%AD%E7%BB%83%E6%A0%B7%E6%9C%AC%E9%83%BD%E4%B8%80%E8%87%B4%E7%9A%84%E5%81%87%E8%AE%BE%E3%80%82%E5%9C%A8%E6%AD%A4%E6%83%85%E5%BD%A2%E4%B8%8B%EF%BC%8C%E8%AE%BE%E8%AE%A1%E4%B8%80%E7%A7%8D%E5%BD%92%E7%BA%B3%E5%81%8F%E5%A5%BD%E7%94%A8%E4%BA%8E%E5%81%87%E8%AE%BE%E9%80%89%E6%8B%A9%E3%80%82"><span class="nav-number">4.0.0.3.</span> <span class="nav-text">【问】若数据包含噪声，则假设空间中有可能不存在与所有训练样本都一致的假设。在此情形下，设计一种归纳偏好用于假设选择。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%97%AE%E3%80%91%E6%9C%AC%E7%AB%A01-4%E8%8A%82%E5%9C%A8%E8%AE%BA%E8%BF%B0%E2%80%9C%E6%B2%A1%E6%9C%89%E5%85%8D%E8%B4%B9%E7%9A%84%E5%8D%88%E9%A4%90%E2%80%9D%E5%AE%9A%E7%90%86%E6%97%B6%EF%BC%8C%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E4%BA%86%E2%80%9C%E5%88%86%E7%B1%BB%E9%94%99%E8%AF%AF%E7%8E%87%E2%80%9D%E4%BD%9C%E4%B8%BA%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F%E6%9D%A5%E5%AF%B9%E5%88%86%E7%B1%BB%E5%99%A8%E8%BF%9B%E8%A1%8C%E8%AF%84%E4%BC%B0%E3%80%82%E8%8B%A5%E6%8D%A2%E7%94%A8%E5%85%B6%E4%BB%96%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F-%EF%BC%8C%E5%88%99%E5%BC%8F%EF%BC%881-1%EF%BC%89%E5%B0%86%E6%94%B9%E4%B8%BA-%EF%BC%8C%E8%AF%95%E8%AF%81%E6%98%8E%E2%80%9C%E6%B2%A1%E6%9C%89%E5%85%8D%E8%B4%B9%E7%9A%84%E5%8D%88%E9%A4%90%E5%AE%9A%E7%90%86%E2%80%9D%E4%BB%8D%E6%88%90%E7%AB%8B%E3%80%82"><span class="nav-number">4.0.0.4.</span> <span class="nav-text">【问】本章1.4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量 ，则式（1.1）将改为  ，试证明“没有免费的午餐定理”仍成立。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%97%AE%E3%80%91%E8%AF%95%E8%BF%B0%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%83%BD%E5%9C%A8%E4%BA%92%E8%81%94%E7%BD%91%E6%90%9C%E7%B4%A2%E7%9A%84%E5%93%AA%E4%BA%9B%E7%8E%AF%E8%8A%82%E8%B5%B7%E4%BD%9C%E7%94%A8"><span class="nav-number">4.0.0.5.</span> <span class="nav-text">【问】试述机器学习能在互联网搜索的哪些环节起作用</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
