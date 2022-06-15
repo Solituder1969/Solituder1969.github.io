@@ -138,4 +138,177 @@
         <tag>机器学习</tag>
       </tags>
   </entry>
+  <entry>
+    <title>机器学习-第二章模型评估与选择</title>
+    <url>/2022/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<p><a name="hEUyN"></a></p>
+<h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1654962817166-0cfadc49-0081-47b7-9eb4-a452524a07d1.jpeg"><br><a name="I31vg"></a></p>
+<h1 id="二、读书笔记"><a href="#二、读书笔记" class="headerlink" title="二、读书笔记"></a>二、读书笔记</h1><p><a name="Jkh0Q"></a></p>
+<h2 id="2-1-评估方法"><a href="#2-1-评估方法" class="headerlink" title="2.1 评估方法"></a>2.1 评估方法</h2><p><a name="u5iwA"></a></p>
+<h3 id="2-1-1-留出法"><a href="#2-1-1-留出法" class="headerlink" title="2.1.1 留出法"></a>2.1.1 留出法</h3><ul>
+<li><strong>基本概念</strong>：直接将数据集D分为两个互斥的集合S和T，在集合S上进行训练模型，在T上进行测试，结果的误差作为对“泛化误差”的估算。</li>
+<li><strong>注意事项</strong>：保持样本的类别比例相似，采样时应该采取“分层采样”的方式。此外，单次使用留出法得出的结论往往不准确，需要进行若干次随机划分、重复实验评估后取均值来作为评估结果。</li>
+<li><strong>包含问题</strong>：如果训练集过大，则测试集相对就小，评估结果可能不太准确、不太稳定；而如果减小训练集，扩大测试集，评估模型与训练结果差别更大，参考性就弱了。测试集小时，方差大；训练集小时，偏差大。</li>
+</ul>
+<p><a name="whX9j"></a></p>
+<h3 id="2-1-2-交叉验证法"><a href="#2-1-2-交叉验证法" class="headerlink" title="2.1.2 交叉验证法"></a>2.1.2 交叉验证法</h3><p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655023530616-20f713ff-43da-4e0b-bb28-0117688963a7.png#clientId=u42850908-3d60-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u065f1039&margin=%5Bobject%20Object%5D&name=jqxx02-01.png&originHeight=755&originWidth=1817&originalType=binary&ratio=1&rotation=0&showTitle=false&size=150984&status=done&style=shadow&taskId=u5441e992-ad97-4696-8f3c-f925b36bc3d&title=" alt="jqxx02-01.png"></p>
+<ul>
+<li><strong>基本概念</strong>：将一个数据集D分为k组，训练时取其中k-1组，剩下一组作为测试集，如此可以进行k次训练，最终结果就是这k次训练结果的均值。交叉验证法因此可称为“k折交叉验证”。此外，受限于划分方法，训练时往往要随机使用多次划分重复p次，就成了“p次k折交叉验证”。</li>
+<li><strong>特殊情况</strong>：当 k&#x3D;|D| 时，即每次只拿出一个数据来测试，其余数据来进行训练，交叉验证就变成了“留一法”。这样的训练样本与原数据集非常相似，评估结果往往较为准确，但开销极大。</li>
+</ul>
+<p><a name="adl13"></a></p>
+<h3 id="2-1-3-自助法"><a href="#2-1-3-自助法" class="headerlink" title="2.1.3 自助法"></a>2.1.3 自助法</h3><ul>
+<li><strong>基本概念</strong>：从数据集D中，随机选出一个样本，将其复制到数据集D’ 中，D集合不变。这样重复m次。当m足够大时，取极限 <img src="https://cdn.nlark.com/yuque/__latex/aca24400fb63f42d34f61e880f2a8dea.svg#card=math&code=%7B%5Clim_%7Bx%20%5Cto%20%2B%5Cinfty%7D%7D%281-%5Cfrac%7B1%7D%7Bm%7D%29%5E%7Bm%7D%20%5Cto%20%5Cfrac%7B1%7D%7Be%7D%20%5Capprox%200.368&id=Uo2PX">，这个结果的意思是：m次采样都没有采中的概率。作数学期望，可知，当m足够大时，样本中仍旧有差不多36.8%的数据没有录入。因此可以用D’ 作训练集，D\D’ 作测试集。</li>
+<li><strong>解决问题</strong>：注意到|D|&#x3D;m，也即，实际数据集和期望数据集的大小都是m，这样可以解决数据集规模不同引发的估计偏差。在数据集较少时很有用。</li>
+<li><strong>存在问题</strong>：自助法改变了数据的分布，这就又引入了分布不同产生的估计误差。</li>
+</ul>
+<p><a name="k5uON"></a></p>
+<h3 id="2-1-4-调参与自助模型"><a href="#2-1-4-调参与自助模型" class="headerlink" title="2.1.4 调参与自助模型"></a>2.1.4 调参与自助模型</h3><ul>
+<li><strong>基本概念</strong>：在进行模型评估与选择时，除了算法之外，参数的设定往往也会改变模型的结果。参数设定本质上与算法选取没什么区别，关键在于参数是在实数集上取的，因而无法每个结果都测一遍，只能以“范围+步长”的方式确定候选的参数，再从候选参数中选一个最合适的。</li>
+<li><strong>注意事项</strong>：当训练集和验证集通过后，我们得到了我们的模型和参数设置，此时应该用原始的数据集D再训练一次，这样才能最终提交给用户。</li>
+</ul>
+<hr>
+<p><a name="ddzDf"></a></p>
+<h2 id="2-2-性能度量"><a href="#2-2-性能度量" class="headerlink" title="2.2 性能度量"></a>2.2 性能度量</h2><p>对回归（预测的是连续值）任务，最常用的性能度量是“均方误差”，计算公式为：<br /><img src="https://cdn.nlark.com/yuque/__latex/28080c79fd15a7ce4234d5bcb69f3cdb.svg#card=math&code=E%EF%BC%88f%3BD%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%28f%28x_%7Bi%7D%29-y_%7Bi%7D%29%5E2&id=Brqtv"><br />更一般的，对于数据分布D和概率密度函数p(~)，均方误差可以改写为：<br /><img src="https://cdn.nlark.com/yuque/__latex/15e1d5bba0688a4f938592cfca84ab7c.svg#card=math&code=E%28f%3BD%29%20%3D%20%5Cint_%7Bx%5Csim%20D%7D%28f%28x%29-y%29%5E2p%28x%29dx&id=qZDue"><br />除此以外，还有诸多的性能度量，以下作一一介绍：<br><a name="cwkpD"></a></p>
+<h3 id="2-2-1-错误率与精确度"><a href="#2-2-1-错误率与精确度" class="headerlink" title="2.2.1 错误率与精确度"></a>2.2.1 错误率与精确度</h3><ul>
+<li><strong>错误率</strong>：分类错误的样本数占样本总数的比例，其定义可以写为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/28f55746537046d2c1907b2bdeee2dab.svg#card=math&code=E%28f%3BD%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%E2%85%A1%28f%28x_%7Bi%7D%29%5Cneq%20y_%7Bi%7D%29&id=i7Zi7"><br />更加一般地，对于数据分布D和概率密度函数p(~)，错误率可以改写为：<br /><img src="https://cdn.nlark.com/yuque/__latex/466378cb6494fa22498f74a0b8546455.svg#card=math&code=E%28f%3BD%29%3D%5Cint_%7Bx%5Csim%20D%7D%E2%85%A1%28f%28x%29%5Cneq%20y%29p%28x%29dx&id=QSDZi"></p>
+<ul>
+<li><strong>精确度</strong>：分类正确的样本数占样本综述的比例，其定义可以写为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/46e577bb84d1a67e48706f8196f7fc0c.svg#card=math&code=acc%28f%3BD%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum%20%E2%85%A1%28f%28x_i%29%20%3D%20y_i%29%3D1-E%28f%3BD%29%0A&id=U9Wlc"></p>
+<p>更加一般地，对于数据分布D和概率密度函数p(~)，错误率可以改写为：<br /><img src="https://cdn.nlark.com/yuque/__latex/ff6ae612d8037d218aa57fdff97eb4d3.svg#card=math&code=acc%28f%3BD%29%3D%5Cint_%7Bx%20%5Csim%20D%7D%E2%85%A1%28f%28x%29%3Dy%29p%28x%29dx%3D1-E%28f%3BD%29&id=ERreh"></p>
+<p><a name="palnb"></a></p>
+<h3 id="2-2-2-查准率、查全率与F1"><a href="#2-2-2-查准率、查全率与F1" class="headerlink" title="2.2.2 查准率、查全率与F1"></a>2.2.2 查准率、查全率与F1</h3><p>先给出分类结果混淆矩阵：</p>
+<table>
+<thead>
+<tr>
+<th>真实情况</th>
+<th>预测结果</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>正例</td>
+<td>反例</td>
+</tr>
+<tr>
+<td>正例</td>
+<td>TP（真正例）</td>
+<td>FN（假反例）</td>
+</tr>
+<tr>
+<td>反例</td>
+<td>FP（假正例）</td>
+<td>TN（真反例）</td>
+</tr>
+</tbody></table>
+<ul>
+<li>查准率：预测结果中，有多少是用户所需要的。用公式可以表示为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/99fd7ec5c24e07b66ee7752d0d6f4026.svg#card=math&code=P%3D%5Cfrac%7BTP%7D%7BTP%2BFP%7D&id=KcTiu"></p>
+<ul>
+<li>查全率：用户所需要的数据中，有多少是被预测出来的。用公式可以表示为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/710c06342b1907d565b88aa5c556aac5.svg#card=math&code=R%3D%5Cfrac%7BTP%7D%7BTP%2BFN%7D&id=rv61u"><br />一般来说，查准率和查全率不能兼顾。查准率高，则算法可能更偏保守，只挑选有把握的，容易漏掉一些正例。反之，查全率高，则算法偏激进，尽可能不遗漏，但这也也容易把一些反例放入其中。只有样本数量较少时，两者才可能兼顾得比较好。<br />为了比较算法的优劣，一般有以下几种方法：</p>
+<ul>
+<li>图像法：在P-R图中，若算法A将算法B完全包裹住，则一般认为算法A优于算法B</li>
+<li>面积法：对于算法曲线交叉的情况，取两者与坐标轴围成图形的面积，孰大孰优</li>
+<li>平衡点：取P&#x3D;R时的情况，比较算法A与算法B此时的P值，孰大孰优55</li>
+<li>F1度量：取P、R的调和平均值，公式为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/d4a2089961c946fa4394a9b99b271392.svg#card=math&code=F1%3D%5Cfrac%7B2%7D%7B%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B1%7D%7BR%7D%7D%3D%5Cfrac%7B2PR%7D%7BP%2BR%7D%3D%5Cfrac%7B2TP%7D%7B2TP%2BFP%2BFN%7D%3D%5Cfrac%7B2TP%7D%7B%7CD%7C%2BTP-TN%7D&id=iA8Kt"></p>
+<ul>
+<li>Fβ度量：β＞1时，查全率影响更大；β＜1时，查准率影响更大；β等于1时，退化为F1度量。Fβ是加权调和平均值，公式为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/51cc98b828359653d6a23d3725854c72.svg#card=math&code=F_%7B%5Cbeta%7D%3D%5Cfrac%7B1%2B%5Cbeta%5E2%7D%7B%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B%5Cbeta%5E2%7D%7BR%7D%7D%3D%5Cfrac%7B%281%2B%5Cbeta%5E2%29PR%7D%7BR%2B%5Cbeta%5E2P%7D&id=OGe55"><br />当考察对象不再局限于一个二维混淆矩阵，而是多个二维混淆矩阵时，有两种方式：<br />第一种，对每个混淆矩阵，分别计算查准率和查全率，再分别取均值，这样就得到了“宏查准率”、“宏查全率”、“宏F1”：<br /><img src="https://cdn.nlark.com/yuque/__latex/ee78a63700c49320ed3a28c19aaf44cd.svg#card=math&code=macro-P%3D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DP_%7Bi%7D%5C%5C%0Amacro-R%3D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DR_%7Bi%7D%5C%5C%0Amacro-F1%3D%5Cfrac%7B2%28macro-P%29%28macro-R%29%7D%7B%28macro-P%29%2B%28macro-R%29%7D&id=Qz69G"><br />第二种，对每个元素的TP、FP、TN、FN，先合起来取均值，再根据这些均值计算得到“微查准率”、“微查全率”和“微F1”：<br /><img src="https://cdn.nlark.com/yuque/__latex/8cf5f06dae2cc5a6792d309f12053b6b.svg#card=math&code=micro-P%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFP%7D%7D%5C%5C%0Amicro-R%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFN%7D%7D%5C%5C%0Amicro-F1%3D%5Cfrac%7B2%28micro-P%29%28micro-R%29%7D%7B%28micro-P%29%2B%28micro-R%29%7D&id=SSpM2"></p>
+<p><a name="kxOyQ"></a></p>
+<h3 id="2-2-3-ROC与AUC"><a href="#2-2-3-ROC与AUC" class="headerlink" title="2.2.3 ROC与AUC"></a>2.2.3 ROC与AUC</h3><ul>
+<li><strong>ROC：受试者工作特征</strong>，根据学习器的预算结果对样例进行排序，然后按照这个顺序，依次把样例作为正例预测，计算其“真正例率”和“假正例率”，分别作为纵、横轴，这样就得到了ROC曲线图。其中，真正例率记为TPR，假正例率记为FPR，它们的计算公式分别为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/f93f89e93ed83c62303f72ab4388b3fc.svg#card=math&code=TPR%3D%5Cfrac%7BTP%7D%7BTP%2BFR%7D%5C%5C%0AFPR%3D%5Cfrac%7BFP%7D%7BFP%2BTN%7D&id=on65h"></p>
+<ul>
+<li><strong>ROC曲线绘制流程</strong>：给定m+个正例，m-个反例：<ul>
+<li>根据学习器的预测结果进行排序。</li>
+<li>然后首先把分类阈值设置为最大值，即所有样例都先归为反例，此时TPR与FPR都为0，就在(0,0)处标记一个点。</li>
+<li>将分类阈值依次设为每个样例的预测值，也就是依次将每个样例划分为正例。</li>
+<li>假设前一个样例的坐标为(x,y)，当前如果为真正例，则在y坐标上加上一个(1&#x2F;m+)，如果为假正例，则在x坐标上加上一个（1&#x2F;m-)。</li>
+<li>对所做折线图进行平滑</li>
+</ul>
+</li>
+<li><strong>AUC：ROC曲线下面积，</strong>根据面积大小判定学习器性能优劣。根据ROC曲线的绘制流程，将曲线看作是一个个梯形的相加，则AUC计算公式为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/6f7d29dcb6612ab21aa9faabf3025b8c.svg#card=math&code=AUC%3D%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7Bm-1%7D%28x_%7Bi%2B1%7D-x_%7Bi%7D%29%28y_%7Bi%7D%2By_%7Bi%2B1%7D%29&id=p3dk7"><br />如果我们考虑排序误差情况，令正例预测值小于反例，则记1罚分，两个相等，则记0.5分，令D+表示正例集合，D-表示反例集合，则可以给出排序损失误差：<br /><img src="https://cdn.nlark.com/yuque/__latex/cbaa8eae89339b82b74f4bceb290830a.svg#card=math&code=%5Cell_%7Brank%7D%3D%5Cfrac%7B1%7D%7Bm%5E%2Bm%5E-%7D%5Csum_%7Bx%5E%2B%5Cin%20D%5E%2B%7D%5Csum_%7Bx%5E-%20%5Cin%20D%5E-%7D%28%E2%85%A1%28f%28x%5E%2B%29%3Cf%28x%5E-%29%29%2B%5Cfrac%7B1%7D%7B2%7D%E2%85%A1%28f%28x%5E%2B%29%3Df%28x%5E-%29%29&id=leJXC"><br />可以证明，排序损失误差值等于ROC曲线上面的面积（课后习题，关键在于将1&#x2F;(m+m-)看作是一个小格子的面积）。因此有：<br /><img src="https://cdn.nlark.com/yuque/__latex/e4e8dcb2fdacc507b87c6b1fa746f4d8.svg#card=math&code=AUC%3D1-%5Cell_%7Brank%7D&id=k3eWS"></p>
+<hr>
+<p><a name="ouYAX"></a></p>
+<h2 id="2-3-比较检验"><a href="#2-3-比较检验" class="headerlink" title="2.3 比较检验"></a>2.3 比较检验</h2><p>引入“比较检验”的根本原因在于，性能度量给出的是学习器在“验证集”上的表现，而我们实际需要的是其“泛化性能”的评估，测试对象扩大了。因此，“验证集”的评估能否适用于“泛化性能”，需要根据训练集的数据分布等一系列条件进行检验，即“评估结果的广泛性是否具备统计学意义？这个把握有多大？”<br><a name="Q4otu"></a></p>
+<h3 id="2-3-1-假设检验"><a href="#2-3-1-假设检验" class="headerlink" title="2.3.1 假设检验"></a>2.3.1 假设检验</h3><p>我们假设<strong>泛化错误率</strong>为 ε，<strong>测试错误率</strong>为 ε^，则我们可以得到两个结论：</p>
+<ol>
+<li>泛化错误率为 ε 的学习器进行一次分类，其中m个样本中出现了m’个错误类，某个固定顺序的这样结果出现的概率为：</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/__latex/93d755c3cb765a96c6b33e9a1dc4d6b7.svg#card=math&code=%5Cepsilon%5E%7Bm%27%7D%281-%5Cepsilon%29%5E%7Bm-m%27%7D&id=rcA7p"></p>
+<ol start="2">
+<li>测试错误率为ε^的学习器，在m个样本中误分类了 m×ε^个样本</li>
+</ol>
+<p>综上，我们可以计算出，在m个样本上，泛化错误率为ε的学习器将ε^×m个样本误分类的概率为：<br /><img src="https://cdn.nlark.com/yuque/__latex/be5ee7abea5934972e8e64aa67e605f9.svg#card=math&code=P%28%5Chat%7B%5Cepsilon%7D%3B%5Cepsilon%29%3DC_%7Bm%7D%5E%7B%5Chat%7B%5Cepsilon%7D%C3%97m%7D%5Cepsilon%5E%7B%5Chat%7B%5Cepsilon%7D%C3%97m%7D%281-%5Cepsilon%29%5E%7Bm-%5Chat%7B%5Cepsilon%7D%C3%97m%7D&id=fEZH4"><br />对 ε 做导数，可以求得在ε&#x3D;ε^时，P最大，当|ε&#x3D;ε^|增大时，P减小，符合二项分布的规律。我们可以使用二项检验来对 “ ε≤ε0?”进行检验。<br />考虑假设 ε≤ε0，在1-α的概率内能观测到的最大错误率为：<br /><img src="https://cdn.nlark.com/yuque/__latex/d29a7a35b14a543315855ab5baf0a1e3.svg#card=math&code=%5Coverline%7B%5Cepsilon%7D%3Dmax%20%5Cquad%20s.t.%20%5Cquad%20%5Csum_%7Bi%3D%5Cepsilon_%7B0%7D%C3%97m%2B1%7D%5E%7Bm%7DC_%7Bm%7D%5E%7Bi%7D%20%5Cepsilon%5Ei%281-%5Cepsilon%29%5E%7Bm-i%7D%20%3C%5Calpha&id=vEig3"><br />该式子应该这样理解：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655282573322-248faa0b-a553-455c-8683-69d25f574ab8.png#clientId=u2e3c9e60-21de-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u6574f678&margin=%5Bobject%20Object%5D&name=jqxx02-02.png&originHeight=972&originWidth=1273&originalType=binary&ratio=1&rotation=0&showTitle=false&size=87073&status=done&style=shadow&taskId=u6962b426-acd4-47a6-92f6-883fe7c2b23&title=" alt="jqxx02-02.png"><br /> 我们设置一个“误分类样本概率”标准ε0，此时，“误分类样本概率大于ε0“的概率，就成了上图中阴影部分的面积，我们将其记为S。那么对应的，1-S就是“误分类样本概率小于ε0”的概率，也就是上图中白色部分的面积。<br /> 现在，我们确定一个置信值α，如果S小于α，那就是“误分类样本概率大于ε0的概率”比α小，我们就认为结果是可以接受的，符合标准，反之，则不可以接受。<br /> 我们可以确定一个临界标准ε’，显然ε越大，整个图像就越往右边靠拢，S就越大。在满足条件S＜α的前提下，我们取最大值（也就是临界值ε’）。如果此时ε^比ε’还要大，那么ε^的图像中，S必然比α大，我们认为误分类的概率不符合标准了。而如果ε^比ε’小，那么我们就认为在α置信度下，S的大小没有出格，自然ε≤ε0就是可以接受的了。<br /> 更具体的来说，我们知道，对于一个二项分布E(n,p)，n固定后，<strong>p不改变曲线的形状，只改变曲线的位置</strong>。p越大，曲线越往右，越小，曲线越往左。<br /> 当我们定下标准ε0后，我们就可以在曲线图上截出一块阴影来（如上图），而白色的部分就表示泛化错误率小于ε0的概率。我们要确定的是“把握”，即这个泛化的错误率比ε0小的概率大不大，那我们就得设置一个置信值α，确保这个概率比1-α大，也即阴影部分面积比α小，这样我们才能认为这个结论是可靠的。<br /> 而怎么判定这个结论呢？我们就去找一个临界值ε’，也就是把这个二项分布图像在坐标轴上移来移去，直到阴影部分面积达到小于α时的最大值。这个时候，如果测试错误率ε^比ε’小，那阴影部分面积肯定比α小（图像更靠左，右侧面积小了），结论就可靠了。反之，结论就不可靠。<br /> 对于非一次性留出法估计的情况，我们需要另作讨论。<br /> 多次重复留出法或者交叉验证法会对数据进行多次训练&#x2F;测试，得到多个测试错误率。对此，我们可以使用τ检验法。首先计算平均测试错误率和方差：<br /><img src="https://cdn.nlark.com/yuque/__latex/3124c5b906af783b01cc19c722a8b93e.svg#card=math&code=%5Cmu%3D%5Cfrac%7B1%7D%7Bk%7D%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%5Chat%7B%5Cepsilon_%7Bi%7D%7D&id=BD9iw"><br /><img src="https://cdn.nlark.com/yuque/__latex/f95a20fb090faccd8d73f37e3bcd8e8c.svg#card=math&code=%5Csigma%5E2%3D%5Cfrac%7B1%7D%7Bk-1%7D%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%28%5Chat%7B%5Cepsilon_i%7D-%5Cmu%29%5E2&id=nmbit"><br />这k个ε都可以看作是泛化错误率ε0的单独采样，故参数：<br /><img src="https://cdn.nlark.com/yuque/__latex/9febda2401d2a0cb1be691ada6e909bb.svg#card=math&code=%5Ctau_%5Ctau%3D%5Cfrac%7B%5Csqrt%7Bk%7D%28%5Cmu-%5Cepsilon_0%29%7D%7B%5Csigma%7D&id=Whksj"><br />服从自由度为k-1的τ分布，如图所示：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655303977339-bc316aab-6b41-4dd1-a3e3-a37a5e3ee891.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uc2d884f8&margin=%5Bobject%20Object%5D&name=jqxx02-03.png&originHeight=907&originWidth=1208&originalType=binary&ratio=1&rotation=0&showTitle=false&size=65960&status=done&style=shadow&taskId=u2def9ea8-c3d5-4de8-bb9e-901bff61df6&title=" alt="jqxx02-03.png"><br />若平均错误率μ与ε0之差|μ-ε0|落在了落在了临界值范围[τ_{-a&#x2F;2，τ_{a&#x2F;2}}]内，则不能拒绝假设“μ&#x3D;ε0”，反之，则认为该假设不靠谱。<br><a name="xkgdU"></a></p>
+<h3 id="2-3-2-交叉验证t检验"><a href="#2-3-2-交叉验证t检验" class="headerlink" title="2.3.2 交叉验证t检验"></a>2.3.2 交叉验证t检验</h3><ul>
+<li>对于两个学习器A和B，若两个学习器性能相同，则它们在相同训练集、测试集上的错误率应该相同。故可以对这两个学习器的2k个错误率ε_{ai}，ε_{bi}两两进行τ检验。分别计算差值、方差，在显著度α下，如果参数小于临界值，则表示假设不能被拒绝，否则，假设不可靠。</li>
+<li>5×2交叉检验法<br><a name="qw7Fh"></a><h3 id="2-3-3-McNemar检验"><a href="#2-3-3-McNemar检验" class="headerlink" title="2.3.3 McNemar检验"></a>2.3.3 McNemar检验</h3>对二分类问题，使用留出法还可以获得两个学习器分类结果的差异，用列联表表示：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>算法B</th>
+<th>算法A</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>正确</td>
+<td>错误</td>
+</tr>
+<tr>
+<td>正确</td>
+<td>e00</td>
+<td>e01</td>
+</tr>
+<tr>
+<td>错误</td>
+<td>e10</td>
+<td>e11</td>
+</tr>
+</tbody></table>
+<p>如果两学习器性能相同，则应该有e10&#x3D;e01，变量|e01-e10|服从正态分布，均值为1，方差为e10+e01，故变量：<br /><img src="https://cdn.nlark.com/yuque/__latex/be4f505abc0b99ca5b7881787661e43d.svg#card=math&code=%5Ctau_%7B%5Cchi%5E2%7D%3D%5Cfrac%7B%28%7Ce_%7B01%7D-e_%7B10%7D%7C-1%29%5E2%7D%7Be_%7B01%7D%2Be%7B10%7D%7D&id=cWKbg"><br />服从自由度为1的卡方分布，给定显著度α，当该变量小于临界值X_{a^2}时，不能拒绝假设，即认为两个学习器的性能没有显著差异，否则拒绝假设，且平均错误率较小的学习器性能更优。<br><a name="TrB1V"></a></p>
+<h3 id="2-3-4-FriedMan检验和Nemenyi后续检验"><a href="#2-3-4-FriedMan检验和Nemenyi后续检验" class="headerlink" title="2.3.4 FriedMan检验和Nemenyi后续检验"></a>2.3.4 FriedMan检验和Nemenyi后续检验</h3><ul>
+<li>FriedMan检验：用于多组数据集、多个算法比较的场景。首先根据每个数据集上不同算法的测试性能给出排序并赋予值1、2、3……并求出平均序值，如图所示：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655306533344-1109b09c-0106-4d6d-9d6c-9c4433cdf3d0.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uef40909e&margin=%5Bobject%20Object%5D&name=jqxx02-04.png&originHeight=459&originWidth=1189&originalType=binary&ratio=1&rotation=0&showTitle=false&size=63690&status=done&style=shadow&taskId=u6b31fa7a-dbd3-46df-a60c-cd7339e2d93&title=" alt="jqxx02-04.png"><br />如果算法的性能相同，那么它们的平均序值应该相同。假定N个数据集上比较k个算法，令ri表示第i个算法的平均序值，不考虑平分序值的情况，则ri符合正态分布，均值、方差、参数如下：<br /><img src="https://cdn.nlark.com/yuque/__latex/df51466e46630a64f6d8ef1c9a6e90f0.svg#card=math&code=%5Cmu%3D%5Cfrac%7Bk%2B1%7D%7B2%7D%5C%5C%0A%5Csigma%3D%5Cfrac%7Bk%5E2-1%7D%7B12%7D%5C%5C%0A%5Ctau_%7B%5Cchi%5E2%7D%3D%5Cfrac%7B12N%7D%7Bk%28k%2B1%29%7D%28%5Csum_%7Bi%3D1%7D%5E%7Bk%7Dr_i%5E2-%5Cfrac%7Bk%28k%2B1%29%5E2%7D%7B4%7D%29&id=dhOAi"><br />在k和N较大时，服从自由度为k-1的卡方分布。<br />当然上述参量过于保守，现在通常使用变量：<br /><img src="https://cdn.nlark.com/yuque/__latex/a53f50d435f96970004a55192629f0c9.svg#card=math&code=%5Ctau_F%3D%5Cfrac%7B%28N-1%29%5Ctau_%7B%5Cchi%5E2%7D%7D%7BN%28k-1%29-%5Ctau_%7B%5Cchi%5E2%7D%7D&id=xhi2x"><br />该变量服从自由度为k-1和(k-1)(N-1)的F分布。</p>
+<ul>
+<li>Nemenyi检验：计算平均序值差别的临界值域，公式为：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/__latex/2b9b316ff28210e9b0dd367c71123f84.svg#card=math&code=CD%3Dq_a%5Csqrt%7B%5Cfrac%7Bk%28k%2B1%29%7D%7B6N%7D%7D&id=O4bNq"><br />如果两个算法的平均序值之差超出了临界值域CD，则以相应的置信度拒绝“两个算法性能相同”这一假设。</p>
+<hr>
+<p><a name="VZlpv"></a></p>
+<h2 id="2-4-偏差方差"><a href="#2-4-偏差方差" class="headerlink" title="2.4 偏差方差"></a>2.4 偏差方差</h2><p> 为了解释“为什么算法X具备这样的性能”，我们可以进行如下的推导：对于测试样本x，令yD为x在数据集中的标记，y为x的真实标记，f(x;D)为训练集D上学得模型f在x上的预测输出。以回归任务为例，学习算法的期望预测为：<br /><img src="https://cdn.nlark.com/yuque/__latex/303ae23ff62b70556f7268ff8a3a45e6.svg#card=math&code=%5Coverline%7Bf%28x%29%7D%3DE_D%5Bf%28x%3BD%29%5D&id=lCEeg"><br />使用样本数量相同的不同训练集产生的方差为：<br /><img src="https://cdn.nlark.com/yuque/__latex/f60886e5457ee7dbddc99a90eb691074.svg#card=math&code=var%28x%29%3DE_D%5B%28f%28x%3BD%29-%5Coverline%7Bf%28x%29%7D%29%5E2%5D&id=iDdol"><br />噪声为：<br /><img src="https://cdn.nlark.com/yuque/__latex/1c005586aadd707ff23bbf5522087aac.svg#card=math&code=%5Cepsilon%5E2%3DE_D%5B%28y_D-y%29%5E2%5D&id=itVW3"><br />期望输出与真实标记的差别称为偏差（bias），即：<br /><img src="https://cdn.nlark.com/yuque/__latex/9bb0e37e24b3840389ba83287f949d9d.svg#card=math&code=bias%5E2%28x%29%3D%28%5Coverline%7Bf%28x%29%7D-y%29%5E2&id=miF5L"><br />假设噪声期望为0，则E(f;D)可以拆解为：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308046942-8863e20b-718c-4af8-bbdf-e5119e08deca.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u89bb82d0&margin=%5Bobject%20Object%5D&name=jqxx02-05.png&originHeight=897&originWidth=1351&originalType=binary&ratio=1&rotation=0&showTitle=false&size=186831&status=done&style=shadow&taskId=u18b1f747-9940-436e-a398-f6408ebf8b8&title=" alt="jqxx02-05.png"><br />所以我们可以得到：<br /><img src="https://cdn.nlark.com/yuque/__latex/7c68be6df5c5ea9cb498c428aebea200.svg#card=math&code=E%28f%3BD%29%3Dbias%5E2%28x%29%2Bvar%28x%29%2B%5Cepsilon%5E2&id=Qmf5X"><br />即，泛化误差可以理解为偏差、方差和噪声之和。</p>
+<ol>
+<li><strong>偏差刻画了学习算法本身的拟合能力；</strong></li>
+<li><strong>方差刻画了数据扰动所造成的影响；</strong></li>
+<li><strong>噪声刻画了学习问题本身的难度。</strong></li>
+</ol>
+<p>一般来说，偏差和方差是有冲突的。当训练量不足时，学习器的拟合能力不够强，训练数据的扰动不足以使学习器产生显著变化，此时<strong>偏差就主导了泛化错误率</strong>；当拟合能力增强时，训练数据的扰动逐渐能被学习器掌握到，<strong>方差逐渐主导了泛化错误率</strong>。当拟合能力非常强时，任何轻微的扰动都会使得学习器发生显著变化，<strong>此时容易发生过拟合</strong>。<br><a name="A6EUQ"></a></p>
+<h1 id="三、课后习题"><a href="#三、课后习题" class="headerlink" title="三、课后习题"></a>三、课后习题</h1><p><strong>2.1 数据集包含 1000 个样本，其中 500 个正例、 500 个反例，将其划分为包含 70% 样本的训练集和 30% 样本的测试集用于留出法评估，估算有多少种划分方式。</strong><br />答：排列组合问题。<br />训练&#x2F;测试集的划分要尽可能保存数据分布一致，那么训练集中应该包括350个正例和350个反例，剩余的作测试集，那么划分方式应该有 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475842-17454024-2e69-44e0-8721-44b6b03a644f.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3b7fc0be&margin=%5Bobject%20Object%5D&originHeight=30&originWidth=62&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uf424aa04-aeb7-465e-8c06-fa5b5751714&title=">种。<br /><strong>2.2 数据集包含100个样本，其中正反例各一半，假定学习算法所产生的模型是将新样本预测为训练样本数较多的类别（训练样本数相同时进行随机猜测），试给出用10折交叉验证法和留一法分别对错误率进行评估所得的结果。</strong><br />答：10折交叉验证：交叉验证中每个子集数据分布要尽可能保持一致，那么本题中10次训练中每次正反例各占45，模型训练结果随机猜测，错误率期望为50%。<br />留一法：若留出样本为正例，训练集中则有50个反例和49个正例，模型预测为反例；反之留出样本为反例，模型预测为正例，错误率为100%。<br /><strong>2.3 若学习器A的F1值比学习器B高，试析A的BEP值是否也比B高。</strong><br />答：先看看F1值的定义，<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308475886-98ac55c1-50dc-4c74-b701-e76cbb5342a5.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3f28a089&margin=%5Bobject%20Object%5D&name=image.png&originHeight=121&originWidth=290&originalType=url&ratio=1&rotation=0&showTitle=false&size=25619&status=done&style=shadow&taskId=uc479b748-4be0-4174-bc56-2bcac316dce&title=" alt="image.png"><br /><img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475830-710a1c9e-8f54-43a1-91ec-c22be5b06fa9.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u308894c5&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=236&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ub14ae658-4c5d-4096-ac1f-69dc8cad4e3&title="> ，其中 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475785-4d2d6152-29e0-4a48-8594-ae099c4e03a1.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u6fef2e2b&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=188&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u666d58f0-a0d3-4b60-beb5-5d693cfbf47&title="> 即查准率（Precision ），【预测为正例且真实为正例的数量】&#x2F;【预测为正例的数量】，说白了关心预测为正样本时的准确率； <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475789-a5f70ae5-75dd-48e6-b862-b5a273657292.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u45d1ad4b&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=191&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u0d5df702-4ff6-4ea8-b46f-6dc10b97937&title=">即查全率（又称召回率Recall），【预测为正例且真实为正例的数量】&#x2F;【真实为正例的数量】。F1值计算中对查准率和查全率都同等重视。<br />再看看BEP值<br /> 首先目前很多分类算法输出的都是0-1之间的一个概率值，比如逻辑回归、xgboost等，分类时的做法是预定一个阈值（典型为0.5），若对样本的输出大于此阈值则归为1类（即正例），那么根据样本的输出值从大到小排序（下文简称为“样本的排序”），排在最前面的即可理解为最有可能为正例的样本，而排在最后的是最不可能为正例的样本。从前往后，逐个将样本预测为正例（即把当前样本的输出值定于为阈值，小于阈值的都为反例），每次计算当前的查准率和查全率，即可得到查全率为横坐标查准率为纵坐标上的一个点，在将所有点按顺利连接后即可得到“P-R曲线”，而BEP（即Break-Event Point，平衡点）是在查全率&#x3D;查准率时的取值。<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308476944-44f2baa0-b9a7-4853-ab98-4f916dbde619.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u14800057&margin=%5Bobject%20Object%5D&name=image.png&originHeight=269&originWidth=317&originalType=url&ratio=1&rotation=0&showTitle=false&size=73637&status=done&style=shadow&taskId=uc1e5192b-29f3-4de2-a232-2312cf9855d&title=" alt="image.png"><br />讨论：<br /> 从定义上看，F1值是在阈值固定时，将所有样本分类完成后，综合查全率和查准率得出的值；而BEP值则是寻求一个阈值使得查全率和查准率相同的情况下得到的（此时BEP &#x3D; 查全率 &#x3D; 查准率）。<br /> 也就是说BEP值和“样本的排序”紧密相关的，而和样本的预测值大小无关，同样的排序，即使将所有预测值同时乘以0.5，其BEP值也是相同的；但是对于F1值，所有样本都将预测为负例（假定阈值为0.5时），此时F1值为0。<br /> 回到题目本身，“若学习器A的F1值比学习器B高，则A的BEP值比B高”，那么若能找到两个学习器BEP值相同，而F1值不同，则题目命题就不成立了。那从上面的讨论中已经有了答案了，想象一下学习器A对样本输出值均为学习器B的两倍，两者BEP值是相同的，A的输出在（0,1）之间，而B的输出在（0,0.5）之间，此时B的 F1 值为0，A的 F1 值是在0-1之间。所以原命题不成立。<br /> ps.个人从直觉上BEP值和F1值是没有明确关系的，在讨论过程中拿“输出值乘以0.5”为例，事实上，想象一下，一串固定排序的点(模型的输出概率值)，只在0-1之间同时前进或者后退（每个点前进步长可以不一样，但是排序不变），其BEP值也不会发生变化，而F1值是不断变化的。<br /><strong>2.4 试述真正例率（TPR）、假正例率（FPR）与查准率（P）、查全率（R）之间的联系。</strong><br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308476937-5fb6eb49-4eed-41d1-8930-46dff78e1d7c.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u47ebc881&margin=%5Bobject%20Object%5D&name=image.png&originHeight=121&originWidth=290&originalType=url&ratio=1&rotation=0&showTitle=false&size=25619&status=done&style=shadow&taskId=u70d152d8-8fae-4bc4-a238-11746bf3d51&title=" alt="image.png"><br />查全率： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476807-06d6989e-de76-495e-be4e-ff4634536071.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=ud55feb24&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=191&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ubda14e3e-05b5-40a6-8401-5cbe7621de7&title="> 。【预测为正例且真实为正例的数量】&#x2F;【真实为正例的数量】<br />查准率： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476804-dd6ecda7-7b10-4f33-906b-ca5d2a13e96b.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u76109f7c&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=188&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uccec4fd1-d4db-4442-9909-caf72f27fad&title="> 。【预测为正例且真实为正例的数量】&#x2F;【预测为正例的数量】<br />真正例率（TPR）：同查全率<br />假正例率（FPR）： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476805-a7a205ea-fdf7-4264-a126-f255920722f0.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u0b1fc12d&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=148&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u3a7b806c-28bc-4485-95bc-02a8461a0bd&title="> 。即所有反例中被预测为正例的比率。<br /><strong>2.5 试证明(2.22)AUC&#x3D;1−lrank</strong><br />答：显然，在ROC曲线中，一条横线对应一个（或多个）负样本 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477397-4ed257f2-a20b-4f34-8b8e-c0f08f8d0d8d.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uae10d620&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=26&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u6147f971-583d-41ae-ad8c-16096f8c241&title="> ， 一条竖线对应一个（或多个）正样本 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477438-27b8101b-6012-43d7-a553-a60c264d67b7.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u0549f093&margin=%5Bobject%20Object%5D&originHeight=32&originWidth=26&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ua75ee475-3db7-4a45-b313-a9d44823c83&title="> ， 而一条斜线则对应多个正负样本 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477474-a0aa206d-25c5-4ff0-9938-63dafc51d7fe.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uc52e1617&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=60&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u2887ec99-0394-4a00-9c07-d0084459eaf&title="> ，且 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477605-94247cd1-1e4a-4c49-95ee-ca61b98f19b9.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u13d3d066&margin=%5Bobject%20Object%5D&originHeight=27&originWidth=135&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u403fc1e8-b933-428d-895c-5dbff8f0708&title="> ，即样本的预测值相同。如下图所示：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308477836-57b2ee1b-3afd-46f6-91a9-5b6bac19fcd7.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u83e12a3e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=473&originWidth=640&originalType=url&ratio=1&rotation=0&showTitle=false&size=61093&status=done&style=shadow&taskId=u0c4b8744-6528-46cf-83ae-4386dab0ac7&title=" alt="image.png"><br />其中 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477950-1bcb7c71-7cb5-46c8-850c-df3006afa752.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8a25c67a&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=32&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u8db74d8d-0efa-439c-861c-d01a0d39673&title="> 对应一个（或多个预测值相同的）正例，而 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477985-e79c25e9-aa6f-433c-a6ab-242ef8b1f8a0.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3caf6a43&margin=%5Bobject%20Object%5D&originHeight=21&originWidth=27&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u80ea02b1-ae8b-4212-983d-a8c913dcb22&title="> 对应多个预测值相同的正负例 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478132-87b157f1-62ad-40d6-b7df-fbe1039ff6c8.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u691ed9ea&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=60&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u1abad83a-44e6-4d9f-9c6c-5b82adc9e79&title="> ，显然阴影部分的宽为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478133-7d1a6f13-b19d-4925-9f6a-ae1783fa12ec.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u377807d0&margin=%5Bobject%20Object%5D&originHeight=54&originWidth=258&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u2aa5122e-fd31-476a-ae81-81701f50d08&title="> , <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478307-5ed9c6f4-1158-404c-a2b8-7494e966634e.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u27c53835&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=32&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ud2c1142a-5bf9-4fa7-bc57-f3da90acff9&title="> 的纵坐标为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478608-433bd2a5-06fe-4bad-9f70-19a690cf193c.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u889b0f25&margin=%5Bobject%20Object%5D&originHeight=56&originWidth=258&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uf4228333-2c7b-4aef-a8b5-0c392b09b3b&title=">，而 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478649-c5f6943e-3d82-49ff-b73b-3008cf5c5340.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u4267c141&margin=%5Bobject%20Object%5D&originHeight=21&originWidth=27&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u69073b80-d8f0-4594-b87e-5a84ee29412&title="> 纵坐标为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478668-06a6a6f9-530d-4bb1-9e55-c1a8ea59363d.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u7d132dba&margin=%5Bobject%20Object%5D&originHeight=56&originWidth=541&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u46b0ecc0-ff8b-487e-bdb0-c91cda11461&title="> ，于是阴影部分面积则为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478788-6eadbe0f-538f-45d4-b67c-d60ebc072994.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8f1fde88&margin=%5Bobject%20Object%5D&originHeight=59&originWidth=774&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u7630b464-7138-4bf3-acbe-d4b0250f5ee&title="><br />令 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478802-fa621d6c-78ca-44b6-bbfb-99023b9f1190.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uf1a2ecb8&margin=%5Bobject%20Object%5D&originHeight=35&originWidth=70&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u8b4fcf88-8e91-4d51-9e6e-58cf0eb5c2c&title="> 表示预测值唯一的负例集合，即原负例集合中以预测值 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479052-37b956ae-a29d-44c3-a325-692544745614.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u02a05563&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=40&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ucf8ebd14-853f-4448-b01f-a7345efafd0&title="> 去重，那么AUC值为： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479121-14f4ad9b-1a35-41a8-8312-2ffe5e8fc991.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u85546fd0&margin=%5Bobject%20Object%5D&originHeight=83&originWidth=832&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ubf6c6aae-3373-4590-ab53-e193237d485&title="> 其中 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479153-cfe6faaa-fd8e-402f-a12b-03d8c55463c1.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=ua9c43e23&margin=%5Bobject%20Object%5D&originHeight=65&originWidth=860&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uaf666110-4286-4a40-888a-fbb74af78fd&title="><br />而 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479330-298a0bbb-6d2b-4647-8b17-a4fc2d6b2dd3.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u17f1c561&margin=%5Bobject%20Object%5D&originHeight=65&originWidth=860&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u4a720620-c264-4769-94d9-bcfa88f9d9e&title="><br />于是 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479327-9b2eeba3-4f5d-4978-ac18-ef0c9f3e10a5.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u2f393a02&margin=%5Bobject%20Object%5D&originHeight=60&originWidth=658&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u1708efb7-0597-4c96-a75f-9b0fdcdbec7&title="><br />于是 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479553-91aa9ec7-086e-4549-9098-5da76b4399ac.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u755fa8e3&margin=%5Bobject%20Object%5D&originHeight=23&originWidth=151&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uef861489-e0ec-4df8-a557-0f253e86aa0&title="><br /><strong>2.6 试述错误率和ROC曲线的联系</strong><br />答：错误率是在阈值固定的情况下得出的，ROC曲线是在阈值随着样本预测值变化的情况下得出的。ROC曲线上的每一个点，都对应着一个错误率。<br /><strong>2.7 试证明任意一条ROC曲线都有一条代价曲线与之对应，反之亦然</strong><br />答：首先“任意一条ROC曲线都有一条代价曲线与之对应”，显然ROC曲线上每个点（FPR，TPR）都对应着下图中一条线段，取所有线段的下届，即可得到唯一的代价曲线。<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308479666-c18a85fa-3ffa-4cfc-868e-febda2a7b8f9.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8cdefca7&margin=%5Bobject%20Object%5D&name=image.png&originHeight=315&originWidth=406&originalType=url&ratio=1&rotation=0&showTitle=false&size=84247&status=done&style=shadow&taskId=u2a160080-91a3-4e40-9ce5-f466b54e018&title=" alt="image.png"><br />反之，代价曲线实际上是一个多边形（在有限样本下），易理解，每条边都对应代价平面上一条线段，实际上从左向右遍历每一条边，即可得到ROC曲线上从左到右每一个点。<br />ps. ROC曲线对应着唯一条代价曲线，但是一条代价曲线可对应着多条不同的ROC曲线，如上图中，在绿、黄、蓝三条线段交于红点时，此时去掉黄色线段代价曲线是不会发生变化的，但是ROC曲线则会少一个点。<br /><strong>2.8 Min-max 规范化和z-score 规范化的优缺点。</strong><br />答：Min-max 规范化优点1、计算相对简单一点。2、当新样本进来时，只有在新样本大于原最大值或者小于原最小值时，才需要重新计算规范化之后的值。缺点在于1、容易受高杠杆点和离群点影响。<br />z-score 规范化优点在于。1、对异常值敏感低。缺点在于1、计算更负责。2、每次新样本进来都需要重新计算规范化。<br /></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>知识总结</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
 </search>

@@ -20,31 +20,105 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="幸运值为E">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Solituder1969">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="一、思维导图 二、读书笔记 2.1 评估方法 2.1.1 留出法 基本概念：直接将数据集D分为两个互斥的集合S和T，在集合S上进行训练模型，在T上进行测试，结果的误差作为对“泛化误差”的估算。 注意事项：保持样本的类别比例相似，采样时应该采取“分层采样”的方式。此外，单次使用留出法得出的结论往往不准确，需要进行若干次随机划分、重复实验评估后取均值来作为评估结果。 包含问题：如果训练集过大，则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习-第二章模型评估与选择">
+<meta property="og:url" content="http://example.com/2022/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/index.html">
 <meta property="og:site_name" content="Solituder1969">
-<meta property="og:description" content="幸运值为E">
+<meta property="og:description" content="一、思维导图 二、读书笔记 2.1 评估方法 2.1.1 留出法 基本概念：直接将数据集D分为两个互斥的集合S和T，在集合S上进行训练模型，在T上进行测试，结果的误差作为对“泛化误差”的估算。 注意事项：保持样本的类别比例相似，采样时应该采取“分层采样”的方式。此外，单次使用留出法得出的结论往往不准确，需要进行若干次随机划分、重复实验评估后取均值来作为评估结果。 包含问题：如果训练集过大，则">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1654962817166-0cfadc49-0081-47b7-9eb4-a452524a07d1.jpeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655023530616-20f713ff-43da-4e0b-bb28-0117688963a7.png#clientId=u42850908-3d60-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u065f1039&margin=%5Bobject%20Object%5D&name=jqxx02-01.png&originHeight=755&originWidth=1817&originalType=binary&ratio=1&rotation=0&showTitle=false&size=150984&status=done&style=shadow&taskId=u5441e992-ad97-4696-8f3c-f925b36bc3d&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/aca24400fb63f42d34f61e880f2a8dea.svg#card=math&code=%7B%5Clim_%7Bx%20%5Cto%20%2B%5Cinfty%7D%7D%281-%5Cfrac%7B1%7D%7Bm%7D%29%5E%7Bm%7D%20%5Cto%20%5Cfrac%7B1%7D%7Be%7D%20%5Capprox%200.368&id=Uo2PX">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/28080c79fd15a7ce4234d5bcb69f3cdb.svg#card=math&code=E%EF%BC%88f%3BD%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%28f%28x_%7Bi%7D%29-y_%7Bi%7D%29%5E2&id=Brqtv">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/15e1d5bba0688a4f938592cfca84ab7c.svg#card=math&code=E%28f%3BD%29%20%3D%20%5Cint_%7Bx%5Csim%20D%7D%28f%28x%29-y%29%5E2p%28x%29dx&id=qZDue">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/28f55746537046d2c1907b2bdeee2dab.svg#card=math&code=E%28f%3BD%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%E2%85%A1%28f%28x_%7Bi%7D%29%5Cneq%20y_%7Bi%7D%29&id=i7Zi7">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/466378cb6494fa22498f74a0b8546455.svg#card=math&code=E%28f%3BD%29%3D%5Cint_%7Bx%5Csim%20D%7D%E2%85%A1%28f%28x%29%5Cneq%20y%29p%28x%29dx&id=QSDZi">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/46e577bb84d1a67e48706f8196f7fc0c.svg#card=math&code=acc%28f%3BD%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum%20%E2%85%A1%28f%28x_i%29%20%3D%20y_i%29%3D1-E%28f%3BD%29%0A&id=U9Wlc">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/ff6ae612d8037d218aa57fdff97eb4d3.svg#card=math&code=acc%28f%3BD%29%3D%5Cint_%7Bx%20%5Csim%20D%7D%E2%85%A1%28f%28x%29%3Dy%29p%28x%29dx%3D1-E%28f%3BD%29&id=ERreh">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/99fd7ec5c24e07b66ee7752d0d6f4026.svg#card=math&code=P%3D%5Cfrac%7BTP%7D%7BTP%2BFP%7D&id=KcTiu">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/710c06342b1907d565b88aa5c556aac5.svg#card=math&code=R%3D%5Cfrac%7BTP%7D%7BTP%2BFN%7D&id=rv61u">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/d4a2089961c946fa4394a9b99b271392.svg#card=math&code=F1%3D%5Cfrac%7B2%7D%7B%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B1%7D%7BR%7D%7D%3D%5Cfrac%7B2PR%7D%7BP%2BR%7D%3D%5Cfrac%7B2TP%7D%7B2TP%2BFP%2BFN%7D%3D%5Cfrac%7B2TP%7D%7B%7CD%7C%2BTP-TN%7D&id=iA8Kt">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/51cc98b828359653d6a23d3725854c72.svg#card=math&code=F_%7B%5Cbeta%7D%3D%5Cfrac%7B1%2B%5Cbeta%5E2%7D%7B%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B%5Cbeta%5E2%7D%7BR%7D%7D%3D%5Cfrac%7B%281%2B%5Cbeta%5E2%29PR%7D%7BR%2B%5Cbeta%5E2P%7D&id=OGe55">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/ee78a63700c49320ed3a28c19aaf44cd.svg#card=math&code=macro-P%3D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DP_%7Bi%7D%5C%5C%0Amacro-R%3D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DR_%7Bi%7D%5C%5C%0Amacro-F1%3D%5Cfrac%7B2%28macro-P%29%28macro-R%29%7D%7B%28macro-P%29%2B%28macro-R%29%7D&id=Qz69G">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8cf5f06dae2cc5a6792d309f12053b6b.svg#card=math&code=micro-P%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFP%7D%7D%5C%5C%0Amicro-R%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFN%7D%7D%5C%5C%0Amicro-F1%3D%5Cfrac%7B2%28micro-P%29%28micro-R%29%7D%7B%28micro-P%29%2B%28micro-R%29%7D&id=SSpM2">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f93f89e93ed83c62303f72ab4388b3fc.svg#card=math&code=TPR%3D%5Cfrac%7BTP%7D%7BTP%2BFR%7D%5C%5C%0AFPR%3D%5Cfrac%7BFP%7D%7BFP%2BTN%7D&id=on65h">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6f7d29dcb6612ab21aa9faabf3025b8c.svg#card=math&code=AUC%3D%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7Bm-1%7D%28x_%7Bi%2B1%7D-x_%7Bi%7D%29%28y_%7Bi%7D%2By_%7Bi%2B1%7D%29&id=p3dk7">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/cbaa8eae89339b82b74f4bceb290830a.svg#card=math&code=%5Cell_%7Brank%7D%3D%5Cfrac%7B1%7D%7Bm%5E%2Bm%5E-%7D%5Csum_%7Bx%5E%2B%5Cin%20D%5E%2B%7D%5Csum_%7Bx%5E-%20%5Cin%20D%5E-%7D%28%E2%85%A1%28f%28x%5E%2B%29%3Cf%28x%5E-%29%29%2B%5Cfrac%7B1%7D%7B2%7D%E2%85%A1%28f%28x%5E%2B%29%3Df%28x%5E-%29%29&id=leJXC">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/e4e8dcb2fdacc507b87c6b1fa746f4d8.svg#card=math&code=AUC%3D1-%5Cell_%7Brank%7D&id=k3eWS">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/93d755c3cb765a96c6b33e9a1dc4d6b7.svg#card=math&code=%5Cepsilon%5E%7Bm%27%7D%281-%5Cepsilon%29%5E%7Bm-m%27%7D&id=rcA7p">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/be5ee7abea5934972e8e64aa67e605f9.svg#card=math&code=P%28%5Chat%7B%5Cepsilon%7D%3B%5Cepsilon%29%3DC_%7Bm%7D%5E%7B%5Chat%7B%5Cepsilon%7D%C3%97m%7D%5Cepsilon%5E%7B%5Chat%7B%5Cepsilon%7D%C3%97m%7D%281-%5Cepsilon%29%5E%7Bm-%5Chat%7B%5Cepsilon%7D%C3%97m%7D&id=fEZH4">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/d29a7a35b14a543315855ab5baf0a1e3.svg#card=math&code=%5Coverline%7B%5Cepsilon%7D%3Dmax%20%5Cquad%20s.t.%20%5Cquad%20%5Csum_%7Bi%3D%5Cepsilon_%7B0%7D%C3%97m%2B1%7D%5E%7Bm%7DC_%7Bm%7D%5E%7Bi%7D%20%5Cepsilon%5Ei%281-%5Cepsilon%29%5E%7Bm-i%7D%20%3C%5Calpha&id=vEig3">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655282573322-248faa0b-a553-455c-8683-69d25f574ab8.png#clientId=u2e3c9e60-21de-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u6574f678&margin=%5Bobject%20Object%5D&name=jqxx02-02.png&originHeight=972&originWidth=1273&originalType=binary&ratio=1&rotation=0&showTitle=false&size=87073&status=done&style=shadow&taskId=u6962b426-acd4-47a6-92f6-883fe7c2b23&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/3124c5b906af783b01cc19c722a8b93e.svg#card=math&code=%5Cmu%3D%5Cfrac%7B1%7D%7Bk%7D%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%5Chat%7B%5Cepsilon_%7Bi%7D%7D&id=BD9iw">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f95a20fb090faccd8d73f37e3bcd8e8c.svg#card=math&code=%5Csigma%5E2%3D%5Cfrac%7B1%7D%7Bk-1%7D%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%28%5Chat%7B%5Cepsilon_i%7D-%5Cmu%29%5E2&id=nmbit">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/9febda2401d2a0cb1be691ada6e909bb.svg#card=math&code=%5Ctau_%5Ctau%3D%5Cfrac%7B%5Csqrt%7Bk%7D%28%5Cmu-%5Cepsilon_0%29%7D%7B%5Csigma%7D&id=Whksj">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655303977339-bc316aab-6b41-4dd1-a3e3-a37a5e3ee891.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uc2d884f8&margin=%5Bobject%20Object%5D&name=jqxx02-03.png&originHeight=907&originWidth=1208&originalType=binary&ratio=1&rotation=0&showTitle=false&size=65960&status=done&style=shadow&taskId=u2def9ea8-c3d5-4de8-bb9e-901bff61df6&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/be4f505abc0b99ca5b7881787661e43d.svg#card=math&code=%5Ctau_%7B%5Cchi%5E2%7D%3D%5Cfrac%7B%28%7Ce_%7B01%7D-e_%7B10%7D%7C-1%29%5E2%7D%7Be_%7B01%7D%2Be%7B10%7D%7D&id=cWKbg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655306533344-1109b09c-0106-4d6d-9d6c-9c4433cdf3d0.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uef40909e&margin=%5Bobject%20Object%5D&name=jqxx02-04.png&originHeight=459&originWidth=1189&originalType=binary&ratio=1&rotation=0&showTitle=false&size=63690&status=done&style=shadow&taskId=u6b31fa7a-dbd3-46df-a60c-cd7339e2d93&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/df51466e46630a64f6d8ef1c9a6e90f0.svg#card=math&code=%5Cmu%3D%5Cfrac%7Bk%2B1%7D%7B2%7D%5C%5C%0A%5Csigma%3D%5Cfrac%7Bk%5E2-1%7D%7B12%7D%5C%5C%0A%5Ctau_%7B%5Cchi%5E2%7D%3D%5Cfrac%7B12N%7D%7Bk%28k%2B1%29%7D%28%5Csum_%7Bi%3D1%7D%5E%7Bk%7Dr_i%5E2-%5Cfrac%7Bk%28k%2B1%29%5E2%7D%7B4%7D%29&id=dhOAi">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a53f50d435f96970004a55192629f0c9.svg#card=math&code=%5Ctau_F%3D%5Cfrac%7B%28N-1%29%5Ctau_%7B%5Cchi%5E2%7D%7D%7BN%28k-1%29-%5Ctau_%7B%5Cchi%5E2%7D%7D&id=xhi2x">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/2b9b316ff28210e9b0dd367c71123f84.svg#card=math&code=CD%3Dq_a%5Csqrt%7B%5Cfrac%7Bk%28k%2B1%29%7D%7B6N%7D%7D&id=O4bNq">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/303ae23ff62b70556f7268ff8a3a45e6.svg#card=math&code=%5Coverline%7Bf%28x%29%7D%3DE_D%5Bf%28x%3BD%29%5D&id=lCEeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f60886e5457ee7dbddc99a90eb691074.svg#card=math&code=var%28x%29%3DE_D%5B%28f%28x%3BD%29-%5Coverline%7Bf%28x%29%7D%29%5E2%5D&id=iDdol">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/1c005586aadd707ff23bbf5522087aac.svg#card=math&code=%5Cepsilon%5E2%3DE_D%5B%28y_D-y%29%5E2%5D&id=itVW3">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/9bb0e37e24b3840389ba83287f949d9d.svg#card=math&code=bias%5E2%28x%29%3D%28%5Coverline%7Bf%28x%29%7D-y%29%5E2&id=miF5L">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308046942-8863e20b-718c-4af8-bbdf-e5119e08deca.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u89bb82d0&margin=%5Bobject%20Object%5D&name=jqxx02-05.png&originHeight=897&originWidth=1351&originalType=binary&ratio=1&rotation=0&showTitle=false&size=186831&status=done&style=shadow&taskId=u18b1f747-9940-436e-a398-f6408ebf8b8&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/7c68be6df5c5ea9cb498c428aebea200.svg#card=math&code=E%28f%3BD%29%3Dbias%5E2%28x%29%2Bvar%28x%29%2B%5Cepsilon%5E2&id=Qmf5X">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475842-17454024-2e69-44e0-8721-44b6b03a644f.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3b7fc0be&margin=%5Bobject%20Object%5D&originHeight=30&originWidth=62&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uf424aa04-aeb7-465e-8c06-fa5b5751714&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308475886-98ac55c1-50dc-4c74-b701-e76cbb5342a5.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3f28a089&margin=%5Bobject%20Object%5D&name=image.png&originHeight=121&originWidth=290&originalType=url&ratio=1&rotation=0&showTitle=false&size=25619&status=done&style=shadow&taskId=uc479b748-4be0-4174-bc56-2bcac316dce&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475830-710a1c9e-8f54-43a1-91ec-c22be5b06fa9.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u308894c5&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=236&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ub14ae658-4c5d-4096-ac1f-69dc8cad4e3&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475785-4d2d6152-29e0-4a48-8594-ae099c4e03a1.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u6fef2e2b&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=188&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u666d58f0-a0d3-4b60-beb5-5d693cfbf47&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475789-a5f70ae5-75dd-48e6-b862-b5a273657292.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u45d1ad4b&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=191&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u0d5df702-4ff6-4ea8-b46f-6dc10b97937&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308476944-44f2baa0-b9a7-4853-ab98-4f916dbde619.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u14800057&margin=%5Bobject%20Object%5D&name=image.png&originHeight=269&originWidth=317&originalType=url&ratio=1&rotation=0&showTitle=false&size=73637&status=done&style=shadow&taskId=uc1e5192b-29f3-4de2-a232-2312cf9855d&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308476937-5fb6eb49-4eed-41d1-8930-46dff78e1d7c.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u47ebc881&margin=%5Bobject%20Object%5D&name=image.png&originHeight=121&originWidth=290&originalType=url&ratio=1&rotation=0&showTitle=false&size=25619&status=done&style=shadow&taskId=u70d152d8-8fae-4bc4-a238-11746bf3d51&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476807-06d6989e-de76-495e-be4e-ff4634536071.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=ud55feb24&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=191&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ubda14e3e-05b5-40a6-8401-5cbe7621de7&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476804-dd6ecda7-7b10-4f33-906b-ca5d2a13e96b.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u76109f7c&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=188&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uccec4fd1-d4db-4442-9909-caf72f27fad&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476805-a7a205ea-fdf7-4264-a126-f255920722f0.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u0b1fc12d&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=148&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u3a7b806c-28bc-4485-95bc-02a8461a0bd&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477397-4ed257f2-a20b-4f34-8b8e-c0f08f8d0d8d.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uae10d620&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=26&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u6147f971-583d-41ae-ad8c-16096f8c241&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477438-27b8101b-6012-43d7-a553-a60c264d67b7.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u0549f093&margin=%5Bobject%20Object%5D&originHeight=32&originWidth=26&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ua75ee475-3db7-4a45-b313-a9d44823c83&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477474-a0aa206d-25c5-4ff0-9938-63dafc51d7fe.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uc52e1617&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=60&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u2887ec99-0394-4a00-9c07-d0084459eaf&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477605-94247cd1-1e4a-4c49-95ee-ca61b98f19b9.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u13d3d066&margin=%5Bobject%20Object%5D&originHeight=27&originWidth=135&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u403fc1e8-b933-428d-895c-5dbff8f0708&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308477836-57b2ee1b-3afd-46f6-91a9-5b6bac19fcd7.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u83e12a3e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=473&originWidth=640&originalType=url&ratio=1&rotation=0&showTitle=false&size=61093&status=done&style=shadow&taskId=u0c4b8744-6528-46cf-83ae-4386dab0ac7&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477950-1bcb7c71-7cb5-46c8-850c-df3006afa752.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8a25c67a&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=32&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u8db74d8d-0efa-439c-861c-d01a0d39673&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477985-e79c25e9-aa6f-433c-a6ab-242ef8b1f8a0.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3caf6a43&margin=%5Bobject%20Object%5D&originHeight=21&originWidth=27&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u80ea02b1-ae8b-4212-983d-a8c913dcb22&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478132-87b157f1-62ad-40d6-b7df-fbe1039ff6c8.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u691ed9ea&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=60&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u1abad83a-44e6-4d9f-9c6c-5b82adc9e79&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478133-7d1a6f13-b19d-4925-9f6a-ae1783fa12ec.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u377807d0&margin=%5Bobject%20Object%5D&originHeight=54&originWidth=258&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u2aa5122e-fd31-476a-ae81-81701f50d08&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478307-5ed9c6f4-1158-404c-a2b8-7494e966634e.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u27c53835&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=32&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ud2c1142a-5bf9-4fa7-bc57-f3da90acff9&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478608-433bd2a5-06fe-4bad-9f70-19a690cf193c.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u889b0f25&margin=%5Bobject%20Object%5D&originHeight=56&originWidth=258&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uf4228333-2c7b-4aef-a8b5-0c392b09b3b&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478649-c5f6943e-3d82-49ff-b73b-3008cf5c5340.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u4267c141&margin=%5Bobject%20Object%5D&originHeight=21&originWidth=27&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u69073b80-d8f0-4594-b87e-5a84ee29412&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478668-06a6a6f9-530d-4bb1-9e55-c1a8ea59363d.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u7d132dba&margin=%5Bobject%20Object%5D&originHeight=56&originWidth=541&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u46b0ecc0-ff8b-487e-bdb0-c91cda11461&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478788-6eadbe0f-538f-45d4-b67c-d60ebc072994.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8f1fde88&margin=%5Bobject%20Object%5D&originHeight=59&originWidth=774&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u7630b464-7138-4bf3-acbe-d4b0250f5ee&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478802-fa621d6c-78ca-44b6-bbfb-99023b9f1190.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uf1a2ecb8&margin=%5Bobject%20Object%5D&originHeight=35&originWidth=70&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u8b4fcf88-8e91-4d51-9e6e-58cf0eb5c2c&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479052-37b956ae-a29d-44c3-a325-692544745614.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u02a05563&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=40&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ucf8ebd14-853f-4448-b01f-a7345efafd0&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479121-14f4ad9b-1a35-41a8-8312-2ffe5e8fc991.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u85546fd0&margin=%5Bobject%20Object%5D&originHeight=83&originWidth=832&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ubf6c6aae-3373-4590-ab53-e193237d485&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479153-cfe6faaa-fd8e-402f-a12b-03d8c55463c1.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=ua9c43e23&margin=%5Bobject%20Object%5D&originHeight=65&originWidth=860&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uaf666110-4286-4a40-888a-fbb74af78fd&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479330-298a0bbb-6d2b-4647-8b17-a4fc2d6b2dd3.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u17f1c561&margin=%5Bobject%20Object%5D&originHeight=65&originWidth=860&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u4a720620-c264-4769-94d9-bcfa88f9d9e&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479327-9b2eeba3-4f5d-4978-ac18-ef0c9f3e10a5.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u2f393a02&margin=%5Bobject%20Object%5D&originHeight=60&originWidth=658&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u1708efb7-0597-4c96-a75f-9b0fdcdbec7&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479553-91aa9ec7-086e-4549-9098-5da76b4399ac.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u755fa8e3&margin=%5Bobject%20Object%5D&originHeight=23&originWidth=151&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uef861489-e0ec-4df8-a557-0f253e86aa0&title=">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308479666-c18a85fa-3ffa-4cfc-868e-febda2a7b8f9.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8cdefca7&margin=%5Bobject%20Object%5D&name=image.png&originHeight=315&originWidth=406&originalType=url&ratio=1&rotation=0&showTitle=false&size=84247&status=done&style=shadow&taskId=u2a160080-91a3-4e40-9ce5-f466b54e018&title=">
+<meta property="article:published_time" content="2022-06-15T16:00:33.000Z">
+<meta property="article:modified_time" content="2022-06-15T16:12:33.072Z">
 <meta property="article:author" content="Joshua Jiang">
-<meta property="article:tag" content="Python、Java、SE、Galgame...">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1654962817166-0cfadc49-0081-47b7-9eb4-a452524a07d1.jpeg">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Solituder1969</title>
+  <title>机器学习-第二章模型评估与选择 | Solituder1969</title>
   
 
 
@@ -184,9 +258,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -202,10 +277,9 @@
       <meta itemprop="name" content="Solituder1969">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/" class="post-title-link" itemprop="url">机器学习-第二章模型评估与选择</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          机器学习-第二章模型评估与选择
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -238,7 +312,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <meta name="referrer" content="no-referrer" />
+        <meta name="referrer" content="no-referrer" />
 
 <p><a name="hEUyN"></a></p>
 <h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1654962817166-0cfadc49-0081-47b7-9eb4-a452524a07d1.jpeg"><br><a name="I31vg"></a></p>
@@ -400,327 +474,34 @@
 <p>一般来说，偏差和方差是有冲突的。当训练量不足时，学习器的拟合能力不够强，训练数据的扰动不足以使学习器产生显著变化，此时<strong>偏差就主导了泛化错误率</strong>；当拟合能力增强时，训练数据的扰动逐渐能被学习器掌握到，<strong>方差逐渐主导了泛化错误率</strong>。当拟合能力非常强时，任何轻微的扰动都会使得学习器发生显著变化，<strong>此时容易发生过拟合</strong>。<br><a name="A6EUQ"></a></p>
 <h1 id="三、课后习题"><a href="#三、课后习题" class="headerlink" title="三、课后习题"></a>三、课后习题</h1><p><strong>2.1 数据集包含 1000 个样本，其中 500 个正例、 500 个反例，将其划分为包含 70% 样本的训练集和 30% 样本的测试集用于留出法评估，估算有多少种划分方式。</strong><br />答：排列组合问题。<br />训练&#x2F;测试集的划分要尽可能保存数据分布一致，那么训练集中应该包括350个正例和350个反例，剩余的作测试集，那么划分方式应该有 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475842-17454024-2e69-44e0-8721-44b6b03a644f.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3b7fc0be&margin=%5Bobject%20Object%5D&originHeight=30&originWidth=62&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uf424aa04-aeb7-465e-8c06-fa5b5751714&title=">种。<br /><strong>2.2 数据集包含100个样本，其中正反例各一半，假定学习算法所产生的模型是将新样本预测为训练样本数较多的类别（训练样本数相同时进行随机猜测），试给出用10折交叉验证法和留一法分别对错误率进行评估所得的结果。</strong><br />答：10折交叉验证：交叉验证中每个子集数据分布要尽可能保持一致，那么本题中10次训练中每次正反例各占45，模型训练结果随机猜测，错误率期望为50%。<br />留一法：若留出样本为正例，训练集中则有50个反例和49个正例，模型预测为反例；反之留出样本为反例，模型预测为正例，错误率为100%。<br /><strong>2.3 若学习器A的F1值比学习器B高，试析A的BEP值是否也比B高。</strong><br />答：先看看F1值的定义，<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308475886-98ac55c1-50dc-4c74-b701-e76cbb5342a5.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3f28a089&margin=%5Bobject%20Object%5D&name=image.png&originHeight=121&originWidth=290&originalType=url&ratio=1&rotation=0&showTitle=false&size=25619&status=done&style=shadow&taskId=uc479b748-4be0-4174-bc56-2bcac316dce&title=" alt="image.png"><br /><img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475830-710a1c9e-8f54-43a1-91ec-c22be5b06fa9.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u308894c5&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=236&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ub14ae658-4c5d-4096-ac1f-69dc8cad4e3&title="> ，其中 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475785-4d2d6152-29e0-4a48-8594-ae099c4e03a1.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u6fef2e2b&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=188&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u666d58f0-a0d3-4b60-beb5-5d693cfbf47&title="> 即查准率（Precision ），【预测为正例且真实为正例的数量】&#x2F;【预测为正例的数量】，说白了关心预测为正样本时的准确率； <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308475789-a5f70ae5-75dd-48e6-b862-b5a273657292.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u45d1ad4b&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=191&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u0d5df702-4ff6-4ea8-b46f-6dc10b97937&title=">即查全率（又称召回率Recall），【预测为正例且真实为正例的数量】&#x2F;【真实为正例的数量】。F1值计算中对查准率和查全率都同等重视。<br />再看看BEP值<br /> 首先目前很多分类算法输出的都是0-1之间的一个概率值，比如逻辑回归、xgboost等，分类时的做法是预定一个阈值（典型为0.5），若对样本的输出大于此阈值则归为1类（即正例），那么根据样本的输出值从大到小排序（下文简称为“样本的排序”），排在最前面的即可理解为最有可能为正例的样本，而排在最后的是最不可能为正例的样本。从前往后，逐个将样本预测为正例（即把当前样本的输出值定于为阈值，小于阈值的都为反例），每次计算当前的查准率和查全率，即可得到查全率为横坐标查准率为纵坐标上的一个点，在将所有点按顺利连接后即可得到“P-R曲线”，而BEP（即Break-Event Point，平衡点）是在查全率&#x3D;查准率时的取值。<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308476944-44f2baa0-b9a7-4853-ab98-4f916dbde619.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u14800057&margin=%5Bobject%20Object%5D&name=image.png&originHeight=269&originWidth=317&originalType=url&ratio=1&rotation=0&showTitle=false&size=73637&status=done&style=shadow&taskId=uc1e5192b-29f3-4de2-a232-2312cf9855d&title=" alt="image.png"><br />讨论：<br /> 从定义上看，F1值是在阈值固定时，将所有样本分类完成后，综合查全率和查准率得出的值；而BEP值则是寻求一个阈值使得查全率和查准率相同的情况下得到的（此时BEP &#x3D; 查全率 &#x3D; 查准率）。<br /> 也就是说BEP值和“样本的排序”紧密相关的，而和样本的预测值大小无关，同样的排序，即使将所有预测值同时乘以0.5，其BEP值也是相同的；但是对于F1值，所有样本都将预测为负例（假定阈值为0.5时），此时F1值为0。<br /> 回到题目本身，“若学习器A的F1值比学习器B高，则A的BEP值比B高”，那么若能找到两个学习器BEP值相同，而F1值不同，则题目命题就不成立了。那从上面的讨论中已经有了答案了，想象一下学习器A对样本输出值均为学习器B的两倍，两者BEP值是相同的，A的输出在（0,1）之间，而B的输出在（0,0.5）之间，此时B的 F1 值为0，A的 F1 值是在0-1之间。所以原命题不成立。<br /> ps.个人从直觉上BEP值和F1值是没有明确关系的，在讨论过程中拿“输出值乘以0.5”为例，事实上，想象一下，一串固定排序的点(模型的输出概率值)，只在0-1之间同时前进或者后退（每个点前进步长可以不一样，但是排序不变），其BEP值也不会发生变化，而F1值是不断变化的。<br /><strong>2.4 试述真正例率（TPR）、假正例率（FPR）与查准率（P）、查全率（R）之间的联系。</strong><br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308476937-5fb6eb49-4eed-41d1-8930-46dff78e1d7c.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u47ebc881&margin=%5Bobject%20Object%5D&name=image.png&originHeight=121&originWidth=290&originalType=url&ratio=1&rotation=0&showTitle=false&size=25619&status=done&style=shadow&taskId=u70d152d8-8fae-4bc4-a238-11746bf3d51&title=" alt="image.png"><br />查全率： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476807-06d6989e-de76-495e-be4e-ff4634536071.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=ud55feb24&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=191&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ubda14e3e-05b5-40a6-8401-5cbe7621de7&title="> 。【预测为正例且真实为正例的数量】&#x2F;【真实为正例的数量】<br />查准率： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476804-dd6ecda7-7b10-4f33-906b-ca5d2a13e96b.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u76109f7c&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=188&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uccec4fd1-d4db-4442-9909-caf72f27fad&title="> 。【预测为正例且真实为正例的数量】&#x2F;【预测为正例的数量】<br />真正例率（TPR）：同查全率<br />假正例率（FPR）： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308476805-a7a205ea-fdf7-4264-a126-f255920722f0.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u0b1fc12d&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=148&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u3a7b806c-28bc-4485-95bc-02a8461a0bd&title="> 。即所有反例中被预测为正例的比率。<br /><strong>2.5 试证明(2.22)AUC&#x3D;1−lrank</strong><br />答：显然，在ROC曲线中，一条横线对应一个（或多个）负样本 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477397-4ed257f2-a20b-4f34-8b8e-c0f08f8d0d8d.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uae10d620&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=26&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u6147f971-583d-41ae-ad8c-16096f8c241&title="> ， 一条竖线对应一个（或多个）正样本 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477438-27b8101b-6012-43d7-a553-a60c264d67b7.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u0549f093&margin=%5Bobject%20Object%5D&originHeight=32&originWidth=26&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ua75ee475-3db7-4a45-b313-a9d44823c83&title="> ， 而一条斜线则对应多个正负样本 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477474-a0aa206d-25c5-4ff0-9938-63dafc51d7fe.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uc52e1617&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=60&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u2887ec99-0394-4a00-9c07-d0084459eaf&title="> ，且 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477605-94247cd1-1e4a-4c49-95ee-ca61b98f19b9.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u13d3d066&margin=%5Bobject%20Object%5D&originHeight=27&originWidth=135&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u403fc1e8-b933-428d-895c-5dbff8f0708&title="> ，即样本的预测值相同。如下图所示：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308477836-57b2ee1b-3afd-46f6-91a9-5b6bac19fcd7.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u83e12a3e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=473&originWidth=640&originalType=url&ratio=1&rotation=0&showTitle=false&size=61093&status=done&style=shadow&taskId=u0c4b8744-6528-46cf-83ae-4386dab0ac7&title=" alt="image.png"><br />其中 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477950-1bcb7c71-7cb5-46c8-850c-df3006afa752.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8a25c67a&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=32&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u8db74d8d-0efa-439c-861c-d01a0d39673&title="> 对应一个（或多个预测值相同的）正例，而 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308477985-e79c25e9-aa6f-433c-a6ab-242ef8b1f8a0.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3caf6a43&margin=%5Bobject%20Object%5D&originHeight=21&originWidth=27&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u80ea02b1-ae8b-4212-983d-a8c913dcb22&title="> 对应多个预测值相同的正负例 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478132-87b157f1-62ad-40d6-b7df-fbe1039ff6c8.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u691ed9ea&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=60&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u1abad83a-44e6-4d9f-9c6c-5b82adc9e79&title="> ，显然阴影部分的宽为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478133-7d1a6f13-b19d-4925-9f6a-ae1783fa12ec.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u377807d0&margin=%5Bobject%20Object%5D&originHeight=54&originWidth=258&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u2aa5122e-fd31-476a-ae81-81701f50d08&title="> , <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478307-5ed9c6f4-1158-404c-a2b8-7494e966634e.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u27c53835&margin=%5Bobject%20Object%5D&originHeight=29&originWidth=32&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ud2c1142a-5bf9-4fa7-bc57-f3da90acff9&title="> 的纵坐标为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478608-433bd2a5-06fe-4bad-9f70-19a690cf193c.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u889b0f25&margin=%5Bobject%20Object%5D&originHeight=56&originWidth=258&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uf4228333-2c7b-4aef-a8b5-0c392b09b3b&title=">，而 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478649-c5f6943e-3d82-49ff-b73b-3008cf5c5340.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u4267c141&margin=%5Bobject%20Object%5D&originHeight=21&originWidth=27&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u69073b80-d8f0-4594-b87e-5a84ee29412&title="> 纵坐标为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478668-06a6a6f9-530d-4bb1-9e55-c1a8ea59363d.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u7d132dba&margin=%5Bobject%20Object%5D&originHeight=56&originWidth=541&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u46b0ecc0-ff8b-487e-bdb0-c91cda11461&title="> ，于是阴影部分面积则为 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478788-6eadbe0f-538f-45d4-b67c-d60ebc072994.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8f1fde88&margin=%5Bobject%20Object%5D&originHeight=59&originWidth=774&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u7630b464-7138-4bf3-acbe-d4b0250f5ee&title="><br />令 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308478802-fa621d6c-78ca-44b6-bbfb-99023b9f1190.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=uf1a2ecb8&margin=%5Bobject%20Object%5D&originHeight=35&originWidth=70&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u8b4fcf88-8e91-4d51-9e6e-58cf0eb5c2c&title="> 表示预测值唯一的负例集合，即原负例集合中以预测值 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479052-37b956ae-a29d-44c3-a325-692544745614.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u02a05563&margin=%5Bobject%20Object%5D&originHeight=26&originWidth=40&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ucf8ebd14-853f-4448-b01f-a7345efafd0&title="> 去重，那么AUC值为： <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479121-14f4ad9b-1a35-41a8-8312-2ffe5e8fc991.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u85546fd0&margin=%5Bobject%20Object%5D&originHeight=83&originWidth=832&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=ubf6c6aae-3373-4590-ab53-e193237d485&title="> 其中 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479153-cfe6faaa-fd8e-402f-a12b-03d8c55463c1.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=ua9c43e23&margin=%5Bobject%20Object%5D&originHeight=65&originWidth=860&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uaf666110-4286-4a40-888a-fbb74af78fd&title="><br />而 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479330-298a0bbb-6d2b-4647-8b17-a4fc2d6b2dd3.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u17f1c561&margin=%5Bobject%20Object%5D&originHeight=65&originWidth=860&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u4a720620-c264-4769-94d9-bcfa88f9d9e&title="><br />于是 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479327-9b2eeba3-4f5d-4978-ac18-ef0c9f3e10a5.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u2f393a02&margin=%5Bobject%20Object%5D&originHeight=60&originWidth=658&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=u1708efb7-0597-4c96-a75f-9b0fdcdbec7&title="><br />于是 <img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1655308479553-91aa9ec7-086e-4549-9098-5da76b4399ac.svg#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u755fa8e3&margin=%5Bobject%20Object%5D&originHeight=23&originWidth=151&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&taskId=uef861489-e0ec-4df8-a557-0f253e86aa0&title="><br /><strong>2.6 试述错误率和ROC曲线的联系</strong><br />答：错误率是在阈值固定的情况下得出的，ROC曲线是在阈值随着样本预测值变化的情况下得出的。ROC曲线上的每一个点，都对应着一个错误率。<br /><strong>2.7 试证明任意一条ROC曲线都有一条代价曲线与之对应，反之亦然</strong><br />答：首先“任意一条ROC曲线都有一条代价曲线与之对应”，显然ROC曲线上每个点（FPR，TPR）都对应着下图中一条线段，取所有线段的下届，即可得到唯一的代价曲线。<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1655308479666-c18a85fa-3ffa-4cfc-868e-febda2a7b8f9.png#clientId=u9855ea40-27b8-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u8cdefca7&margin=%5Bobject%20Object%5D&name=image.png&originHeight=315&originWidth=406&originalType=url&ratio=1&rotation=0&showTitle=false&size=84247&status=done&style=shadow&taskId=u2a160080-91a3-4e40-9ce5-f466b54e018&title=" alt="image.png"><br />反之，代价曲线实际上是一个多边形（在有限样本下），易理解，每条边都对应代价平面上一条线段，实际上从左向右遍历每一条边，即可得到ROC曲线上从左到右每一个点。<br />ps. ROC曲线对应着唯一条代价曲线，但是一条代价曲线可对应着多条不同的ROC曲线，如上图中，在绿、黄、蓝三条线段交于红点时，此时去掉黄色线段代价曲线是不会发生变化的，但是ROC曲线则会少一个点。<br /><strong>2.8 Min-max 规范化和z-score 规范化的优缺点。</strong><br />答：Min-max 规范化优点1、计算相对简单一点。2、当新样本进来时，只有在新样本大于原最大值或者小于原最小值时，才需要重新计算规范化之后的值。缺点在于1、容易受高杠杆点和离群点影响。<br />z-score 规范化优点在于。1、对异常值敏感低。缺点在于1、计算更负责。2、每次新样本进来都需要重新计算规范化。<br /></p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"># 知识总结</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Joshua Jiang">
-      <meta itemprop="description" content="幸运值为E">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Solituder1969">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/" class="post-title-link" itemprop="url">机器学习-第一章绪论</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-05-27 00:52:14 / 修改时间：01:27:15" itemprop="dateCreated datePublished" datetime="2022-05-27T00:52:14+08:00">2022-05-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <meta name="referrer" content="no-referrer" />
-
-<h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653542484796-45e4206d-c082-46ab-a6a0-077372378008.jpeg"></p>
-<h1 id="二、读书笔记"><a href="#二、读书笔记" class="headerlink" title="二、读书笔记"></a>二、读书笔记</h1><h2 id="2-1-引言部分"><a href="#2-1-引言部分" class="headerlink" title="2.1 引言部分"></a>2.1 引言部分</h2><ol>
-<li>机器学习研究的内容，是关于“学习算法”的，即<strong>从“数据”中产生“模型”</strong>的算法。</li>
-<li>一些专用术语：数据、记录、数据集、示例&#x2F;样本、属性&#x2F;特征、属性值、属性空间&#x2F;样本空间&#x2F;输入空间、特征向量（示例）、维数、训练数据、训练样本、训练集、假设、真实、学习器、标记、样例、标记空间。</li>
-<li>如果<strong>预测的是离散值，则学习任务称为“分类”</strong>。如果是<strong>连续值，则称为“回归”</strong>。预测任务是希望通过对训练集进行学习，从而建立一个<strong>从输入空间X到输出空间Y的映射</strong>。模型建立起来后，使用其进行预测的行为，称为“测试”。</li>
-<li><strong>监督学习</strong>：分类和回归。<strong>无监督学习</strong>：聚类。</li>
-<li>学得模型适用于新样本的能力，就是“<strong>泛化</strong>”能力。训练的目标就是使得模型的泛化能力更强。</li>
-</ol>
-<h2 id="2-2-假设空间"><a href="#2-2-假设空间" class="headerlink" title="2.2 假设空间"></a>2.2 假设空间</h2><ol>
-<li><strong>归纳</strong>：从特殊到一般，也就是“<strong>泛化</strong>”的步骤。归纳学习也可以分为“狭义”和“广义”，后者指<strong>从样例中学习</strong>，前者要求<strong>从训练数据中学得概念</strong>，前者目前的应用较少，大多是“<strong>黑箱</strong>”型的模型。</li>
-<li><strong>演绎</strong>：从一般到特殊，也就是“<strong>特化</strong>”的步骤。</li>
-<li>概念学习中，最基本的是“<strong>布尔概念</strong>”的学习，也就是0&#x2F;1值的目标概念的学习。</li>
-<li>假设空间与版本空间，前者是所有维度中所有可能值组成的空间，后者是训练集的可能泛化集合。简单理解，版本空间就是软件测试中的“<strong>等价类划分</strong>”。</li>
-</ol>
-<h2 id="2-3-归纳偏好"><a href="#2-3-归纳偏好" class="headerlink" title="2.3 归纳偏好"></a>2.3 归纳偏好</h2><ol>
-<li>训练集泛化，产生版本空间，而版本空间的存在，必然导致模型的“<strong>选择策略</strong>”问题。“<strong>归纳偏好</strong>”就诞生了。</li>
-<li>如果没有“偏好”，则模型训练将随机抽取训练集的等效假设，这样对于某些特定的预测，结果可能完全相反，学习便没有了意义。</li>
-<li><strong>奥卡姆剃刀：若有多个假设与观察一致，则选最简单的那个。</strong>算法的归纳偏好与问题本身是否匹配，这个因素很多时候直接决定了算法的性能。</li>
-<li>没有免费的午餐（NFL定理）：<strong>如果所有“问题”出现的机会相同、或所有问题同等重要</strong>，则在期望性上，学习算法的期望性能与随机胡猜都差不多。</li>
-<li>要谈论算法的相对优劣，必须要针对具体的学习问题。</li>
-</ol>
-<h1 id="三、推导复演"><a href="#三、推导复演" class="headerlink" title="三、推导复演"></a>三、推导复演</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494319704-8feb3a85-de44-4413-9a3d-a122928f6ad1.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=uf87768d6&margin=%5Bobject%20Object%5D&name=22052501.png&originHeight=388&originWidth=1336&originalType=binary&ratio=1&rotation=0&showTitle=false&size=137737&status=done&style=shadow&taskId=u3495b512-d3ab-4d96-ae6b-2acb913b017&title=" alt="22052501.png"><br><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494332118-c5a5f11b-350c-4225-aa87-27c042d187cb.png#clientId=u035abb44-eb3a-4&crop=0&crop=0&crop=1&crop=0.5194&from=ui&height=1413&id=u0a894fbe&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u3900f441-bfa5-445e-8818-c09964946c1&title=&width=1381" alt="22052502.png"><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653494366516-ded4c6ea-b6fe-4ea7-be83-7d03d6f1542d.png#clientId=u035abb44-eb3a-4&crop=0.033&crop=0.7096&crop=1&crop=1&from=ui&height=1366&id=uae712198&margin=%5Bobject%20Object%5D&name=22052502.png&originHeight=1413&originWidth=1381&originalType=binary&ratio=1&rotation=0&showTitle=false&size=252139&status=done&style=shadow&taskId=u0f565a0c-01b7-4b60-8798-e63291b05b3&title=&width=1335" alt="22052502.png"></p>
-<h1 id="四、习题总结"><a href="#四、习题总结" class="headerlink" title="四、习题总结"></a>四、习题总结</h1><p><strong>【问】表1.1中若只包含编号为1和4的两个样例，试给出相应的版本空间。</strong><br>【答】如果只剩下编号1和4，则数据集为：</p>
-<table>
-<thead>
-<tr>
-<th>编号</th>
-<th>色泽</th>
-<th>根蒂</th>
-<th>敲声</th>
-<th>好瓜</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>青绿</td>
-<td>蜷缩</td>
-<td>浊响</td>
-<td>是</td>
-</tr>
-<tr>
-<td>4</td>
-<td>乌黑</td>
-<td>稍蜷</td>
-<td>沉闷</td>
-<td>否</td>
-</tr>
-</tbody></table>
-<p>编号1可以泛化出来的假设空间一共有2<em>2</em>2&#x3D;8种，其中囊括了编号4的有1种（<em>，</em>，*），因此版本空间一共有7种。我们用G表示青绿，用W表示蜷缩，用Z表示浊响，则版本空间如图所示：<br><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1653578522278-03163815-e3e8-4bed-a572-593db3099c4a.jpeg"></p>
-<p><strong>【问】若使用最多包含k个合取式的析合范式来表达表1.1西瓜分类问题的假设空间，试估算有多少种可能的假设。</strong><br>【答】（1）“色泽”一共有2种候选项，“根蒂”和“敲声”都有3种候选项。因此，一共有2<em>3</em>3&#x3D;18种不同的瓜。<br>（2）从合取式的角度考虑，一共存在3<em>4</em>4&#x3D;48种不同的合取式。<br>（3）一共有18种瓜，而每个瓜是否在析合范式中，只存在两种可能：是或者不是。因此，所有析合范式加起来的假设数量，不会超过$2^{18}$个（这里的意思是这样的，比如在范式A中，瓜1是好瓜，而在范式B中，瓜1不是好瓜。那么这两个范式就涵盖了瓜1的两种可能情形。以此类推，对于所有的范式，涵盖的可能性最多不超过$2^{18}$种。我们可以据此推断出析合范式包含的合取式的上限数量）。<br>（4）选取 i 个合取式，一共有$C_{48}^{i}$种不同的选取方式，每种选取方式都将决定18种瓜中哪些是好瓜，哪些是坏瓜。换而言之，每种选取方式决定了一个18维的向量的值（这个值仅为0或者1，用来决定这个瓜是不是好的）。<br>（5）因此，判断 i&#x3D;k 时，需要遍历$C_{48}^{i}$种可能的情况，并将结果重复（18维向量相等）的筛掉。<br>（6）最终，对于i$\le$k的情况，依次做5的操作，最后再将结果叠加即可。</p>
-<p><strong>【问】若数据包含噪声，则假设空间中有可能不存在与所有训练样本都一致的假设。在此情形下，设计一种归纳偏好用于假设选择。</strong><br>【答】可以选择满足最多样本的假设（贪心），或者设“准确率”&#x3D;（符合假设条件的好瓜数）&#x2F;（符合假设条件的样例数），选择“准确率”最高的。</p>
-<p><strong>【问】本章1.4节在论述“没有免费的午餐”定理时，默认使用了“分类错误率”作为性能度量来对分类器进行评估。若换用其他性能度量 ，则式（1.1）将改为 <strong><img src="https://cdn.nlark.com/yuque/0/2022/svg/27569747/1653583503837-a7a2d131-0d32-4e19-80fa-569eea2ec355.svg#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u3bf440b4&margin=%5Bobject%20Object%5D&originHeight=38&originWidth=565&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=uf8d3456f-a878-4f3c-8f82-7358c43dc70&title="></strong> ，试证明“没有免费的午餐定理”仍成立。</strong><br>【答】如图所示：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1653583580252-41d9c9ae-5c42-4671-b2db-04c65f96d6c3.png#clientId=ubcc3ad6d-ad71-4&crop=0&crop=0&crop=0.9917&crop=1&from=ui&height=549&id=u2748a6ab&margin=%5Bobject%20Object%5D&name=22052601.png&originHeight=553&originWidth=1391&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119083&status=done&style=shadow&taskId=u613304d0-f6ee-484e-891e-fb5d9a02a25&title=&width=1380" alt="22052601.png"></p>
-<p><strong>【问】试述机器学习能在互联网搜索的哪些环节起作用</strong><br>【答】做分词解读NLP，进行语义分析；信息匹配；根据用户的搜索历史进行结果的个性化排序。</p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/" rel="prev" title="机器学习-第一章绪论">
+      <i class="fa fa-chevron-left"></i> 机器学习-第一章绪论
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/hexo-g-%E6%8C%87%E4%BB%A4%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BAindex-html%E6%96%87%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Joshua Jiang">
-      <meta itemprop="description" content="幸运值为E">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Solituder1969">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/hexo-g-%E6%8C%87%E4%BB%A4%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BAindex-html%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">hexo g 指令无法创建index.html文件</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-19 14:27:42" itemprop="dateCreated datePublished" datetime="2022-02-19T14:27:42+08:00">2022-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-20 16:27:54" itemprop="dateModified" datetime="2022-02-20T16:27:54+08:00">2022-02-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><strong>背景描述</strong><blockquote>
-<p>笔者新建了项目 <strong><em>“Solituder1969”</em></strong>, 使用 “hexo” 工具搭建博客。在将主题更换为 “next” 、添加了博主图片、首页新增 “tags” 和 “categorites” 分类后，本地4000端口 debug 没有任何问题。之后应该 <strong><em>清理缓存，重新生成，部署到 github</em></strong> 。</p>
-</blockquote>
-</li>
-<li><strong>问题描述</strong><blockquote>
-<p>在第二步中，使用 <strong><em>“hexo generate”</em></strong> 指令，生成的 “public” 文件夹（也即要部署的静态文件夹）里却没有主页 “index.html”，对于 “tags”和”categories” 也没有生成对应的 “.html” 文件，只有初始的 “.md”文件。其结果就是本地再次调用 <strong><em>“hexo s”</em></strong> 指令运行时，只有一个 **_”Cannot get &#x2F;“_**。</p>
-</blockquote>
-</li>
-<li><strong>问题归因</strong></br><br> 3.1 <strong><em>hexo generate</em> 的原理</strong><br> 浏览项目目录，我们发现 <em>hexo</em> 项目的结构是这样的：<blockquote>
-<p>-node_modules<br>-public<br>-scaffolds<br>-source<br>-themes</p>
-</blockquote>
-<p> 可以发现， <em><strong>source</strong></em> 文件夹与 <em><strong>themes</strong></em> 文件夹处于同级目录， <em><strong>public</strong></em> 为生成的静态包， <em><strong>node_modules</strong></em> 为 npm 引入的模块， <em><strong>scaffolds</strong></em> 则提供了”draft”、”page”和”post”三种格式。 </br><br> 根据 “模板引擎”的理论，我们可以简单地认为， <em><strong>source</strong></em> 中存放了我们博客中的数据（标签、文章等）， <em><strong>themes</strong></em> 则为整个博客使用的模板。</br><br> hexo 先遍历 <em><strong>themes</strong></em> 下主题（例如 “next”）的 <em><strong>source</strong></em> 文件，建立索引，随后根据主目录下 <em><strong>source</strong></em> 里存放的文章类型，以 <em><strong>layout</strong></em> 里对应的布局将文章渲染成html文件。</br><br> 至于hexo是如何遍历、如何进行数据填充的，这就涉及到插件 <em><strong>hexo-generator-index</strong></em> 了。它会首先调取 <em><strong>_config.yml</strong></em> 里的参数，然后指定对象需要填充进哪个路径中，最后再通过page变量调取。</br><br> 通过上述的分析，我们知道， <em><strong>“hexo generate”</strong></em> 指令生成主页，一共需要以下四个方面支持：</p>
-<blockquote>
-<p>a. 数据源，原本是什么样子的<br>b. 模板引擎，要生成什么样子的<br>c. 配置文件，a和b中元素是如何对应的，模板的具体细节<br>d. 插件，a和b的对应关系是如何填充的</br></p>
-</blockquote>
-<p> 3.2 <strong>问题诊断</strong></p>
-<table>
-<thead>
-<tr>
-<th><strong>数据源</strong></th>
-<th><strong>使用 _</strong>“hexo new hello-world”<strong>_ 指令生成了一篇文章，确保主页不空</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>模板引擎</strong></td>
-<td><strong>套用的是 _</strong>“next”<strong>_ 模板，这是当前比较受欢迎的博客模板</strong></td>
-</tr>
-<tr>
-<td><strong>配置文件</strong></td>
-<td><strong>更改了相关的参数属性，但仅涉及诸如头像、进度条、搜索等功能性相关</strong></td>
-</tr>
-<tr>
-<td><strong>插件</strong></td>
-<td><strong>齐全，没有报错</strong></td>
-</tr>
-</tbody></table>
-</li>
-<li><strong>解决方案</strong><br> 这里就是比较离奇的地方了。笔者在尝试了4个多小时之后，仍旧没有解决这个问题。之后笔者重新利用 <em><strong>hexo init</strong></em> 指令，初始化了一个 <em><strong>text</strong></em> 项目，并将原项目中的 <em><strong>config</strong></em> 文件直接覆盖了过来，安装插件之后，_<strong>test</strong>_  项目经过 <em><strong>clean</strong></em> 后，居然可以 <em><strong>generate</strong></em> 出 <em><strong>index.html</strong></em> 了！</br><br> 原项目与测试项目除了名字之外，其余都是一样的。但原项目就无法生成主页，而测试项目就可以无问题产出结果。不得不说，挺奇妙的……</li>
-<li><strong>问题总结</strong><br> A. 发现了 <em><strong>hexo</strong></em> 构建项目时的一个问题：无法生成默认页；<br> B. 尝试着分析了一下问题的源头，主要来自<strong>数据源</strong>、<strong>模板引擎</strong>、<strong>配置文件</strong>和<strong>插件</strong>四个方面；<br> C. 尝试了4个小时，反复排查了过去，<strong>没有能够解决问题</strong>；<br> D. 重新构建了一个测试项目，并把原工程的相关文件<strong>覆盖</strong>了一遍，可以顺利<strong>运行产出预期结果</strong>；<br> E. 已成功部署，但问题<strong>仍待解决</strong>……</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Joshua Jiang">
-      <meta itemprop="description" content="幸运值为E">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Solituder1969">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-19 02:35:15" itemprop="dateCreated datePublished" datetime="2022-02-19T02:35:15+08:00">2022-02-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -773,6 +554,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">一、思维导图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="nav-number">2.</span> <span class="nav-text">二、读书笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E7%95%99%E5%87%BA%E6%B3%95"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 留出法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E6%B3%95"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 交叉验证法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-%E8%87%AA%E5%8A%A9%E6%B3%95"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 自助法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-%E8%B0%83%E5%8F%82%E4%B8%8E%E8%87%AA%E5%8A%A9%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.1.4.</span> <span class="nav-text">2.1.4 调参与自助模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 性能度量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E9%94%99%E8%AF%AF%E7%8E%87%E4%B8%8E%E7%B2%BE%E7%A1%AE%E5%BA%A6"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 错误率与精确度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E6%9F%A5%E5%87%86%E7%8E%87%E3%80%81%E6%9F%A5%E5%85%A8%E7%8E%87%E4%B8%8EF1"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 查准率、查全率与F1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-ROC%E4%B8%8EAUC"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 ROC与AUC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%AF%94%E8%BE%83%E6%A3%80%E9%AA%8C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 比较检验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 假设检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81t%E6%A3%80%E9%AA%8C"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 交叉验证t检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-McNemar%E6%A3%80%E9%AA%8C"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 McNemar检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-FriedMan%E6%A3%80%E9%AA%8C%E5%92%8CNemenyi%E5%90%8E%E7%BB%AD%E6%A3%80%E9%AA%8C"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 FriedMan检验和Nemenyi后续检验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E5%81%8F%E5%B7%AE%E6%96%B9%E5%B7%AE"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 偏差方差</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">三、课后习题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
