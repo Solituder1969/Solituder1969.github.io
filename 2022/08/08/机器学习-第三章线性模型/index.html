@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、思维导图 二、读书笔记 2.1 基本形式线性模型，对于d个属性描述的示例x&#x3D;(x1;x2;x3;…;xd)，线性模型的表现形式为：可以用向量形式写成：这里可以直接简单理解为：为每个属性赋予一个权重值，权重越高，说明该值越重要。因此，线性模型的描述是相当直观的。 2.2 线性回归【定义】给定数据集D&#x3D;{(x1,y1),(x2,y2),…,(xn,yn)}，其中，xi&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章-线性模型">
+<meta property="og:url" content="http://example.com/2022/08/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AB%A0%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Solituder1969">
+<meta property="og:description" content="一、思维导图 二、读书笔记 2.1 基本形式线性模型，对于d个属性描述的示例x&#x3D;(x1;x2;x3;…;xd)，线性模型的表现形式为：可以用向量形式写成：这里可以直接简单理解为：为每个属性赋予一个权重值，权重越高，说明该值越重要。因此，线性模型的描述是相当直观的。 2.2 线性回归【定义】给定数据集D&#x3D;{(x1,y1),(x2,y2),…,(xn,yn)}，其中，xi&amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1659806945431-677cefc5-3b54-4595-ad59-73c7a84dd1d3.jpeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/e5df6fae90d4eced9d2a5312ff25314d.svg#card=math&code=f%28x%29%3Dw_1x_1%2Bw_2x_2%2B...%2Bw_dx_d%2Bb&id=dY2GD">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/95d810ea1c2b0c460d25271c36a232e1.svg#card=math&code=f%28x%29%3D%5Cvec%7Bw%7Dx%2Bb&id=JxG3L">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/3c36aaa0a4a435323dd31dc48ac584ff.svg#card=math&code=f%28x_i%29%3D%5Cvec%7Bw%7D%5ET%5Cvec%7Bx_i%7D%2Bb%2C%5Cspace%20to%5Cspace%20%20make%5Cspace%20f%28x_i%29%5Csimeq%20y_i&id=axkQ5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a688d22ce609490264d573c4577ace42.svg#card=math&code=%28w%5E%2A%2Cb%5E%2A%29%3D%5Cunderset%7B%28w%2Cb%29%7D%7Barg%7D%5Cspace%20min%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Barg%28f%28x_i%29-y_i%29%29%5E2%7D&id=ju9eE">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/162a07fca5702b469ba3339d27685e36.svg#card=math&code=E_%7B%28w%2Cb%29%7D%3D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i-wx_i-b%29%5E2%7D&id=IZPM0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/5750b697dda9be8c7959b93d86303c2d.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%28w%2Cb%29%7D%7D%7B%5Cpartial%20w%7D%3D2%28w%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%5E2%7D-%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i-b%29x_i%7D%29&id=SX31e">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/c6d69e84a62743cae1415fc0b0e03695.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%28w%2Cb%29%7D%7D%7B%5Cpartial%20b%7D%3D2%28mb-%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i-wx_i%29%7D%29&id=Kij7O">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/1d5fa5b4c5dc1210d4b005bb8ced42cf.svg#card=math&code=w%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7By_i%28x_i-%5Coverline%7Bx%7D%29%7D%7D%7B%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%5E2%7D-%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%7D%29%5E2%7D%2C%5Cspace%20%5Coverline%7Bx%7D%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%7D&id=TGIES">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0ce12e73f5fbbf3c8d8c1f1ccde9e157.svg#card=math&code=b%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7By_i-wx_i%7D&id=BdgAW">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/1ea02ddd295d1fe6c59ceee39db632f6.svg#card=math&code=X%3D%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ax_%7B11%7D%5Cquad%5Cspace%20x_%7B12%7D%5Cspace...%5Cspace%20x_%7B1d%7D%5Cquad%5Cspace1%5C%5C%0Ax_%7B21%7D%5Cquad%5Cspace%20x_%7B22%7D%5Cspace...%5Cspace%20x_%7B2d%7D%5Cquad%5Cspace1%5C%5C%0A............................%5C%5C%0Ax_%7Bm1%7D%5Cquad%20x_%7Bm2%7D%5Cspace%20...%20x_%7Bmd%7D%5Cquad%201%0A%5Cend%7Barray%7D%0A%5Cright%29%0A%0A%5Chat%7Bw%7D%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Aw_1%5C%5C%0Aw_2%5C%5C%0A.%5C%5C%0Aw_d%5C%5C%0Ab%0A%5Cend%7Barray%7D%0A%5Cright%29%0A%0AY%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ay_1%5C%5C%0Ay_2%5C%5C%0A.%5C%5C%0A.%5C%5C%0Ay_m%0A%5Cend%7Barray%7D%0A%5Cright%29&id=CEJYS">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/db98d5bf2f58dfbe4e6bccca9a3bd950.svg#card=math&code=%5Chat%7Bw%7D%5E%2A%3D%5Cunderset%7B%5Chat%7Bw%7D%7D%7Barg%7D%5Cspace%20min%28Y-X%5Chat%7Bw%7D%29%5ET%28Y-X%5Chat%7Bw%7D%29&id=Sphtn">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/3dfd9c1763726f12bfa11c7f4898d75c.svg#card=math&code=E_%7B%5Chat%7Bw%7D%7D%3D%28Y-X%5Chat%7Bw%7D%29%5ET%28Y-X%5Chat%7Bw%7D%29&id=YWzyH">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/5370fd3ce11d46cbd5535c8d14f5e15e.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%5Chat%7Bw%7D%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%3D-X%5ETY-%5Cfrac%7B%5Cpartial%20%28%5Chat%7Bw%7D%5ETX%5ETY%29%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%2BX%5ETX%5Chat%7Bw%7D%5ET%20%2B%5Cfrac%7B%5Cpartial%20%5Chat%7Bw%7D%5ETX%5ETX%5Chat%7Bw%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D&id=pv7pj">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/03b32f3e03df4263d8389f42f0444bac.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%5Chat%7Bw%7D%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%3D-X%5ETY-X%5ETY%2BX%5ETX%5Chat%7Bw%7D%5ET%2BX%5ETX%5Chat%7Bw%7D&id=ZAgZO">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/39049156f9491d0cc4b5900ea18c4752.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%5Chat%7Bw%7D%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%3D2X%5ET%28X%20%5Chat%7Bw%7D-Y%29&id=zpwWs">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a7bf012cf9f4bc9dbb1f6e3282440da7.svg#card=math&code=%5Cfrac%7BdY%7D%7BdX%7D%3DA&id=D81kN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/4e6b42ab36f946cc9d05786b07011584.svg#card=math&code=%5Cfrac%7BdY%7D%7BdX%7D%3DA%5ET&id=HdVeD">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/9b0c5d1ab8674cf82b64cc87d3e0314e.svg#card=math&code=%5Cfrac%7BdY%7D%7BdX%5ET%7D%3DB%C3%97A&id=a54TX">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/708cd5cb34c634538376a75c93550c14.svg#card=math&code=r%28X%5ETX%29%3Dd%2B1&id=SbB1B">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/eac54b253057f88a1455bc0cb3bc1103.svg#card=math&code=%5Chat%7Bw%7D%5E%2A%3D%28X%5ETX%29%5E%7B-1%7DX%5ETY&id=ovrlb">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0d55fc90da83c958a147c898f7f925eb.svg#card=math&code=H%3D%28X%5ETX%29%5E%7B-1%7DX%5ET%2C%5Chat%7Bx_i%7D%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ax_%7Bi1%7D%5C%5C%0Ax_%7Bi2%7D%5C%5C%0A.%5C%5C%0Ax_%7Bid%7D%5C%5C%0A1%0A%5Cend%7Barray%7D%0A%5Cright%29&id=v3yl7">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8b9321bbb82747bfcdfb7b5af081eb18.svg#card=math&code=f%28%5Chat%7Bx_i%7D%29%3D%5Chat%7Bx_i%7D%5ETHY&id=rC9io">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a43d62beb611deeef1e5ba0b09c0051e.svg#card=math&code=X%5ETX&id=YtaR2">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/069a50f84a9e64fb9f51b78f6583bce9.svg#card=math&code=y%3Dg%5E%7B-1%7D%28w%5ETx%2Bb%29&id=XWtxj">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/e9043fb5d0504c05f4158ffa9caac386.svg#card=math&code=lny%3Dw%5ETx%2Bb&id=BjYwu">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a2bdcb83ff49e1ba8e76d0d96f0b5626.svg#card=math&code=y%3D%5Cleft%5C%7B%0A%5Cbegin%7Barray%7D%7B%7D%0A0%2C%5Cquad%20%20z%3C0%5C%5C%0A0.5%2C%5Cquad%20z%3D0%5C%5C%0A1%2C%5Cquad%20z%3E0%0A%5Cend%7Barray%7D%0A%5Cright.&id=IpNNk">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/16ac3ec0b32fbaa0bee9614a491407df.svg#card=math&code=y%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D&id=y3kl0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659673060102-fe9f3538-50ef-46a9-8ed1-7fb332c80c39.png#clientId=u33f4090c-60f9-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u481e569e&margin=%5Bobject%20Object%5D&name=22080501.png&originHeight=601&originWidth=1123&originalType=binary&ratio=1&rotation=0&showTitle=true&size=124749&status=done&style=none&taskId=uba62942e-972b-4d19-a2da-6c4637d72c7&title=%E5%AF%B9%E6%95%B0%E5%87%A0%E7%8E%87%E5%87%BD%E6%95%B0%E5%9B%BE%E5%83%8F">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6aaf49346c119259af25ac818401397b.svg#card=math&code=y%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-%28w%5ETx%2Bb%29%7D%7D%2C%5Cquad%20ln%7B%5Cfrac%7By%7D%7B1-y%7D%3Dw%5ETx%2Bb%7D&id=lC9HC">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/06e41854cd68e8b4108841914828af1a.svg#card=math&code=ln%5Cfrac%7Bp%28y%3D1%7Cx%29%7D%7Bp%28y%3D0%7Cx%29%7D%3Dw%5ETx%2Bb&id=ffBcy">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/808081d88f74471d4ec6f7a5215ce623.svg#card=math&code=p%28y%3D1%7Cx%29%3D%5Cfrac%7Be%5E%7Bw%5ETx%2Bb%7D%7D%7B1%2Be%5E%7Bw%5ETx%2Bb%7D%7D&id=Xo4RH">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/454a1e8c6f18def76a1984b61150e423.svg#card=math&code=p%28y%3D0%7Cx%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7Bw%5ETx%2Bb%7D%7D&id=lsv6Z">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/def23b9cc8b992f63061d5dddf07e8d2.svg#card=math&code=l%28w%2Cb%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Blnp%28y_i%7Cx_i%3Bw%2Cb%29%7D&id=sXQhg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/4e9ce2450616eaf400ebcf3c98ec7644.svg#card=math&code=%5Chat%7Bx%7D%3D%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ax_%7B11%7D%5Cquad%5Cspace%20x_%7B12%7D%5Cspace...%5Cspace%20x_%7B1d%7D%5Cquad%5Cspace1%5C%5C%0Ax_%7B21%7D%5Cquad%5Cspace%20x_%7B22%7D%5Cspace...%5Cspace%20x_%7B2d%7D%5Cquad%5Cspace1%5C%5C%0A............................%5C%5C%0Ax_%7Bm1%7D%5Cquad%20x_%7Bm2%7D%5Cspace%20...%20x_%7Bmd%7D%5Cquad%201%0A%5Cend%7Barray%7D%0A%5Cright%29%0A%EF%BC%8C%0A%5Cbeta%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Aw_1%5C%5C%0Aw_2%5C%5C%0A.%5C%5C%0Aw_d%5C%5C%0Ab%0A%5Cend%7Barray%7D%0A%5Cright%29%0A&id=ONonJ">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/2f6b19a23a13cbdc0f71050e4b797a18.svg#card=math&code=w%5ETx%2Bb%3D%5Cbeta%5ET%5Chat%7Bx%7D&id=iVuPR">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/87ab7c5e46d13c47169b7d93b2410b46.svg#card=math&code=p_1%28%5Chat%7Bx%7D%3B%5Cbeta%29%3Dp%28y%3D1%7C%5Chat%7Bx%7D%3B%5Cbeta%29%5C%5Cp_0%28%5Chat%7Bx%7D%3B%5Cbeta%29%3Dp%28y%3D0%7C%5Chat%7Bx%7D%3B%5Cbeta%29%3D1-p_1%28%5Chat%7Bx%7D%3B%5Cbeta%29&id=rVy5j">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/72f32798c616c75771b8d780ef957aec.svg#card=math&code=p%28y_i%7Cx_i%3Bw%2Cb%29%3Dy_ip_1%28%5Chat%7Bx_i%7D%3B%5Cbeta%29%2B%281-y_i%29p_0%28%5Chat%7Bx_i%7D%3B%5Cbeta%29&id=zc8sp">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/e06c039f2d15cc2175493b9ccbcb411c.svg#card=math&code=p%28y_i%7C%5Chat%7Bx_i%7D%3B%5Cbeta%29%3Dy_i%2B%281-2y_i%29p_0%28%5Chat%7Bx_i%7D%3B%5Cbeta%29&id=BRjCo">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/cf5300c276aa8b4509d217e75a538fb4.svg#card=math&code=p%28y_i%7C%5Chat%7Bx_i%7D%3B%5Cbeta%29%3Dy_i%2B%281-2y_i%29%5Cfrac%7B1%7D%7B1%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%7D%3D%5Cfrac%7B1-y_i%2By_ie%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%7D%7B1%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%7D&id=Salyo">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/73a82ab43c4b54ef5865e361b574029a.svg#card=math&code=ln%28p%28y_i%7C%5Chat%7Bx_i%7D%3B%5Cbeta%29%29%3Dln%281-y_i%2By_ie%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29&id=fKEPN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0d1187ccfcda7bc12aeff2f9810f3e0c.svg#card=math&code=l%28%5Cbeta%29%3D%0A%5Cleft%5C%7B%0A%5Cbegin%7Barray%7D%7B%7D%0A%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29%29%7D%2C%5Cquad%5Cquad%5Cspace%5Cquad%20y_i%3D0%5C%5C%0A%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28%5Cbeta%5ET%5Chat%7Bx_i%7D-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29%29%7D%2C%5Cquad%20y_i%3D1%0A%5Cend%7Barray%7D%0A%5Cright.&id=IDHuD">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f3b1c5082b2684d7facfb35324c7817e.svg#card=math&code=l%28%5Cbeta%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i%5Cbeta%5ET%5Chat%7Bx_i%7D-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29%29%7D&id=qqCN8">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659711305838-f17576a1-b7d8-4be2-bd30-dfdb34d8b618.png#clientId=u33f4090c-60f9-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=ua676142b&margin=%5Bobject%20Object%5D&name=22080502.png&originHeight=1065&originWidth=1562&originalType=binary&ratio=1&rotation=0&showTitle=true&size=169765&status=done&style=shadow&taskId=u9942ed36-a9e9-4fc4-8816-2ff179ea037&title=%E7%89%9B%E9%A1%BF%E6%B3%95%E6%B1%82%E8%A7%A3%E5%AF%BC%E6%95%B0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659712733054-155955a2-bc83-41f9-bb1f-218d69cc6680.png#clientId=u33f4090c-60f9-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u39c04d55&margin=%5Bobject%20Object%5D&name=22080503.png&originHeight=679&originWidth=1043&originalType=binary&ratio=1&rotation=0&showTitle=true&size=176034&status=done&style=shadow&taskId=u15a9fcd9-14d8-41d1-be00-a6f90cc767a&title=%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E7%A4%BA%E6%84%8F%E5%9B%BE">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a65b697578636994d9d7291c34231a8c.svg#card=math&code=f%28x%29%3D%5Bf_1%28x%29%3Bf_2%28x%29%3B...%3Bf_n%28x%29%5D&id=zXlFV">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/99eb65987d85cf0fecdf7942e620ddb6.svg#card=math&code=E%3D%5B%5Cepsilon%28f_1%28x%29%29%3B%5Cepsilon%28f_2%28x%29%29%3B...%3B%5Cepsilon%28f_n%28x%29%29%5D%3D%5Cunderset%7Bx%7D%7B%5Csum%7D%20f%28x%29p%28x%29&id=Hzhoe">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/4459ab9e91496e0f948337a58917d0d3.svg#card=math&code=%5Cmu%20%3D%5Cepsilon%28x%29%3D%5B%5Cepsilon%28x_1%29%3B%5Cepsilon%28x_2%29%3B...%3B%5Cepsilon%28x_n%29%5D%3D%5B%5Cmu_1%3B%5Cmu_2%3B...%3B%5Cmu_n%5D%3D%5Cunderset%7Bx%7D%7B%5Csum%7D%20xp%28x%29&id=GPKXk">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f2766205e90baffbaa10a54da6d4442f.svg#card=math&code=%5Cbegin%7Baligned%7D%0ACov%28X%2CY%29%26%3DE%5B%28X-E%28X%29%28Y-E%28Y%29%29%5D%5C%5C%0A%26%3DE%28XY%29-2E%28X%29E%28Y%29%2BE%28X%29E%28Y%29%5C%5C%0A%26%3DE%28XY%29-E%28X%29E%28Y%29%0A%5Cend%7Baligned%7D&id=fo6WV">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/3cc178301e863feb2d918885b45a7c3b.svg#card=math&code=D%3D%5C%7B%28x_i%2Cy_i%29%5C%7D_%7Bi%3D1%7D%5Em%2Cy_i%5Cin%5C%7B0%2C1%5C%7D&id=OwhCo">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/1d09131b8f67aba817b1a2b0ff92abba.svg#card=math&code=X_i%2C%5Cmu_i%2C%5CSigma_i&id=HghLe">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/7b61b0de4bd2c86771084696e140ec4b.svg#card=math&code=w%5ET%5Cmu_0%E3%80%81w%5ET%5Cmu_1&id=j9Hl5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/ffba220e68acae84c87c8ca36d6cea46.svg#card=math&code=w%5ET%5CSigma_0w%E3%80%81w%5ET%5CSigma_1w&id=OgDLe">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/7f4006d418a8eb26f9767dfc73ad6e21.svg#card=math&code=w%5ET%5Cmu_0%E3%80%81w%5ET%5Cmu_1%E3%80%81w%5ET%5CSigma_0w%E3%80%81w%5ET%5CSigma_1w&id=yAqXf">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/72ce896c0bfcbb24341614d8eb9d117d.svg#card=math&code=%5Cbegin%7Baligned%7D%0AJ%26%3D%5Cfrac%7B%7C%7Cw%5ET%5Cmu_0-w%5ET%5Cmu_1%7C%7C_%7B2%7D%5E2%7D%7Bw%5ET%5CSigma_0w%2Bw%5ET%5CSigma_1w%7D%5C%5C%0A%26%3D%5Cfrac%7B%7C%7C%28%5Cmu_0-%5Cmu_1%29%5ETw%7C%7C_%7B2%7D%5E%7B2%7D%7D%7Bw%5ET%28%5CSigma_0%2B%5CSigma_1%29w%7D%5C%5C%0A%26%3D%5Cfrac%7B%5B%28%5Cmu_0-%5Cmu_1%29%5ETw%5D%5ET%28%5Cmu_0-%5Cmu_1%29%5ETw%7D%7Bw%5ET%28%5CSigma_0%2B%5CSigma_1%29w%7D%5C%5C%0A%26%3D%5Cfrac%7Bw%5ET%28%5Cmu_0-%5Cmu_1%29%28%5Cmu_0-%5Cmu_1%29%5ETw%7D%7Bw%5ET%28%5CSigma_0%2B%5CSigma_1%29w%7D%5C%5C%0A%5Cend%7Baligned%7D&id=Njgse">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a23c432511c87ec88f8b1eca970054e3.svg#card=math&code=S_w%3D%5CSigma_0%2B%5CSigma_1%3D%5Cunderset%7Bx%5Cin%20X_0%7D%7B%5Csum%7D%28x-%5Cmu_0%29%28x-%5Cmu_0%29%5ET%2B%5Cunderset%7Bx%5Cin%20X_1%7D%7B%5Csum%7D%28x-%5Cmu_1%29%28x-%5Cmu_1%29%5ET&id=NqD8E">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8e62e576f9f088f4ae536c85915fd3f4.svg#card=math&code=S_b%3D%28%5Cmu0-%5Cmu_1%29%28%5Cmu_0-%5Cmu_1%29%5ET&id=c3Ntv">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/931eef0abc2f37ede254aad474f3d9c2.svg#card=math&code=J%3D%5Cfrac%7Bw%5ETS_bw%7D%7Bw%5ETS_ww%7D&id=JNxiN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/e1bb1d39508a0d16b1983804efdc4e3d.svg#card=math&code=w%3DS%5E%7B-1%7D_w%28%5Cmu_0-%5Cmu_1%29&id=BOI5w">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/291561ab9a6814095270b3bdb94f7c48.svg#card=math&code=D%3D%5C%7B%28x_1%2Cy_1%29%2C%28x_2%2Cy_2%29%2C...%2C%28x_m%2Cy_m%29%5C%7D%2Cy_i%5Cin%20%5C%7BC_1%2CC_2%2C...%2CC_N%5C%7D&id=Uq93t">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659805351832-3d633443-574a-4915-9483-6da8c7ca4e06.png#clientId=u63109467-1f39-4&crop=0&crop=0.0248&crop=1&crop=0.894&from=ui&height=867&id=u0c4ddf57&margin=%5Bobject%20Object%5D&name=22080701.png&originHeight=867&originWidth=1291&originalType=binary&ratio=1&rotation=0&showTitle=true&size=250046&status=done&style=shadow&taskId=ude2a2385-4d2c-4104-852b-79519421e7f&title=OVO%E4%B8%8EOVR%E7%A4%BA%E6%84%8F%E5%9B%BE&width=1291">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a5d6480eedfd7b1b307ab9909d5dcfe8.svg#card=math&code=if%20%5Cquad%20%5Cfrac%7By%7D%7B1-y%7D%3E1%EF%BC%8Cresult%3DT&id=LzAHs">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a12c58e99445cc1dca0bc090f689676f.svg#card=math&code=if%20%5Cquad%20%5Cfrac%7By%7D%7B1-y%7D%3E%5Cfrac%7Bm%5E%2B%7D%7Bm%5E-%7D%2C%5Cquad%20result%3DT&id=ZTxU7">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8fb65dc6df2c699f5ce47011edf482ce.svg#card=math&code=%5Cfrac%7By%27%7D%7B1-y%27%7D%3D%5Cfrac%7By%7D%7B1-y%7D%C3%97%5Cfrac%7Bm%5E-%7D%7Bm%5E%2B%7D&id=XZsOv">
+<meta property="article:published_time" content="2022-08-08T08:54:53.000Z">
+<meta property="article:modified_time" content="2022-08-08T09:00:43.697Z">
+<meta property="article:author" content="Joshua Jiang">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1659806945431-677cefc5-3b54-4595-ad59-73c7a84dd1d3.jpeg">
+
+<link rel="canonical" href="http://example.com/2022/08/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AB%A0%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第三章-线性模型 | Solituder1969</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Solituder1969</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">世界的访问者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Solituder1969" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AB%A0%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Joshua Jiang">
+      <meta itemprop="description" content="幸运值为E">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Solituder1969">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第三章-线性模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-08-08 16:54:53 / 修改时间：17:00:43" itemprop="dateCreated datePublished" datetime="2022-08-08T16:54:53+08:00">2022-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <meta name="referrer" content="no-referrer" />
+
+<p><a name="SHYZP"></a></p>
+<h1 id="一、思维导图"><a href="#一、思维导图" class="headerlink" title="一、思维导图"></a>一、思维导图</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1659806945431-677cefc5-3b54-4595-ad59-73c7a84dd1d3.jpeg"><br><a name="Cccft"></a></p>
+<h1 id="二、读书笔记"><a href="#二、读书笔记" class="headerlink" title="二、读书笔记"></a>二、读书笔记</h1><p><a name="KpEih"></a></p>
+<h2 id="2-1-基本形式"><a href="#2-1-基本形式" class="headerlink" title="2.1 基本形式"></a>2.1 基本形式</h2><p>线性模型，对于d个属性描述的示例x&#x3D;(x1;x2;x3;…;xd)，线性模型的表现形式为：<br /><img src="https://cdn.nlark.com/yuque/__latex/e5df6fae90d4eced9d2a5312ff25314d.svg#card=math&code=f%28x%29%3Dw_1x_1%2Bw_2x_2%2B...%2Bw_dx_d%2Bb&id=dY2GD"><br />可以用向量形式写成：<br /><img src="https://cdn.nlark.com/yuque/__latex/95d810ea1c2b0c460d25271c36a232e1.svg#card=math&code=f%28x%29%3D%5Cvec%7Bw%7Dx%2Bb&id=JxG3L"><br />这里可以直接简单理解为：<strong>为每个属性赋予一个权重值，权重越高，说明该值越重要</strong>。因此，线性模型的描述是相当直观的。<br><a name="VSScK"></a></p>
+<h2 id="2-2-线性回归"><a href="#2-2-线性回归" class="headerlink" title="2.2 线性回归"></a>2.2 线性回归</h2><p>【定义】给定数据集D&#x3D;{(<strong>x1</strong>,y1),(<strong>x2</strong>,y2),…,(<strong>xn</strong>,yn)}，其中，xi&#x3D;(xi1;xi2;…;xid)，yi∈R. 线性回归试图学得：<br /><img src="https://cdn.nlark.com/yuque/__latex/3c36aaa0a4a435323dd31dc48ac584ff.svg#card=math&code=f%28x_i%29%3D%5Cvec%7Bw%7D%5ET%5Cvec%7Bx_i%7D%2Bb%2C%5Cspace%20to%5Cspace%20%20make%5Cspace%20f%28x_i%29%5Csimeq%20y_i&id=axkQ5"><br />特别的，当<strong>xi</strong>只包含一个属性时，这将变为“一维线性回归”，矩阵点乘变为数字相乘。<br />【最小二乘法】<br />我们在这里使用“均方误差”这一性能度量来让误差最小化。对于“一维线性回归”，即有：<br /><img src="https://cdn.nlark.com/yuque/__latex/a688d22ce609490264d573c4577ace42.svg#card=math&code=%28w%5E%2A%2Cb%5E%2A%29%3D%5Cunderset%7B%28w%2Cb%29%7D%7Barg%7D%5Cspace%20min%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Barg%28f%28x_i%29-y_i%29%29%5E2%7D&id=ju9eE"><br />对每个**[f(xi)-yi]<strong>, 取平方后求和，使得该值最小的(w,b)值，就是我们所需要的参数。<br />令<img src="https://cdn.nlark.com/yuque/__latex/162a07fca5702b469ba3339d27685e36.svg#card=math&code=E_%7B%28w%2Cb%29%7D%3D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i-wx_i-b%29%5E2%7D&id=IZPM0">，求E的最小值，分别对w和b求偏导，得：<br /><img src="https://cdn.nlark.com/yuque/__latex/5750b697dda9be8c7959b93d86303c2d.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%28w%2Cb%29%7D%7D%7B%5Cpartial%20w%7D%3D2%28w%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%5E2%7D-%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i-b%29x_i%7D%29&id=SX31e"><br /><img src="https://cdn.nlark.com/yuque/__latex/c6d69e84a62743cae1415fc0b0e03695.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%28w%2Cb%29%7D%7D%7B%5Cpartial%20b%7D%3D2%28mb-%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i-wx_i%29%7D%29&id=Kij7O"><br />令两式为0，可求得最优解：<br /><img src="https://cdn.nlark.com/yuque/__latex/1d5fa5b4c5dc1210d4b005bb8ced42cf.svg#card=math&code=w%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7By_i%28x_i-%5Coverline%7Bx%7D%29%7D%7D%7B%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%5E2%7D-%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%7D%29%5E2%7D%2C%5Cspace%20%5Coverline%7Bx%7D%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Bx_i%7D&id=TGIES"><br /><img src="https://cdn.nlark.com/yuque/__latex/0ce12e73f5fbbf3c8d8c1f1ccde9e157.svg#card=math&code=b%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7By_i-wx_i%7D&id=BdgAW"><br />更一般地，对于多元线性回归，我们使用矩阵来表示，</strong>X<strong>为[m×(d+1)]矩阵，</strong>w^<strong>为[(d+1)×1]矩阵，</strong>Y**为[m×1]矩阵，令：<br /><img src="https://cdn.nlark.com/yuque/__latex/1ea02ddd295d1fe6c59ceee39db632f6.svg#card=math&code=X%3D%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ax_%7B11%7D%5Cquad%5Cspace%20x_%7B12%7D%5Cspace...%5Cspace%20x_%7B1d%7D%5Cquad%5Cspace1%5C%5C%0Ax_%7B21%7D%5Cquad%5Cspace%20x_%7B22%7D%5Cspace...%5Cspace%20x_%7B2d%7D%5Cquad%5Cspace1%5C%5C%0A............................%5C%5C%0Ax_%7Bm1%7D%5Cquad%20x_%7Bm2%7D%5Cspace%20...%20x_%7Bmd%7D%5Cquad%201%0A%5Cend%7Barray%7D%0A%5Cright%29%0A%0A%5Chat%7Bw%7D%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Aw_1%5C%5C%0Aw_2%5C%5C%0A.%5C%5C%0Aw_d%5C%5C%0Ab%0A%5Cend%7Barray%7D%0A%5Cright%29%0A%0AY%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ay_1%5C%5C%0Ay_2%5C%5C%0A.%5C%5C%0A.%5C%5C%0Ay_m%0A%5Cend%7Barray%7D%0A%5Cright%29&id=CEJYS"><br />则可以把多元线性回归的公式记为：<br /><img src="https://cdn.nlark.com/yuque/__latex/db98d5bf2f58dfbe4e6bccca9a3bd950.svg#card=math&code=%5Chat%7Bw%7D%5E%2A%3D%5Cunderset%7B%5Chat%7Bw%7D%7D%7Barg%7D%5Cspace%20min%28Y-X%5Chat%7Bw%7D%29%5ET%28Y-X%5Chat%7Bw%7D%29&id=Sphtn"><br />同一元的情况分析，令<img src="https://cdn.nlark.com/yuque/__latex/3dfd9c1763726f12bfa11c7f4898d75c.svg#card=math&code=E_%7B%5Chat%7Bw%7D%7D%3D%28Y-X%5Chat%7Bw%7D%29%5ET%28Y-X%5Chat%7Bw%7D%29&id=YWzyH">，对w^求导数，可以得到：<br /><img src="https://cdn.nlark.com/yuque/__latex/5370fd3ce11d46cbd5535c8d14f5e15e.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%5Chat%7Bw%7D%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%3D-X%5ETY-%5Cfrac%7B%5Cpartial%20%28%5Chat%7Bw%7D%5ETX%5ETY%29%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%2BX%5ETX%5Chat%7Bw%7D%5ET%20%2B%5Cfrac%7B%5Cpartial%20%5Chat%7Bw%7D%5ETX%5ETX%5Chat%7Bw%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D&id=pv7pj"><br /><img src="https://cdn.nlark.com/yuque/__latex/03b32f3e03df4263d8389f42f0444bac.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%5Chat%7Bw%7D%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%3D-X%5ETY-X%5ETY%2BX%5ETX%5Chat%7Bw%7D%5ET%2BX%5ETX%5Chat%7Bw%7D&id=ZAgZO"><br /><img src="https://cdn.nlark.com/yuque/__latex/39049156f9491d0cc4b5900ea18c4752.svg#card=math&code=%5Cfrac%7B%5Cpartial%20E_%7B%5Chat%7Bw%7D%7D%7D%7B%5Cpartial%20%5Chat%7Bw%7D%7D%3D2X%5ET%28X%20%5Chat%7Bw%7D-Y%29&id=zpwWs"><br />这里用到了矩阵导数的三个性质：</p>
+<ol>
+<li>Y&#x3D;X×A，<img src="https://cdn.nlark.com/yuque/__latex/a7bf012cf9f4bc9dbb1f6e3282440da7.svg#card=math&code=%5Cfrac%7BdY%7D%7BdX%7D%3DA&id=D81kN"></li>
+<li>Y&#x3D;A×X，<img src="https://cdn.nlark.com/yuque/__latex/4e6b42ab36f946cc9d05786b07011584.svg#card=math&code=%5Cfrac%7BdY%7D%7BdX%7D%3DA%5ET&id=HdVeD"></li>
+<li>Y&#x3D;A×X×B，<img src="https://cdn.nlark.com/yuque/__latex/9b0c5d1ab8674cf82b64cc87d3e0314e.svg#card=math&code=%5Cfrac%7BdY%7D%7BdX%5ET%7D%3DB%C3%97A&id=a54TX"></li>
+</ol>
+<p>在C中，可以令<strong>A</strong>&#x3D;<strong>E</strong>，这样就成了对转置矩阵求导的情况了。<br />当<img src="https://cdn.nlark.com/yuque/__latex/708cd5cb34c634538376a75c93550c14.svg#card=math&code=r%28X%5ETX%29%3Dd%2B1&id=SbB1B">，也就是满秩或者正定时，导数为0，可以求得：<br /><img src="https://cdn.nlark.com/yuque/__latex/eac54b253057f88a1455bc0cb3bc1103.svg#card=math&code=%5Chat%7Bw%7D%5E%2A%3D%28X%5ETX%29%5E%7B-1%7DX%5ETY&id=ovrlb"><br />令<img src="https://cdn.nlark.com/yuque/__latex/0d55fc90da83c958a147c898f7f925eb.svg#card=math&code=H%3D%28X%5ETX%29%5E%7B-1%7DX%5ET%2C%5Chat%7Bx_i%7D%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ax_%7Bi1%7D%5C%5C%0Ax_%7Bi2%7D%5C%5C%0A.%5C%5C%0Ax_%7Bid%7D%5C%5C%0A1%0A%5Cend%7Barray%7D%0A%5Cright%29&id=v3yl7">，则最终学到的多元线性回归模型为：<br /><img src="https://cdn.nlark.com/yuque/__latex/8b9321bbb82747bfcdfb7b5af081eb18.svg#card=math&code=f%28%5Chat%7Bx_i%7D%29%3D%5Chat%7Bx_i%7D%5ETHY&id=rC9io"><br />【注意】<strong>一般情况下，</strong><img src="https://cdn.nlark.com/yuque/__latex/a43d62beb611deeef1e5ba0b09c0051e.svg#card=math&code=X%5ETX&id=YtaR2"><strong>往往不是满秩的，此时可以解出多个w^，结果由学习算法的偏好决定</strong>。常见的作法是引入正则化项。<br />【推广】<strong>考虑单调可微函数g(~)，令</strong><img src="https://cdn.nlark.com/yuque/__latex/069a50f84a9e64fb9f51b78f6583bce9.svg#card=math&code=y%3Dg%5E%7B-1%7D%28w%5ETx%2Bb%29&id=XWtxj"><strong>，这样得到的就是“广义线性模型”，g(~)为联系函数</strong>。例如，满足形式为<img src="https://cdn.nlark.com/yuque/__latex/e9043fb5d0504c05f4158ffa9caac386.svg#card=math&code=lny%3Dw%5ETx%2Bb&id=BjYwu">的模型，也就是广义线性模型在g(<del>)&#x3D;ln(</del>)的特例，称为对数线性回归。<br><a name="IM6dc"></a></p>
+<h2 id="2-3-对数几率回归"><a href="#2-3-对数几率回归" class="headerlink" title="2.3 对数几率回归"></a>2.3 对数几率回归</h2><p>【目标】对于预测结果为连续值的，我们可以使用线性回归来进行学习。但如果预测是“分类”，即预测结果是离散的，那么线性回归模型就不适用了，我们必须找到一种近似的手段。<br />【定义】首先将分类结果映射到实数域上，例如单位阶跃函数：<br /><img src="https://cdn.nlark.com/yuque/__latex/a2bdcb83ff49e1ba8e76d0d96f0b5626.svg#card=math&code=y%3D%5Cleft%5C%7B%0A%5Cbegin%7Barray%7D%7B%7D%0A0%2C%5Cquad%20%20z%3C0%5C%5C%0A0.5%2C%5Cquad%20z%3D0%5C%5C%0A1%2C%5Cquad%20z%3E0%0A%5Cend%7Barray%7D%0A%5Cright.&id=IpNNk"><br />参考2.2，联系函数g(~)必须是可逆的。因此，我们使用一个近似的函数y(z)去逼近这个结果，这个函数应该具备单位阶跃函数的性质。这就是对数几率函数：<br /><img src="https://cdn.nlark.com/yuque/__latex/16ac3ec0b32fbaa0bee9614a491407df.svg#card=math&code=y%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D&id=y3kl0"></p>
+<p>该函数图像是这样的：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659673060102-fe9f3538-50ef-46a9-8ed1-7fb332c80c39.png#clientId=u33f4090c-60f9-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u481e569e&margin=%5Bobject%20Object%5D&name=22080501.png&originHeight=601&originWidth=1123&originalType=binary&ratio=1&rotation=0&showTitle=true&size=124749&status=done&style=none&taskId=uba62942e-972b-4d19-a2da-6c4637d72c7&title=%E5%AF%B9%E6%95%B0%E5%87%A0%E7%8E%87%E5%87%BD%E6%95%B0%E5%9B%BE%E5%83%8F" alt="22080501.png" title="对数几率函数图像"><br />将表达式代入其中，可以得到对数几率函数的表现形式：<br /><img src="https://cdn.nlark.com/yuque/__latex/6aaf49346c119259af25ac818401397b.svg#card=math&code=y%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-%28w%5ETx%2Bb%29%7D%7D%2C%5Cquad%20ln%7B%5Cfrac%7By%7D%7B1-y%7D%3Dw%5ETx%2Bb%7D&id=lC9HC"><br />考虑似然概率，则上式可以改写为：<br /><img src="https://cdn.nlark.com/yuque/__latex/06e41854cd68e8b4108841914828af1a.svg#card=math&code=ln%5Cfrac%7Bp%28y%3D1%7Cx%29%7D%7Bp%28y%3D0%7Cx%29%7D%3Dw%5ETx%2Bb&id=ffBcy"><br />可以解出：<br /><img src="https://cdn.nlark.com/yuque/__latex/808081d88f74471d4ec6f7a5215ce623.svg#card=math&code=p%28y%3D1%7Cx%29%3D%5Cfrac%7Be%5E%7Bw%5ETx%2Bb%7D%7D%7B1%2Be%5E%7Bw%5ETx%2Bb%7D%7D&id=Xo4RH"><br /><img src="https://cdn.nlark.com/yuque/__latex/454a1e8c6f18def76a1984b61150e423.svg#card=math&code=p%28y%3D0%7Cx%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7Bw%5ETx%2Bb%7D%7D&id=lsv6Z"><br />【推导】对于对数几率函数，我们需要的是确定所需的参数，也就是w和b这两个值。对于参数的估计，我们可以使用“<strong>极大似然估计法</strong>”来确定所需的参数。它的原理是这样的：<br />将所有的点分别带入参数未知的分布模型里，结果相乘，得到似然函数。“极大似然估计”认为，<strong>最接近真实模型的参数会使得这个似然函数的结果呈现一个极大值</strong>。<br />我们使用极大似然法来估计参数。由于考察的是极值，而对数值和原值有相同的增减性，故可以取对数，将难以计算的连乘化成求和式，有：<br /><img src="https://cdn.nlark.com/yuque/__latex/def23b9cc8b992f63061d5dddf07e8d2.svg#card=math&code=l%28w%2Cb%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7Blnp%28y_i%7Cx_i%3Bw%2Cb%29%7D&id=sXQhg"><br />仿照“多元线性回归”中的分析，我们用以下这组拓展式来表示：<br /><img src="https://cdn.nlark.com/yuque/__latex/4e9ce2450616eaf400ebcf3c98ec7644.svg#card=math&code=%5Chat%7Bx%7D%3D%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Ax_%7B11%7D%5Cquad%5Cspace%20x_%7B12%7D%5Cspace...%5Cspace%20x_%7B1d%7D%5Cquad%5Cspace1%5C%5C%0Ax_%7B21%7D%5Cquad%5Cspace%20x_%7B22%7D%5Cspace...%5Cspace%20x_%7B2d%7D%5Cquad%5Cspace1%5C%5C%0A............................%5C%5C%0Ax_%7Bm1%7D%5Cquad%20x_%7Bm2%7D%5Cspace%20...%20x_%7Bmd%7D%5Cquad%201%0A%5Cend%7Barray%7D%0A%5Cright%29%0A%EF%BC%8C%0A%5Cbeta%3D%0A%5Cleft%28%0A%5Cbegin%7Barray%7D%7B%7D%0Aw_1%5C%5C%0Aw_2%5C%5C%0A.%5C%5C%0Aw_d%5C%5C%0Ab%0A%5Cend%7Barray%7D%0A%5Cright%29%0A&id=ONonJ"><br />可以有：<br /><img src="https://cdn.nlark.com/yuque/__latex/2f6b19a23a13cbdc0f71050e4b797a18.svg#card=math&code=w%5ETx%2Bb%3D%5Cbeta%5ET%5Chat%7Bx%7D&id=iVuPR"><br />令:<br /><img src="https://cdn.nlark.com/yuque/__latex/87ab7c5e46d13c47169b7d93b2410b46.svg#card=math&code=p_1%28%5Chat%7Bx%7D%3B%5Cbeta%29%3Dp%28y%3D1%7C%5Chat%7Bx%7D%3B%5Cbeta%29%5C%5Cp_0%28%5Chat%7Bx%7D%3B%5Cbeta%29%3Dp%28y%3D0%7C%5Chat%7Bx%7D%3B%5Cbeta%29%3D1-p_1%28%5Chat%7Bx%7D%3B%5Cbeta%29&id=rVy5j"><br />似然项可以改写为：<br /><img src="https://cdn.nlark.com/yuque/__latex/72f32798c616c75771b8d780ef957aec.svg#card=math&code=p%28y_i%7Cx_i%3Bw%2Cb%29%3Dy_ip_1%28%5Chat%7Bx_i%7D%3B%5Cbeta%29%2B%281-y_i%29p_0%28%5Chat%7Bx_i%7D%3B%5Cbeta%29&id=zc8sp"><br />而y&#x3D;1和y&#x3D;0时的概率，我们上面已经求出来了，代入上式：<br /><img src="https://cdn.nlark.com/yuque/__latex/e06c039f2d15cc2175493b9ccbcb411c.svg#card=math&code=p%28y_i%7C%5Chat%7Bx_i%7D%3B%5Cbeta%29%3Dy_i%2B%281-2y_i%29p_0%28%5Chat%7Bx_i%7D%3B%5Cbeta%29&id=BRjCo"><br /><img src="https://cdn.nlark.com/yuque/__latex/cf5300c276aa8b4509d217e75a538fb4.svg#card=math&code=p%28y_i%7C%5Chat%7Bx_i%7D%3B%5Cbeta%29%3Dy_i%2B%281-2y_i%29%5Cfrac%7B1%7D%7B1%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%7D%3D%5Cfrac%7B1-y_i%2By_ie%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%7D%7B1%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%7D&id=Salyo"><br />两边取对数：<br /><img src="https://cdn.nlark.com/yuque/__latex/73a82ab43c4b54ef5865e361b574029a.svg#card=math&code=ln%28p%28y_i%7C%5Chat%7Bx_i%7D%3B%5Cbeta%29%29%3Dln%281-y_i%2By_ie%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29&id=fKEPN"><br /><strong>对于二分类问题，yi不是0就是1，因此有</strong>：<br /><img src="https://cdn.nlark.com/yuque/__latex/0d1187ccfcda7bc12aeff2f9810f3e0c.svg#card=math&code=l%28%5Cbeta%29%3D%0A%5Cleft%5C%7B%0A%5Cbegin%7Barray%7D%7B%7D%0A%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29%29%7D%2C%5Cquad%5Cquad%5Cspace%5Cquad%20y_i%3D0%5C%5C%0A%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28%5Cbeta%5ET%5Chat%7Bx_i%7D-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29%29%7D%2C%5Cquad%20y_i%3D1%0A%5Cend%7Barray%7D%0A%5Cright.&id=IDHuD"><br />两式综合，可以得到：<br /><img src="https://cdn.nlark.com/yuque/__latex/f3b1c5082b2684d7facfb35324c7817e.svg#card=math&code=l%28%5Cbeta%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%7B%28y_i%5Cbeta%5ET%5Chat%7Bx_i%7D-ln%281%2Be%5E%7B%5Cbeta%5ET%5Chat%7Bx_i%7D%7D%29%29%7D&id=qqCN8"><br />这样就得到了书上的3.27式。<br />最后附下牛顿法求导的过程，如下所示：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659711305838-f17576a1-b7d8-4be2-bd30-dfdb34d8b618.png#clientId=u33f4090c-60f9-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=ua676142b&margin=%5Bobject%20Object%5D&name=22080502.png&originHeight=1065&originWidth=1562&originalType=binary&ratio=1&rotation=0&showTitle=true&size=169765&status=done&style=shadow&taskId=u9942ed36-a9e9-4fc4-8816-2ff179ea037&title=%E7%89%9B%E9%A1%BF%E6%B3%95%E6%B1%82%E8%A7%A3%E5%AF%BC%E6%95%B0" alt="22080502.png" title="牛顿法求解导数"><br><a name="oQjWo"></a></p>
+<h2 id="2-4-线性判别分析"><a href="#2-4-线性判别分析" class="headerlink" title="2.4 线性判别分析"></a>2.4 线性判别分析</h2><p>【目标】给定训练样例集，设法将样例投影到一条直线上，使<strong>得同类样例的投影点尽可能接近、异类样例的投影点尽可能远离</strong>。对新样例分类时，同样投影到这条线上，根据其位置来判别样本的类别。<br />示意图如下所示：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659712733054-155955a2-bc83-41f9-bb1f-218d69cc6680.png#clientId=u33f4090c-60f9-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u39c04d55&margin=%5Bobject%20Object%5D&name=22080503.png&originHeight=679&originWidth=1043&originalType=binary&ratio=1&rotation=0&showTitle=true&size=176034&status=done&style=shadow&taskId=u15a9fcd9-14d8-41d1-be00-a6f90cc767a&title=%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E7%A4%BA%E6%84%8F%E5%9B%BE" alt="22080503.png" title="线性判别示意图"><br />为了了解LDA的设计思想，我们首先需要回顾两个概念：<strong>均值向量、协方差矩阵</strong>。<br />【均值向量】向量随机变量<strong>X</strong>的数学期望也是一个向量，其每个维度是原<strong>X</strong>向量各个维度的数学期望。例如，f(x)是d维随机变量<strong>X</strong>的n维向量函数，有：<br /><img src="https://cdn.nlark.com/yuque/__latex/a65b697578636994d9d7291c34231a8c.svg#card=math&code=f%28x%29%3D%5Bf_1%28x%29%3Bf_2%28x%29%3B...%3Bf_n%28x%29%5D&id=zXlFV"><br />则其数学期望定义为：<br /><img src="https://cdn.nlark.com/yuque/__latex/99eb65987d85cf0fecdf7942e620ddb6.svg#card=math&code=E%3D%5B%5Cepsilon%28f_1%28x%29%29%3B%5Cepsilon%28f_2%28x%29%29%3B...%3B%5Cepsilon%28f_n%28x%29%29%5D%3D%5Cunderset%7Bx%7D%7B%5Csum%7D%20f%28x%29p%28x%29&id=Hzhoe"><br />特别的，随机变量<strong>X</strong>的数学期望，称之为“<strong>均值向量</strong>”，定义如下：<br /><img src="https://cdn.nlark.com/yuque/__latex/4459ab9e91496e0f948337a58917d0d3.svg#card=math&code=%5Cmu%20%3D%5Cepsilon%28x%29%3D%5B%5Cepsilon%28x_1%29%3B%5Cepsilon%28x_2%29%3B...%3B%5Cepsilon%28x_n%29%5D%3D%5B%5Cmu_1%3B%5Cmu_2%3B...%3B%5Cmu_n%5D%3D%5Cunderset%7Bx%7D%7B%5Csum%7D%20xp%28x%29&id=GPKXk"><br />放到物理学上，<strong>“均值向量”也可以用“质心”来理解</strong>。<br />【协方差】<strong>协方差表示两个变量总体误差的期望</strong>。期望值分别为E(x)和E(Y)的两个实随机变量X与Y之间的协方差Cov(X,Y)可以如下定义：<br /><img src="https://cdn.nlark.com/yuque/__latex/f2766205e90baffbaa10a54da6d4442f.svg#card=math&code=%5Cbegin%7Baligned%7D%0ACov%28X%2CY%29%26%3DE%5B%28X-E%28X%29%28Y-E%28Y%29%29%5D%5C%5C%0A%26%3DE%28XY%29-2E%28X%29E%28Y%29%2BE%28X%29E%28Y%29%5C%5C%0A%26%3DE%28XY%29-E%28X%29E%28Y%29%0A%5Cend%7Baligned%7D&id=fo6WV"><br />如果<strong>两个变量的变化一致（两个都大于自身的期望值），那么两个变量之间的协方差就是正的</strong>。相反，<strong>如果两个变量的变化相反，那么它们的协方差就为负</strong>。<br />【推导】给定数据集<img src="https://cdn.nlark.com/yuque/__latex/3cc178301e863feb2d918885b45a7c3b.svg#card=math&code=D%3D%5C%7B%28x_i%2Cy_i%29%5C%7D_%7Bi%3D1%7D%5Em%2Cy_i%5Cin%5C%7B0%2C1%5C%7D&id=OwhCo">，令<img src="https://cdn.nlark.com/yuque/__latex/1d09131b8f67aba817b1a2b0ff92abba.svg#card=math&code=X_i%2C%5Cmu_i%2C%5CSigma_i&id=HghLe">分别表示<strong>第i∈{0,1}类示例的集合、均值向量、协方差矩阵</strong>。若将数据投影到直线w上，则两类样本的中心在直线上的投影分别为<img src="https://cdn.nlark.com/yuque/__latex/7b61b0de4bd2c86771084696e140ec4b.svg#card=math&code=w%5ET%5Cmu_0%E3%80%81w%5ET%5Cmu_1&id=j9Hl5">；若将所有样本点都投影到直线上，则两类样本的协方差分别为<img src="https://cdn.nlark.com/yuque/__latex/ffba220e68acae84c87c8ca36d6cea46.svg#card=math&code=w%5ET%5CSigma_0w%E3%80%81w%5ET%5CSigma_1w&id=OgDLe">。由于直线是一维空间，因此<img src="https://cdn.nlark.com/yuque/__latex/7f4006d418a8eb26f9767dfc73ad6e21.svg#card=math&code=w%5ET%5Cmu_0%E3%80%81w%5ET%5Cmu_1%E3%80%81w%5ET%5CSigma_0w%E3%80%81w%5ET%5CSigma_1w&id=yAqXf">均为实数。<br />分类问题本质是<strong>使得同性质的样例距离小，异性质的样例距离大</strong>。前者可以用协方差来表示，后者用两者质心的距离来表示。即：我们要使得以下式子尽可能大：<br /><img src="https://cdn.nlark.com/yuque/__latex/72ce896c0bfcbb24341614d8eb9d117d.svg#card=math&code=%5Cbegin%7Baligned%7D%0AJ%26%3D%5Cfrac%7B%7C%7Cw%5ET%5Cmu_0-w%5ET%5Cmu_1%7C%7C_%7B2%7D%5E2%7D%7Bw%5ET%5CSigma_0w%2Bw%5ET%5CSigma_1w%7D%5C%5C%0A%26%3D%5Cfrac%7B%7C%7C%28%5Cmu_0-%5Cmu_1%29%5ETw%7C%7C_%7B2%7D%5E%7B2%7D%7D%7Bw%5ET%28%5CSigma_0%2B%5CSigma_1%29w%7D%5C%5C%0A%26%3D%5Cfrac%7B%5B%28%5Cmu_0-%5Cmu_1%29%5ETw%5D%5ET%28%5Cmu_0-%5Cmu_1%29%5ETw%7D%7Bw%5ET%28%5CSigma_0%2B%5CSigma_1%29w%7D%5C%5C%0A%26%3D%5Cfrac%7Bw%5ET%28%5Cmu_0-%5Cmu_1%29%28%5Cmu_0-%5Cmu_1%29%5ETw%7D%7Bw%5ET%28%5CSigma_0%2B%5CSigma_1%29w%7D%5C%5C%0A%5Cend%7Baligned%7D&id=Njgse"><br />分子表示类间距离，分母表示类内距离。如果分子越大，分母越小，则J越大，异类之间的距离就越大。<br />定义<strong>类内散度矩阵</strong>：<br /><img src="https://cdn.nlark.com/yuque/__latex/a23c432511c87ec88f8b1eca970054e3.svg#card=math&code=S_w%3D%5CSigma_0%2B%5CSigma_1%3D%5Cunderset%7Bx%5Cin%20X_0%7D%7B%5Csum%7D%28x-%5Cmu_0%29%28x-%5Cmu_0%29%5ET%2B%5Cunderset%7Bx%5Cin%20X_1%7D%7B%5Csum%7D%28x-%5Cmu_1%29%28x-%5Cmu_1%29%5ET&id=NqD8E"><br />定义<strong>类间散度矩阵</strong>：<br /><img src="https://cdn.nlark.com/yuque/__latex/8e62e576f9f088f4ae536c85915fd3f4.svg#card=math&code=S_b%3D%28%5Cmu0-%5Cmu_1%29%28%5Cmu_0-%5Cmu_1%29%5ET&id=c3Ntv"><br />那么J可以重写为：<br /><img src="https://cdn.nlark.com/yuque/__latex/931eef0abc2f37ede254aad474f3d9c2.svg#card=math&code=J%3D%5Cfrac%7Bw%5ETS_bw%7D%7Bw%5ETS_ww%7D&id=JNxiN"><br />之后<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/499358024">根据拉格朗日乘子进行相关的推导</a>，即可得到w的表达式，过程在此略过，仅给出结果：<br /><img src="https://cdn.nlark.com/yuque/__latex/e1bb1d39508a0d16b1983804efdc4e3d.svg#card=math&code=w%3DS%5E%7B-1%7D_w%28%5Cmu_0-%5Cmu_1%29&id=BOI5w"><br><a name="QRbyw"></a></p>
+<h2 id="2-5-多分类学习"><a href="#2-5-多分类学习" class="headerlink" title="2.5 多分类学习"></a>2.5 多分类学习</h2><p>【目标】考虑N个类别C_1,C_2,…,C_n，多分类学习的思路是：<strong>将多分类任务拆为若干个二分类任务求解</strong>。先对问题<strong>进行拆分，然后为拆出的每个二分类任务训练一个分类器</strong>；在测试时，<strong>对这些分类器的预测结果进行集成以获得最终的多分类结果</strong>。<br />【拆分】一般有三种策略：<strong>“1对1”(OVO)<strong>、</strong>“一对其余”(OVR)<strong>、</strong>“多对多”(MVM)。</strong>给定数据集<img src="https://cdn.nlark.com/yuque/__latex/291561ab9a6814095270b3bdb94f7c48.svg#card=math&code=D%3D%5C%7B%28x_1%2Cy_1%29%2C%28x_2%2Cy_2%29%2C...%2C%28x_m%2Cy_m%29%5C%7D%2Cy_i%5Cin%20%5C%7BC_1%2CC_2%2C...%2CC_N%5C%7D&id=Uq93t">，这三种策略分别是这样操作的：</p>
+<ol>
+<li>**OVO **: 将N个类别两两配对，产生N(N-1)&#x2F;2个二分类任务。测试时，新样本同时提交给所有的分类器，通过投票，把被预测得最多的类别作为最终分类结果。</li>
+<li>**OVR **: 每次将一个类的样例作为正例，其他所有类的样例作为反例，这个得到N个分类器。测试时若仅有一个预测为正类，那么它对应的类别标记作为最终分类结果。如图所示：</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1659805351832-3d633443-574a-4915-9483-6da8c7ca4e06.png#clientId=u63109467-1f39-4&crop=0&crop=0.0248&crop=1&crop=0.894&from=ui&height=867&id=u0c4ddf57&margin=%5Bobject%20Object%5D&name=22080701.png&originHeight=867&originWidth=1291&originalType=binary&ratio=1&rotation=0&showTitle=true&size=250046&status=done&style=shadow&taskId=ude2a2385-4d2c-4104-852b-79519421e7f&title=OVO%E4%B8%8EOVR%E7%A4%BA%E6%84%8F%E5%9B%BE&width=1291" alt="22080701.png" title="OVO与OVR示意图"></p>
+<ol start="3">
+<li>**MVM **:每次将若干类作为正例，若干类作为反例。MVM需要特别设计，例如“纠错输出码”，即ECOC技术。EOCO技术分为两步：<ul>
+<li><strong>编码</strong>：对N个类别做M次划分，每次划分将部分类划为正类，部分划分为反类。可产生M个训练集。</li>
+<li><strong>解码</strong>：M个分类器对样本进行预测，这些预测标记组成一个编码，返回预测编码和各类别各自编码距离最小的那个，作为最终结果。<br><a name="aDxzy"></a><h2 id="2-6-类别不平衡问题"><a href="#2-6-类别不平衡问题" class="headerlink" title="2.6 类别不平衡问题"></a>2.6 类别不平衡问题</h2>【定义】分类任务中出现不同类别的训练样例数目差别很大的情况。<br />【推导】我们假设y&gt;0.5为正，也即：<br /><img src="https://cdn.nlark.com/yuque/__latex/a5d6480eedfd7b1b307ab9909d5dcfe8.svg#card=math&code=if%20%5Cquad%20%5Cfrac%7By%7D%7B1-y%7D%3E1%EF%BC%8Cresult%3DT&id=LzAHs"><br />但在训练时，由于正反例数目不同，令m+表示正例数，m-表示反例数，观测几率为m+&#x2F;m-，只要实际的判定规则应该是：<br /><img src="https://cdn.nlark.com/yuque/__latex/a12c58e99445cc1dca0bc090f689676f.svg#card=math&code=if%20%5Cquad%20%5Cfrac%7By%7D%7B1-y%7D%3E%5Cfrac%7Bm%5E%2B%7D%7Bm%5E-%7D%2C%5Cquad%20result%3DT&id=ZTxU7"><br />因此，需要对预测值进行缩放：<br /><img src="https://cdn.nlark.com/yuque/__latex/8fb65dc6df2c699f5ce47011edf482ce.svg#card=math&code=%5Cfrac%7By%27%7D%7B1-y%27%7D%3D%5Cfrac%7By%7D%7B1-y%7D%C3%97%5Cfrac%7Bm%5E-%7D%7Bm%5E%2B%7D&id=XZsOv"><br />实际操作起来，为了达到前提条件“训练集是真实样本总体的无偏采样”，需要借助①欠采样；②过采样；③阈值移动……等方式来推断真实几率。<br><a name="pbfbp"></a><h1 id="三、课后习题"><a href="#三、课后习题" class="headerlink" title="三、课后习题"></a>三、课后习题</h1></li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"># 知识总结</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/04/%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" rel="prev" title="差分隐私学习总结">
+      <i class="fa fa-chevron-left"></i> 差分隐私学习总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">一、思维导图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="nav-number">2.</span> <span class="nav-text">二、读书笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%9F%BA%E6%9C%AC%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 基本形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 线性回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%AF%B9%E6%95%B0%E5%87%A0%E7%8E%87%E5%9B%9E%E5%BD%92"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 对数几率回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 线性判别分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 多分类学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 类别不平衡问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">三、课后习题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Joshua Jiang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Joshua Jiang</p>
+  <div class="site-description" itemprop="description">幸运值为E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joshua Jiang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

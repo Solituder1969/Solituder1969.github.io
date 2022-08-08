@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="# 一、思维导图 ![](https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2022&#x2F;jpeg&#x2F;27569747&#x2F;1659886767738-0d766194-b759-484d-9e74-b6e88cf34324.jpeg)  # 二、读书笔记  ## 2.1 前言部分   信息技术的发展，对数据集的研究成为了各个领域的关键，数据成为了最重要和基础的资源，数据的发布、共享、分析成为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="差分隐私学习总结">
+<meta property="og:url" content="http://example.com/2022/08/04/%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Solituder1969">
+<meta property="og:description" content="# 一、思维导图 ![](https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2022&#x2F;jpeg&#x2F;27569747&#x2F;1659886767738-0d766194-b759-484d-9e74-b6e88cf34324.jpeg)  # 二、读书笔记  ## 2.1 前言部分   信息技术的发展，对数据集的研究成为了各个领域的关键，数据成为了最重要和基础的资源，数据的发布、共享、分析成为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/cc8c616dabdb88802a0724e11489afb3.svg#card=math&code=P_%7Br%7D%5BM%28D%29%5Cin%20S_%7Bm%7D%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%5Cin%20S_%7Bm%7D%5D&id=fY0tj">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0cb679bdc65a8056fda20efdfa7ffb2a.svg#card=math&code=p%28x%29%E6%88%96q%28x%29&id=deDA3">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8ad79a4dd5e041126d7b69ab52a11e8d.svg#card=math&code=I%28p%29%3D-ln%20%5Cspace%20p%28x%29&id=VLteF">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/fd1b76ab8e13468077339ff3667eb475.svg#card=math&code=H%28p%29%3DE_%7Bx%5Csim%20P%7D%5BI%28p%29%5D%3D%5Csum%20p%28x%29I%28p%29%3D-%5Csum%20p%28x%29ln%20%5Cspace%20p%28x%29&id=U8RYc">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/824f0cf3262f5fc4728a1ef997abefc3.svg#card=math&code=H%28p%2Cq%29%3DE_%7Bx%5Csim%20P%7D%5BI%28q%29%5D%3D%5Csum%20p%28x%29I%28q%29%3D-%5Csum%20p%28x%29ln%20%5Cspace%20q%28x%29&id=Pf4aa">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/c3ca9d2805b2cfc37092bbabd7c89519.svg#card=math&code=D_%7BKL%7D%28p%7C%7Cq%29%3DH%28p%2Cq%29-H%28p%29%3D%5Csum%20p%28x%29ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=XzhYT">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/dcf33facc608338286b46d9516543aaa.svg#card=math&code=D_%7BKL%7D%28p%7C%7Cq%29%3DH%28p%2Cq%29-H%28p%29%3DE_%7Bx%5Csim%20P%7D%5Bln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D%5D&id=XKyCy">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=StOpp">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=fA3zW">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f4d003f3222b44c4d0a036eac8c5757a.svg#card=math&code=max_%7BS%20%5Csubseteq%20D%7D%5Bln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D%5D%5Cleq%20%5Cepsilon&id=XlQmd">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/5f2139d796d5d1ddb612c299d01f7361.svg#card=math&code=p%28x%29%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97q%28x%29&id=GVJzZ">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/cc8c616dabdb88802a0724e11489afb3.svg#card=math&code=P_%7Br%7D%5BM%28D%29%5Cin%20S_%7Bm%7D%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%5Cin%20S_%7Bm%7D%5D&id=MHaC6">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=L3Efo">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/c3ca9d2805b2cfc37092bbabd7c89519.svg#card=math&code=D_%7BKL%7D%28p%7C%7Cq%29%3DH%28p%2Cq%29-H%28p%29%3D%5Csum%20p%28x%29ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=g6rT9">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0a79fb858e00a9b28301e2b4936af481.svg#card=math&code=max_%7BS%20%5Csubseteq%20D%7D%5Bln%5Cfrac%7BP_%7Br%7D%5BM%28D%29%5Cin%20S%5D%7D%7BP_%7Br%7D%5BM%28D%27%29%5Cin%20S%5D%7D%5D%5Cleq%20%5Cepsilon&id=A0NhO">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/91a623a0aa4afb279670e09f3e2dd120.svg#card=math&code=f%3AD%5Crightarrow%20R%5Ed&id=GFfS3">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/92cf7e11efea59f5efe5d4cd0b89b4fa.svg#card=math&code=GS_f%3D%5Cunderset%7BD%2CD%27%7D%7Bmax%7D%7C%7Cf%28D%29-f%28D%27%29%7C%7C%EF%BC%8C%0A&id=PfEXa">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/91a623a0aa4afb279670e09f3e2dd120.svg#card=math&code=f%3AD%5Crightarrow%20R%5Ed&id=WMQ8Z">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0bf18ca83a919787ce6f24b7665e16dc.svg#card=math&code=LS_f%28D%29%3D%5Cunderset%7BD%27%7D%7Bmax%7D%7C%7Cf%28D%29-f%28D%27%29%7C%7C&id=rql5t">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/48d10c07f0a703f5a49015e37dbc5e41.svg#card=math&code=GS_%7Bf%7D%3D%5Cunderset%7BD%7D%7Bmax%7D%28LS_%7Bf%7D%28D%29%29&id=Kb9Oi">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/9105de1b3c4e24361d78440d32f1c42c.svg#card=math&code=S%EF%BC%9AD%5Crightarrow%20R%20&id=PaZJq">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/2b9653e68dfc089e1d6dbf8c4901995d.svg#card=math&code=S%28D%29%5Cgeq%20LS_%7Bf%7D%28D%29%E4%B8%94S%28D%29%5Cleq%20e%5E%5Cbeta%20S%28D%27%29&id=eQJu8">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/d77a3c27981f574559e1bbd900ef944e.svg#card=math&code=S_%7Bf%2C%5Cbeta%7D%28D%29%3D%5Cunderset%7BD%27%7D%7Bmax%7D%28LS_%7Bf%7D%28D%27%29%C3%97e%5E%7B-%5Cbeta%20%7CD%CE%94D%27%7C%7D%29&id=LEV1T">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/91a623a0aa4afb279670e09f3e2dd120.svg#card=math&code=f%3AD%5Crightarrow%20R%5Ed&id=E0ZBm">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/5238a1cc206cb9475b2b41ea9dad1d90.svg#card=math&code=M%28D%29%3Df%28D%29%2BY&id=i7eJU">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/288ad3bc5949416c5b4771a1a4d334bb.svg#card=math&code=p%28x%29%3D%5Cfrac%7B1%7D%7B2b%7De%5E%7B-%5Cfrac%7B%7Cx%7C%7D%7Bb%7D%7D&id=iINfk">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6a25d9ce94c72ef7501d2a454941c175.svg#card=math&code=P_%7Br%7D%5BM%28D%29%3Dt%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%3Dt%5D&id=yTLEZ">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/52f6f1f9ea9a3c9a05ac620b5db5b1b5.svg#card=math&code=M%28D%29%3Df%28D%29%2BY%3Dt&id=MD9z1">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f1db28e455359c4a8d2c43a4958ae392.svg#card=math&code=Y%3Dt-f%28D%29&id=xWTia">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f3f09f888d66c18465578bf7fddb6a5b.svg#card=math&code=p_%7Br%7D%28M%28D%29%3Dt%29%3Dp_r%28Y%3Dt-f%28D%29%29%3D%5Cfrac%7B%CE%B5%7D%7B2%CE%94f%7De%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%29%7C%7D%7B%CE%94f%7D%7D&id=KclmO">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/9341d61a22e29adc9cc8b1d36027a5c3.svg#card=math&code=p_%7Br%7D%28M%28D%27%29%3Dt%29%3Dp_r%28Y%3Dt-f%28D%27%29%29%3D%5Cfrac%7B%CE%B5%7D%7B2%CE%94f%7De%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%27%29%7C%7D%7B%CE%94f%7D%7D&id=WkkTW">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/ca9f2608d7ffbe34146c3e76a35ba8ef.svg#card=math&code=%5Cfrac%7Bp_r%28M%28D%29%3Dt%29%7D%7Bp_r%28M%28D%27%29%3Dt%29%7D%3D%5Cfrac%7Be%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%29%7C%7D%7B%CE%94f%7D%7D%7D%7Be%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%27%29%7C%7D%7B%CE%94f%7D%7D%7D%3De%5E%7B%5Cfrac%7B%CE%B5%28%7Ct-f%28D%29%7C-%7Ct-f%28D%27%29%7C%29%7D%7B%CE%94f%7D%7D&id=zfruy">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/b61764c7b1050d2a83bdbe8092b41e00.svg#card=math&code=%7Ca%7C-%7Cb%7C%20%5Cleq%7Ca-b%7C&id=vsuax">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/143a75f6669646663d8240535a2b626a.svg#card=math&code=%5Cfrac%7Bp_r%28M%28D%29%3Dt%29%7D%7Bp_r%28M%28D%27%29%3Dt%29%7D%20%5Cleq%20e%5E%7B%5Cfrac%7B%CE%B5%7Cf%28D%E2%80%99%29-f%28D%29%7C%7D%7B%CE%94f%7D%7D&id=A4L7n">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0bf18ca83a919787ce6f24b7665e16dc.svg#card=math&code=LS_f%28D%29%3D%5Cunderset%7BD%27%7D%7Bmax%7D%7C%7Cf%28D%29-f%28D%27%29%7C%7C&id=q3uwq">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/4a0890dd1ea997154194d68f16a84a42.svg#card=math&code=%7Cf%28D%27%29-f%28D%29%7C%5Cleq%20%CE%94f%2C%20%5Cspace%20e%5E%7B%5Cfrac%7B%CE%B5%7Cf%28D%E2%80%99%29-f%28D%29%7C%7D%7B%CE%94f%7D%7D%20%5Cleq%20e%5E%7B%CE%B5%7D&id=PEsIS">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/604995e4d1196f0a5e39723f79d8c57c.svg#card=math&code=%5Cfrac%7Bp_r%28M%28D%29%3Dt%29%7D%7Bp_r%28M%28D%27%29%3Dt%29%7D%20%5Cleq%20e%5E%7B%CE%B5%7D&id=CFFgO">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8ca6aad6a070ce130ea15b975df42093.svg#card=math&code=S%5Csubseteq%20R%5Ek&id=fWf8w">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/cc8c616dabdb88802a0724e11489afb3.svg#card=math&code=P_%7Br%7D%5BM%28D%29%5Cin%20S_%7Bm%7D%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%5Cin%20S_%7Bm%7D%5D&id=qkSk0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/7fdd992183c059cca8d445077a917943.svg#card=math&code=P_%7Br%7D%28M%28D%29%3Dt%29&id=nxyvj">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a47a12d428b27311b53c8bef0a498702.svg#card=math&code=P_%7Br%7D%28M%28D%291%3Dt1%29%20%5Ccap%20P_%7Br%7D%28M%28D%292%3Dt2%29...P_%7Br%7D%28M%28D%29n%3Dtn%29&id=pEBUC">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/bb73a2b0224483d9be4e1f76c0c44822.svg#card=math&code=r%5Cin%20Range&id=YNtGv">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6e473215b3a76bb7fee801435c421d34.svg#card=math&code=e%5E%7B%5Cfrac%7B%CE%B5q%28D%2Cr%29%7D%7B2%CE%94q%7D%7D&id=DA5IR">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658843357318-6c6e9756-bcd0-41c5-88ec-f02d79a03e41.png#clientId=uc5fc21a0-e263-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=ucb4992b3&margin=%5Bobject%20Object%5D&name=22072601.png&originHeight=999&originWidth=1322&originalType=binary&ratio=1&rotation=0&showTitle=true&size=155327&status=done&style=none&taskId=u8d842dc4-bbb9-4b68-a0bc-1f7da90c153&title=%E6%8C%87%E6%95%B0%E6%9C%BA%E5%88%B6%E2%80%94%E8%AF%81%E6%98%8E%E8%BF%87%E7%A8%8B">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658843479884-8c0040ff-c88d-488c-b10a-33b56b2dabf5.png#clientId=uc5fc21a0-e263-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u096891f4&margin=%5Bobject%20Object%5D&name=22072602.png&originHeight=375&originWidth=824&originalType=binary&ratio=1&rotation=0&showTitle=true&size=37025&status=done&style=none&taskId=ucf85c417-0cc5-44ff-8a33-15b55b99884&title=%E6%8C%87%E6%95%B0%E6%9C%BA%E5%88%B6%E2%80%94%E4%B8%8D%E7%AD%89%E5%BC%8F">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/d4c72d3cbc8effe30ef0fb320ff0aad0.svg#card=math&code=P_%7Br_%7Bf%5Cin%20F%7D%7D%5B%7Cf%28D%29-M%28f%28D%29%29%7C%5Cleq%20%CE%B1%5D%20%5Cgeq%201-%5Cdelta&id=E2Inp">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658852214764-9447d4e3-4d27-4906-ac04-7397b22db805.png#clientId=uc5fc21a0-e263-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=ub0a878b9&margin=%5Bobject%20Object%5D&name=22072701.png&originHeight=730&originWidth=1300&originalType=binary&ratio=1&rotation=0&showTitle=true&size=112316&status=done&style=none&taskId=u774c75fe-9223-4cee-a92a-aa213ac413d&title=%E5%87%A0%E7%A7%8D%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%8F%91%E5%B8%83%E6%9C%BA%E5%88%B6%E7%9A%84%E6%AF%94%E8%BE%83">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658904708309-21899ec7-2cbc-4e4d-a30d-e47d6853b09c.png#clientId=u0c1eab30-6d82-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u947e41f0&margin=%5Bobject%20Object%5D&name=22072702.png&originHeight=1196&originWidth=2610&originalType=binary&ratio=1&rotation=0&showTitle=true&size=539826&status=done&style=none&taskId=uca3fa9c1-de09-4f87-8629-c891b887dff&title=PPDR%E5%B0%8F%E7%BB%93">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658937898766-e11fc71c-9248-4caa-a96f-b2c7e4fd20ea.png#clientId=uee37c41f-650d-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u8d95019c&margin=%5Bobject%20Object%5D&name=22072801.png&originHeight=485&originWidth=1297&originalType=binary&ratio=1&rotation=0&showTitle=true&size=93915&status=done&style=none&taskId=u22f7803d-38f4-4f95-84bf-54f547eae69&title=%E5%87%A0%E7%A7%8D%E5%9F%BA%E4%BA%8E%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658938487489-348e1bd5-41eb-4f77-a0ec-611956a7a4ae.png#clientId=uee37c41f-650d-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u56c428c9&margin=%5Bobject%20Object%5D&name=22072802.png&originHeight=739&originWidth=2623&originalType=binary&ratio=1&rotation=0&showTitle=true&size=262348&status=done&style=none&taskId=u9ea92c91-d8af-404c-8f66-e843fe27ff2&title=PPDM%E5%B0%8F%E7%BB%93">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=I7mjM">
+<meta property="article:published_time" content="2022-08-04T09:01:22.000Z">
+<meta property="article:modified_time" content="2022-08-08T09:16:52.974Z">
+<meta property="article:author" content="Joshua Jiang">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="隐私保护">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/__latex/cc8c616dabdb88802a0724e11489afb3.svg#card=math&code=P_%7Br%7D%5BM%28D%29%5Cin%20S_%7Bm%7D%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%5Cin%20S_%7Bm%7D%5D&id=fY0tj">
+
+<link rel="canonical" href="http://example.com/2022/08/04/%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>差分隐私学习总结 | Solituder1969</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Solituder1969</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">世界的访问者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Solituder1969" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/04/%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Joshua Jiang">
+      <meta itemprop="description" content="幸运值为E">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Solituder1969">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          差分隐私学习总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-04 17:01:22" itemprop="dateCreated datePublished" datetime="2022-08-04T17:01:22+08:00">2022-08-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-08 17:16:52" itemprop="dateModified" datetime="2022-08-08T17:16:52+08:00">2022-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4/" itemprop="url" rel="index"><span itemprop="name">隐私保护</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <meta name="referrer" content="no-referrer" />
+<a name="m41Ez"></a>
+# 一、思维导图
+![](https://cdn.nlark.com/yuque/0/2022/jpeg/27569747/1659886767738-0d766194-b759-484d-9e74-b6e88cf34324.jpeg)
+<a name="HdkYj"></a>
+# 二、读书笔记
+<a name="cq9Xb"></a>
+## 2.1 前言部分
+
+<ol>
+<li><p>信息技术的发展，对数据集的研究成为了各个领域的关键，数据成为了最重要和基础的资源，数据的<strong>发布、共享、分析</strong>成为了一个热门的话题</p>
+</li>
+<li><p>数据集中往往包含了诸多的隐私，隐私会随着数据的发布而被泄露。保护隐私，就是要使得<strong>任何用户访问数据库的过程中无法获取关于任何个体的确切信息</strong>。</p>
+</li>
+<li><p>“K-匿名”方法被提出，通过<strong>分组</strong>的方式，在进行<strong>压缩、泛化</strong>等一系列处理后，<strong>将所有记录划分到若干等价类中</strong>，从而将单个记录隐藏在一整个类中。</p>
+</li>
+<li><p>“K-匿名”方法存在两个问题：①<strong>攻击者所掌握的背景知识难以定义</strong>，总是因为出现新型的攻击方式而不断更新；②<strong>无法对隐私保护水平进行定量分析</strong>，从而也就无法用严格的数据来评估保护方法的能力。</p>
+</li>
+<li><p>“差分隐私”方法被提出，相比“K-匿名”方法，存在两个特点：①<strong>假设攻击者能够掌握除了攻击目标之外的所有背景知识</strong>，默认以最恶劣的环境来处理问题；②对隐私保护进行了严格的定义，并<strong>提供了量化评估的方法</strong>。<br><a name="CUw6L"></a></p>
+<h2 id="2-2-差分隐私保护模型"><a href="#2-2-差分隐私保护模型" class="headerlink" title="2.2 差分隐私保护模型"></a>2.2 差分隐私保护模型</h2><p><a name="GOaLG"></a></p>
+<h3 id="2-2-1-相关概念"><a href="#2-2-1-相关概念" class="headerlink" title="2.2.1 相关概念"></a>2.2.1 相关概念</h3></li>
+<li><p><strong>目标</strong>：对两个“只有一个记录不同”的数据集进行查询访问，同一查询在两个数据集上产生相同结果的概率的比值接近于1。</p>
+</li>
+<li><p><strong>邻近数据集</strong>：两个数据集D和D’拥有相同的属性结构，两者的对称差记作集合DΔD’，|DΔD’|&#x3D;1则D和D’为邻近数据集。<br><a name="m4lct"></a></p>
+<h3 id="2-2-2-差分隐私"><a href="#2-2-2-差分隐私" class="headerlink" title="2.2.2 差分隐私"></a>2.2.2 差分隐私</h3><p>【<strong>定义</strong>】设有随机算法M，Pm为M所有可能的输出构成的集合。对于任意两个临近数据集D和D’以及Pm的任何子集Sm，若算法M满足：<br /><img src="https://cdn.nlark.com/yuque/__latex/cc8c616dabdb88802a0724e11489afb3.svg#card=math&code=P_%7Br%7D%5BM%28D%29%5Cin%20S_%7Bm%7D%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%5Cin%20S_%7Bm%7D%5D&id=fY0tj">，<br />则称算法M提供“ε-差分隐私保护”，其中参数ε称为隐私保护预算。<br />【<strong>推导</strong>】<br />首先，给定事件x，有两种不同的分布：<br /><img src="https://cdn.nlark.com/yuque/__latex/0cb679bdc65a8056fda20efdfa7ffb2a.svg#card=math&code=p%28x%29%E6%88%96q%28x%29&id=deDA3"><br />以p(x)为例，取对数，再加上符号保持结果为正：<br /><img src="https://cdn.nlark.com/yuque/__latex/8ad79a4dd5e041126d7b69ab52a11e8d.svg#card=math&code=I%28p%29%3D-ln%20%5Cspace%20p%28x%29&id=VLteF"><br />I(p)表示分布p蕴含的信息。显然，概率越大，包含的信息就越少；概率越小，包含的信息就越多。<br />利用这一基本理念，我们可以计算其“香农熵”H(p):<br /><img src="https://cdn.nlark.com/yuque/__latex/fd1b76ab8e13468077339ff3667eb475.svg#card=math&code=H%28p%29%3DE_%7Bx%5Csim%20P%7D%5BI%28p%29%5D%3D%5Csum%20p%28x%29I%28p%29%3D-%5Csum%20p%28x%29ln%20%5Cspace%20p%28x%29&id=U8RYc"><br />熵就是信息的均值，而在概率分布中，n“均值”就是“期望”，所以对信息值和概率密度函数求积分，即得香农熵。同理，我们可以求p在I(q)上的交叉熵：<br /><img src="https://cdn.nlark.com/yuque/__latex/824f0cf3262f5fc4728a1ef997abefc3.svg#card=math&code=H%28p%2Cq%29%3DE_%7Bx%5Csim%20P%7D%5BI%28q%29%5D%3D%5Csum%20p%28x%29I%28q%29%3D-%5Csum%20p%28x%29ln%20%5Cspace%20q%28x%29&id=Pf4aa"><br />交叉熵就是信息在不同分布下的均值。<br />两者相减，我们就可以得到相对熵KL了，相对熵可以用来衡量两个分布的差异：<br /><img src="https://cdn.nlark.com/yuque/__latex/c3ca9d2805b2cfc37092bbabd7c89519.svg#card=math&code=D_%7BKL%7D%28p%7C%7Cq%29%3DH%28p%2Cq%29-H%28p%29%3D%5Csum%20p%28x%29ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=XzhYT"><br />我们的目标是使得“同一查询在两个数据集上产生相同结果的概率的比值接近于1”，即产生不同结果的概率尽可能低。<br />将相对熵的推导升阶：<br /><img src="https://cdn.nlark.com/yuque/__latex/dcf33facc608338286b46d9516543aaa.svg#card=math&code=D_%7BKL%7D%28p%7C%7Cq%29%3DH%28p%2Cq%29-H%28p%29%3DE_%7Bx%5Csim%20P%7D%5Bln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D%5D&id=XKyCy"><br />这个式子的意义在于：相对熵是两个不同分布“相除后所取的对数”的均值。也即，对于单个值，他们中间的相对信息差距应该是用<img src="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=StOpp">来计算的。<br />根据“差分隐私”的定义，同一查询在两个数据集上产生相同结果的概率的比值接近于1，反过来，那就是产生不同结果的概率尽可能小，也就是<img src="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=fA3zW">尽可能小。<br />我们使用ε来把这个值框住，将字母替换为题设字母：<br /><img src="https://cdn.nlark.com/yuque/__latex/f4d003f3222b44c4d0a036eac8c5757a.svg#card=math&code=max_%7BS%20%5Csubseteq%20D%7D%5Bln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D%5D%5Cleq%20%5Cepsilon&id=XlQmd"><br />将ln变成e的格式，就有：<br /><img src="https://cdn.nlark.com/yuque/__latex/5f2139d796d5d1ddb612c299d01f7361.svg#card=math&code=p%28x%29%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97q%28x%29&id=GVJzZ"><br />用D和D’的概率密度函数来替换p,q，两边再分别积分，就可以得到：<br /><img src="https://cdn.nlark.com/yuque/__latex/cc8c616dabdb88802a0724e11489afb3.svg#card=math&code=P_%7Br%7D%5BM%28D%29%5Cin%20S_%7Bm%7D%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%5Cin%20S_%7Bm%7D%5D&id=MHaC6"><br />推导结束。<br />【注意】“产生不同结果的概率”这个表示有很多种，例如|p(x)-q(x)|，ln(p(x)&#x2F;q(x))……应该怎么选取是一个问题。因此这里通过对信息熵的推导，以可以代表“数据分布差异”的相对熵入手，反推得到应该使用<img src="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=L3Efo">作为表示。对于事件x，产生相同结果，该值为0，没有差异；产生不同结果，该值不为0，只需要用ε盖住即可。<br />【如果该值为负，该怎么判定呢？】<del>一种可能的猜想是，临近数据集的分布近似，符合对称性的规律，所以只需考虑一半的情况即可。</del><br><a name="xa2Ab"></a></p>
+<h3 id="2-2-3-隐私保护预算"><a href="#2-2-3-隐私保护预算" class="headerlink" title="2.2.3 隐私保护预算"></a>2.2.3 隐私保护预算</h3><p>我们使用ε来表示<strong>隐私保护预算</strong>，ε越小，保护的水平越高，但相对的，结果也不能反映出任何有关数据集的有用信息了。<strong>安全性</strong>和<strong>可用性</strong>不可兼得。<br />根据之前的推导，我们是使用“<strong>信息熵</strong>”来表示差分隐私的，因此ε可以理解为<strong>为了达到尽可能高的安全性而使得信息可用性降低到的水准</strong>。<br />这个结论并不难理解，根据相对熵的公式：<br /><img src="https://cdn.nlark.com/yuque/__latex/c3ca9d2805b2cfc37092bbabd7c89519.svg#card=math&code=D_%7BKL%7D%28p%7C%7Cq%29%3DH%28p%2Cq%29-H%28p%29%3D%5Csum%20p%28x%29ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=g6rT9">，<br />且有：<br /><img src="https://cdn.nlark.com/yuque/__latex/0a79fb858e00a9b28301e2b4936af481.svg#card=math&code=max_%7BS%20%5Csubseteq%20D%7D%5Bln%5Cfrac%7BP_%7Br%7D%5BM%28D%29%5Cin%20S%5D%7D%7BP_%7Br%7D%5BM%28D%27%29%5Cin%20S%5D%7D%5D%5Cleq%20%5Cepsilon&id=A0NhO"></p>
+</li>
+</ol>
+<p>相对熵衡量两个分布之间的差别，而两个分布对于任一事件的差别都被ε限制住了，ε越小，相对熵越小，自然分布差别越小，安全性越高，可用性越小。<br />可用性的降低还可以这样理解：<strong>为了使得隐私保护提高，必须加强噪声，而噪声会使得数据的可用性能降低</strong>。这样，“<strong>预算”的概念又可以变为“可以施加的噪声量”</strong>，每次对数据进行访问，就在预算中进行噪声添加，预算削减。而当预算变为0时，就没法进行有价值的分析了。<br />原理上来讲，上述两者的分析是等价的。<br><a name="Wptfz"></a></p>
+<h3 id="2-2-4-敏感度"><a href="#2-2-4-敏感度" class="headerlink" title="2.2.4 敏感度"></a>2.2.4 敏感度</h3><p>从2.2.3可知，噪声加的越多，可用性越少；噪声越少，安全性越差。因此需要对“<strong>加入噪声的量</strong>”进行定量分析和判别，为此引入了“<strong>敏感度</strong>”这个值来分析。敏感度的定义为：<strong>删除数据集中任一记录对查询结果造成的最大改变</strong>，它包含了“<strong>全局敏感度</strong>”和“<strong>局部敏感度</strong>”两种类。<br /><strong>&lt;1&gt;全局敏感度</strong><br /><strong>【定义】</strong>设有函数<img src="https://cdn.nlark.com/yuque/__latex/91a623a0aa4afb279670e09f3e2dd120.svg#card=math&code=f%3AD%5Crightarrow%20R%5Ed&id=GFfS3">_，_输入为一数据集，输出为一d维实数向量。对于任意的邻近数据集D和D’，有：<br /><img src="https://cdn.nlark.com/yuque/__latex/92cf7e11efea59f5efe5d4cd0b89b4fa.svg#card=math&code=GS_f%3D%5Cunderset%7BD%2CD%27%7D%7Bmax%7D%7C%7Cf%28D%29-f%28D%27%29%7C%7C%EF%BC%8C%0A&id=PfEXa"><br />其中||f(D)-f(D’)||为f(D)和f(D’)的一阶范数距离。<br />换而言之，<strong>对任意一个数据集，改变数据集中的一项，求这个函数的输出所发生的变化的最大值。</strong><br /><strong>【问题】</strong>全局敏感度是针对整个分布的，如果全局敏感度较大，需要往里面添加足量的噪声来掩盖，这样会让整体的可用性变差。而有的时候，<strong>我们往往只需要更改一些局部的特性就足以了</strong>，所以必须引入局部敏感度来辅助运算。<br /><strong>&lt;2&gt;局部敏感度</strong><br /><strong>【定义】</strong>设有函数<img src="https://cdn.nlark.com/yuque/__latex/91a623a0aa4afb279670e09f3e2dd120.svg#card=math&code=f%3AD%5Crightarrow%20R%5Ed&id=WMQ8Z"><em>，_输入为一数据集，输出为一d维实数向量。对于给定的数据集D和它的任意邻近数据集D’，有：<br /><img src="https://cdn.nlark.com/yuque/__latex/0bf18ca83a919787ce6f24b7665e16dc.svg#card=math&code=LS_f%28D%29%3D%5Cunderset%7BD%27%7D%7Bmax%7D%7C%7Cf%28D%29-f%28D%27%29%7C%7C&id=rql5t"><br />也就是说，局部敏感度是针对固定的数据集D的。通过一个一个比较它和它的邻近数据集，得出其局部敏感度。<strong>这个过程其实就和攻击者的比较方式是一致的。</strong><br />这样也就不难理解，全局敏感度和局部敏感度之间的关系为：<br /><img src="https://cdn.nlark.com/yuque/__latex/48d10c07f0a703f5a49015e37dbc5e41.svg#card=math&code=GS_%7Bf%7D%3D%5Cunderset%7BD%7D%7Bmax%7D%28LS_%7Bf%7D%28D%29%29&id=Kb9Oi"><br /><strong>【问题】</strong>由于我们是<strong>使用攻击者的思路来定义局部敏感度的</strong>，所以如果直接应用局部敏感度，反而会<strong>泄露数据集的敏感信息</strong>，因此需要引入平滑上界来进行遮掩。<br /><strong>&lt;3&gt;平滑上界</strong><br /><strong>【定义】</strong>给定数据集D及其任意邻近数据集D’，函数f的局部敏感度为LS</em>{f}(D)，对于β&gt;0，若函数<img src="https://cdn.nlark.com/yuque/__latex/9105de1b3c4e24361d78440d32f1c42c.svg#card=math&code=S%EF%BC%9AD%5Crightarrow%20R%20&id=PaZJq">满足：<br /><img src="https://cdn.nlark.com/yuque/__latex/2b9653e68dfc089e1d6dbf8c4901995d.svg#card=math&code=S%28D%29%5Cgeq%20LS_%7Bf%7D%28D%29%E4%B8%94S%28D%29%5Cleq%20e%5E%5Cbeta%20S%28D%27%29&id=eQJu8">，<br />则称S为函数f的局部敏感度的β-平滑上界。<br />同样的，基于平滑上界，我们可以定义平滑敏感度：<br /><img src="https://cdn.nlark.com/yuque/__latex/d77a3c27981f574559e1bbd900ef944e.svg#card=math&code=S_%7Bf%2C%5Cbeta%7D%28D%29%3D%5Cunderset%7BD%27%7D%7Bmax%7D%28LS_%7Bf%7D%28D%27%29%C3%97e%5E%7B-%5Cbeta%20%7CD%CE%94D%27%7C%7D%29&id=LEV1T"><br><a name="hOJOS"></a></p>
+<h3 id="2-2-4-差分隐私保护算法的组合性质"><a href="#2-2-4-差分隐私保护算法的组合性质" class="headerlink" title="2.2.4 差分隐私保护算法的组合性质"></a>2.2.4 差分隐私保护算法的组合性质</h3><p><strong>性质1 序列组合性</strong><br />设有算法M1，M2，……，Mn，其隐私保护预算分别为ε1，ε2，……，εn，那么对于同一数据集D，由这些算法构成的组合算法M(M1(D),M2(D),……,Mn(D))，提供（Σεi）-差分隐私保护。<br />这种组合算法，预算为全体预算的总和。<br /><strong>性质2 并行组合性</strong><br />设有算法M1，M2，……，Mn，其隐私保护预算分别为ε1，ε2，……，εn，那么对于不相交的数据集D1，D2……Dn，由这些算法构成的组合算法M(M1(D1),M2(D2),……,Mn(Dn))，提供（max ε）-差分隐私保护。<br />如果算法序列中，所有算法处理的数据集彼此不相交，那么预算为所有预算中最大值，也即隐私保护水平取决于算法序列中保护水平最差者。<br><a name="aOKy8"></a></p>
+<h3 id="2-2-5-实现机制"><a href="#2-2-5-实现机制" class="headerlink" title="2.2.5 实现机制"></a>2.2.5 实现机制</h3><p><strong>【定义】Laplace机制</strong><br />向确切的查询结果中掺入服从拉普拉斯分布的随机噪声来实现差分隐私保护。给定数据集D，设有函数<img src="https://cdn.nlark.com/yuque/__latex/91a623a0aa4afb279670e09f3e2dd120.svg#card=math&code=f%3AD%5Crightarrow%20R%5Ed&id=E0ZBm">，其敏感度为Δf，那么随机算法<img src="https://cdn.nlark.com/yuque/__latex/5238a1cc206cb9475b2b41ea9dad1d90.svg#card=math&code=M%28D%29%3Df%28D%29%2BY&id=i7eJU">提供 ε-差分隐私保护，其中Y~Lap(Δf&#x2F;ε)为随机噪声，服从尺度参数为Δf&#x2F;ε的拉普拉斯分布。<br /><strong>【证明】</strong><br />对于位置参数为0（关于原点对称）、尺度参数为b的拉普拉斯分布Lap(b)，它的概率密度函数为：<br /><img src="https://cdn.nlark.com/yuque/__latex/288ad3bc5949416c5b4771a1a4d334bb.svg#card=math&code=p%28x%29%3D%5Cfrac%7B1%7D%7B2b%7De%5E%7B-%5Cfrac%7B%7Cx%7C%7D%7Bb%7D%7D&id=iINfk"><br />设邻近数据集为D和D’，满足||D-D’||≤1。根据差分隐私的定义，对于任意一个输出域内的结果t，均要符合式子：<br /><img src="https://cdn.nlark.com/yuque/__latex/6a25d9ce94c72ef7501d2a454941c175.svg#card=math&code=P_%7Br%7D%5BM%28D%29%3Dt%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%3Dt%5D&id=yTLEZ"><br />令<img src="https://cdn.nlark.com/yuque/__latex/52f6f1f9ea9a3c9a05ac620b5db5b1b5.svg#card=math&code=M%28D%29%3Df%28D%29%2BY%3Dt&id=MD9z1">，<img src="https://cdn.nlark.com/yuque/__latex/f1db28e455359c4a8d2c43a4958ae392.svg#card=math&code=Y%3Dt-f%28D%29&id=xWTia">，且Y符合拉普拉斯分布。<br />我们将拉普拉斯分布的概率密度函数带入：<br /><img src="https://cdn.nlark.com/yuque/__latex/f3f09f888d66c18465578bf7fddb6a5b.svg#card=math&code=p_%7Br%7D%28M%28D%29%3Dt%29%3Dp_r%28Y%3Dt-f%28D%29%29%3D%5Cfrac%7B%CE%B5%7D%7B2%CE%94f%7De%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%29%7C%7D%7B%CE%94f%7D%7D&id=KclmO"><br />同理，对于D’，也有：<br /><img src="https://cdn.nlark.com/yuque/__latex/9341d61a22e29adc9cc8b1d36027a5c3.svg#card=math&code=p_%7Br%7D%28M%28D%27%29%3Dt%29%3Dp_r%28Y%3Dt-f%28D%27%29%29%3D%5Cfrac%7B%CE%B5%7D%7B2%CE%94f%7De%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%27%29%7C%7D%7B%CE%94f%7D%7D&id=WkkTW"><br />两式相除：<br /><img src="https://cdn.nlark.com/yuque/__latex/ca9f2608d7ffbe34146c3e76a35ba8ef.svg#card=math&code=%5Cfrac%7Bp_r%28M%28D%29%3Dt%29%7D%7Bp_r%28M%28D%27%29%3Dt%29%7D%3D%5Cfrac%7Be%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%29%7C%7D%7B%CE%94f%7D%7D%7D%7Be%5E%7B%5Cfrac%7B-%CE%B5%7Ct-f%28D%27%29%7C%7D%7B%CE%94f%7D%7D%7D%3De%5E%7B%5Cfrac%7B%CE%B5%28%7Ct-f%28D%29%7C-%7Ct-f%28D%27%29%7C%29%7D%7B%CE%94f%7D%7D&id=zfruy"><br />根据绝对值不等式<img src="https://cdn.nlark.com/yuque/__latex/b61764c7b1050d2a83bdbe8092b41e00.svg#card=math&code=%7Ca%7C-%7Cb%7C%20%5Cleq%7Ca-b%7C&id=vsuax">对上式进行放缩：<br /><img src="https://cdn.nlark.com/yuque/__latex/143a75f6669646663d8240535a2b626a.svg#card=math&code=%5Cfrac%7Bp_r%28M%28D%29%3Dt%29%7D%7Bp_r%28M%28D%27%29%3Dt%29%7D%20%5Cleq%20e%5E%7B%5Cfrac%7B%CE%B5%7Cf%28D%E2%80%99%29-f%28D%29%7C%7D%7B%CE%94f%7D%7D&id=A4L7n"><br />根据全局敏感度的定义：<br /><img src="https://cdn.nlark.com/yuque/__latex/0bf18ca83a919787ce6f24b7665e16dc.svg#card=math&code=LS_f%28D%29%3D%5Cunderset%7BD%27%7D%7Bmax%7D%7C%7Cf%28D%29-f%28D%27%29%7C%7C&id=q3uwq"><br />可以得出：<br /><img src="https://cdn.nlark.com/yuque/__latex/4a0890dd1ea997154194d68f16a84a42.svg#card=math&code=%7Cf%28D%27%29-f%28D%29%7C%5Cleq%20%CE%94f%2C%20%5Cspace%20e%5E%7B%5Cfrac%7B%CE%B5%7Cf%28D%E2%80%99%29-f%28D%29%7C%7D%7B%CE%94f%7D%7D%20%5Cleq%20e%5E%7B%CE%B5%7D&id=PEsIS"><br />即：<br /><img src="https://cdn.nlark.com/yuque/__latex/604995e4d1196f0a5e39723f79d8c57c.svg#card=math&code=%5Cfrac%7Bp_r%28M%28D%29%3Dt%29%7D%7Bp_r%28M%28D%27%29%3Dt%29%7D%20%5Cleq%20e%5E%7B%CE%B5%7D&id=CFFgO"><br />移项，再对概率密度函数在<img src="https://cdn.nlark.com/yuque/__latex/8ca6aad6a070ce130ea15b975df42093.svg#card=math&code=S%5Csubseteq%20R%5Ek&id=fWf8w">上进行积分，e^ε为常量不变，就可以得到：<br /><img src="https://cdn.nlark.com/yuque/__latex/cc8c616dabdb88802a0724e11489afb3.svg#card=math&code=P_%7Br%7D%5BM%28D%29%5Cin%20S_%7Bm%7D%5D%5Cleq%20e%5E%7B%5Cepsilon%7D%C3%97P_%7Br%7D%5BM%28D%27%29%5Cin%20S_%7Bm%7D%5D&id=qkSk0"><br />证毕。<br />同理，对于向量事件t&#x3D;t(t1,t2,…,tn)的情况，只需将<br /><img src="https://cdn.nlark.com/yuque/__latex/7fdd992183c059cca8d445077a917943.svg#card=math&code=P_%7Br%7D%28M%28D%29%3Dt%29&id=nxyvj"><br />转化为：<br /><img src="https://cdn.nlark.com/yuque/__latex/a47a12d428b27311b53c8bef0a498702.svg#card=math&code=P_%7Br%7D%28M%28D%291%3Dt1%29%20%5Ccap%20P_%7Br%7D%28M%28D%292%3Dt2%29...P_%7Br%7D%28M%28D%29n%3Dtn%29&id=pEBUC"><br />概率分别相乘，体现到指数上就是分别相加，再利用绝对值不等式的性质，将累差转化为1阶范式距离，利用放缩与Δf相消，仍旧可以得到上式，结论不变。<br />综上，我们证明了Laplace机制符合差分隐私的定义。<br /><strong>【定义】指数机制</strong><br />设随机算法M输入为数据集D，输出为一实体对象<img src="https://cdn.nlark.com/yuque/__latex/bb73a2b0224483d9be4e1f76c0c44822.svg#card=math&code=r%5Cin%20Range&id=YNtGv">，q(D,r)为可用性函数，Δq为函数q(D,r)的敏感度。若算法M以正比于<img src="https://cdn.nlark.com/yuque/__latex/6e473215b3a76bb7fee801435c421d34.svg#card=math&code=e%5E%7B%5Cfrac%7B%CE%B5q%28D%2Cr%29%7D%7B2%CE%94q%7D%7D&id=DA5IR">的概率从Range中选择并输出r，那么算法M提供ε-差分隐私保护。<br />【推导】<br />首先我们要明白，指数机制的含义是什么。在指数机制的定义中，我们引入了一个“可用性函数”，也可以将其称之为“utility function”，即“效用函数”。它定义了一种对于数据的查询方式。<br />这种查询方式是有问题的，例如通过最大化效用函数与其他信息的组合，我们就可以推断出某个人的隐私。因此，反过来，如果让每个数据在算法M的处理之后，输出结果为效用得分更高的那种选择的话，暴露的隐私就尽可能地少了。这就是指数机制的含义：<strong>以更可能高的概率，得到效用得分更高的输出</strong>。<br />证明过程如下所示：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658843357318-6c6e9756-bcd0-41c5-88ec-f02d79a03e41.png#clientId=uc5fc21a0-e263-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=ucb4992b3&margin=%5Bobject%20Object%5D&name=22072601.png&originHeight=999&originWidth=1322&originalType=binary&ratio=1&rotation=0&showTitle=true&size=155327&status=done&style=none&taskId=u8d842dc4-bbb9-4b68-a0bc-1f7da90c153&title=%E6%8C%87%E6%95%B0%E6%9C%BA%E5%88%B6%E2%80%94%E8%AF%81%E6%98%8E%E8%BF%87%E7%A8%8B" alt="22072601.png" title="指数机制—证明过程"><br />其中，不等式的证法为：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658843479884-8c0040ff-c88d-488c-b10a-33b56b2dabf5.png#clientId=uc5fc21a0-e263-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u096891f4&margin=%5Bobject%20Object%5D&name=22072602.png&originHeight=375&originWidth=824&originalType=binary&ratio=1&rotation=0&showTitle=true&size=37025&status=done&style=none&taskId=ucf85c417-0cc5-44ff-8a33-15b55b99884&title=%E6%8C%87%E6%95%B0%E6%9C%BA%E5%88%B6%E2%80%94%E4%B8%8D%E7%AD%89%E5%BC%8F" alt="22072602.png" title="指数机制—不等式"><br><a name="YnV4b"></a></p>
+<h3 id="2-2-6-研究方向"><a href="#2-2-6-研究方向" class="headerlink" title="2.2.6 研究方向"></a>2.2.6 研究方向</h3><p>集中于“数据发布”和“数据挖掘”中。</p>
+<table>
+<thead>
+<tr>
+<th><strong>方向</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>方式</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据发布</td>
+<td>交互式</td>
+<td>用户提出查询请求，管理员对数据进行扰动处理后返回给用户，用户无法看到数据集全貌</td>
+</tr>
+<tr>
+<td></td>
+<td>非交互式</td>
+<td>管理员对所有数据进行处理，在数据符合差分隐私的前提后，一次性全部发布</td>
+</tr>
+<tr>
+<td>数据挖掘</td>
+<td>接口模式</td>
+<td>用户不可信，管理员只对外发布接口，并对接口进行差分隐私保护，查询数目受隐私保护预算限制</td>
+</tr>
+<tr>
+<td></td>
+<td>完全访问模式</td>
+<td>对数据查询量没有限制，要求用户自己设计查询算法保证差分隐私，确保发布的模型不会泄露数据</td>
+</tr>
+</tbody></table>
+<p><a name="Y8rlW"></a></p>
+<h2 id="2-3-基于差分隐私保护的数据发布"><a href="#2-3-基于差分隐私保护的数据发布" class="headerlink" title="2.3 基于差分隐私保护的数据发布"></a>2.3 基于差分隐私保护的数据发布</h2><p><a name="DtkVF"></a></p>
+<h3 id="2-3-1-交互式数据发布"><a href="#2-3-1-交互式数据发布" class="headerlink" title="2.3.1 交互式数据发布"></a>2.3.1 交互式数据发布</h3><p>【问题】给定数据集D和查询集合F，寻求一种发布机制，使得在满足差分隐私保护的条件下逐个回答F中的各个查询，直到耗尽全部隐私保护预算。即：<strong>在满足一定精确度的前提下，以给定的隐私保护预算回答尽可能多的查询</strong>。<br />【定义1】对于F中任意查询f，设定一个足够小的实数δ。查询结果的精确度α应该满足：<br /><img src="https://cdn.nlark.com/yuque/__latex/d4c72d3cbc8effe30ef0fb320ff0aad0.svg#card=math&code=P_%7Br_%7Bf%5Cin%20F%7D%7D%5B%7Cf%28D%29-M%28f%28D%29%29%7C%5Cleq%20%CE%B1%5D%20%5Cgeq%201-%5Cdelta&id=E2Inp"><br />这个不等式的意义在于：查询结果和干扰结果的差越小，精确度越高。<strong>当达到该精确度的概率大于某个确信值时，我们认为这次查询是有意义的</strong>。<br />【定义2】为了达到这个精确度所需的样本量为样本复杂度。样本复杂度和精确度之间的关系为：表述①<strong>给定样本量n，精确度为α(n)，当n-&gt;∞时，α(n)-&gt;0</strong>；表述②<strong>给定α，达到这一精度需要的样本量为n0(α)。那么当n≥n0(α)时就保证了精确度α，而当α＞0时，n0(α)-&gt;∞</strong>.<br><a name="BwE2C"></a></p>
+<h3 id="2-3-2-交互式发布机制研究"><a href="#2-3-2-交互式发布机制研究" class="headerlink" title="2.3.2 交互式发布机制研究"></a>2.3.2 交互式发布机制研究</h3><p>几种交互式发布机制，及其比较情况：<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658852214764-9447d4e3-4d27-4906-ac04-7397b22db805.png#clientId=uc5fc21a0-e263-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=ub0a878b9&margin=%5Bobject%20Object%5D&name=22072701.png&originHeight=730&originWidth=1300&originalType=binary&ratio=1&rotation=0&showTitle=true&size=112316&status=done&style=none&taskId=u774c75fe-9223-4cee-a92a-aa213ac413d&title=%E5%87%A0%E7%A7%8D%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%8F%91%E5%B8%83%E6%9C%BA%E5%88%B6%E7%9A%84%E6%AF%94%E8%BE%83" alt="22072701.png" title="几种交互式发布机制的比较"><br><a name="zrYyw"></a></p>
+<h3 id="2-3-3-基于直方图的发布"><a href="#2-3-3-基于直方图的发布" class="headerlink" title="2.3.3 基于直方图的发布"></a>2.3.3 基于直方图的发布</h3><table>
+<thead>
+<tr>
+<th><strong>机制</strong></th>
+<th><strong>实现方式</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基于数据格的方法</td>
+<td>向每个数据格的频数分别添加独立的Laplace噪声</td>
+<td>①在数据格数较少时有效，简单快捷<br />②分区会使得频数在添加噪声前就产生误差，需要平衡</td>
+</tr>
+<tr>
+<td>基于K-d树的方法</td>
+<td>①以ε&#x2F;2的预算为所有频数加入Laplace噪声<br />②对扰动后的频数统计紧密程度（计算L（P0））<br />③若L(P0)大于阈值，则该分区划分为两个子分区<br />④对最终迭代结果的分区方案应用到原始分区中，并加入ε&#x2F;2的噪声</td>
+<td>当参数的取值适当时，DPCube算法在查询数量、查询误差等方面具有更好的性能</td>
+</tr>
+<tr>
+<td>基于SSE的方法</td>
+<td>计算分区的“估计频数”与每个数据格频数差值的平方，并对分区累加，记为SSE。SSE越小，查询精度越高。</td>
+<td>NoiseFirst使用于短范围查询；StructureFirst算法适用于长范围查询</td>
+</tr>
+</tbody></table>
+<p><a name="gxUkz"></a></p>
+<h3 id="2-3-4-非交互式数据发布"><a href="#2-3-4-非交互式数据发布" class="headerlink" title="2.3.4 非交互式数据发布"></a>2.3.4 非交互式数据发布</h3><p>【定义】给定数据集D和查询集合F，寻求一种数据发布机制，使其能够在满足差分隐私保护的条件下一次性回答F中的所有查询<br />【实现】集中于批查询、列联表发布、基于分组的发布方法、净化数据集<br><a name="dEfgM"></a></p>
+<h3 id="2-3-5-批查询"><a href="#2-3-5-批查询" class="headerlink" title="2.3.5 批查询"></a>2.3.5 批查询</h3><p>【定义】管理者针对所有可能的查询，一次性对外发布所有查询的结果</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>实现</strong></th>
+<th><strong>总敏感度</strong></th>
+<th><strong>噪声方差</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Lap1</td>
+<td>每个范围查询加入独立噪声</td>
+<td>O(n^2)</td>
+<td>O(n^4&#x2F;ε^2)</td>
+</tr>
+<tr>
+<td>Lap2</td>
+<td>先为每个单一查询加入噪声，再根据干扰后的单一查询计算其他范围查询结果</td>
+<td>O(1)</td>
+<td>O(n&#x2F;ε^2)</td>
+</tr>
+<tr>
+<td>小波变换</td>
+<td>将频数统计矩阵映射到小波系数矩阵中，再为每个小波系数添加Laplace噪声</td>
+<td>O(logn+1)</td>
+<td>O((logn)^3d&#x2F;ε^2)</td>
+</tr>
+<tr>
+<td>层次查询</td>
+<td>基于层次树，将频数统计矩阵映射到层次树中，再添加噪声</td>
+<td>O(logn+1)</td>
+<td>O((logn)^3&#x2F;ε^2)</td>
+</tr>
+</tbody></table>
+<p><a name="qHKMg"></a></p>
+<h3 id="2-3-6-列联表发布方法"><a href="#2-3-6-列联表发布方法" class="headerlink" title="2.3.6 列联表发布方法"></a>2.3.6 列联表发布方法</h3><p>【定义】假设数据集D包含n个记录，由K个布尔变量组成，那么对数据集按照 2^k个可能的组合值进行统计记数所形成的表格，就是列联表。按照多个变量的组合值进行统计所得的记数，也称为“<strong>边缘频数</strong>”。</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>实现</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Lap1</td>
+<td>向列联表的每个单元格加入噪声，根据干扰频数计算边缘频数</td>
+<td>保持了一致性，但累计噪声偏大</td>
+</tr>
+<tr>
+<td>Lap2</td>
+<td>先计算拟发布的边缘频数，再加入噪声</td>
+<td>可用性好，可能违背一致性</td>
+</tr>
+<tr>
+<td>Barak</td>
+<td>将列联表的数据进行傅里叶转换，对边际频数进行无冗余编码</td>
+<td>保持了一致性，噪声小，但不适用于稀疏数据集和非布尔变量数据集</td>
+</tr>
+</tbody></table>
+<p><a name="fjKwm"></a></p>
+<h3 id="2-3-7-基于分组的数据发布方法"><a href="#2-3-7-基于分组的数据发布方法" class="headerlink" title="2.3.7 基于分组的数据发布方法"></a>2.3.7 基于分组的数据发布方法</h3><p>【定义】延续了“K-匿名”模型的思想，并用差分隐私的要求来控制分组和匿名处理的整个过程。</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>实现</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“安全-K-匿名”模型</td>
+<td>1、确定一个随机抽样函数Am，对数据集D进行抽样，得到Sd&#x3D;Am(D)<br />2、从Sd中删除出现次数小于k的记录</td>
+<td>1、当函数Am满足ε-差分隐私保护条件时，“安全-k-匿名”模型能够提供(ε，δ)-差分隐私保护<br />2、只是个理论框架</td>
+</tr>
+<tr>
+<td>DiffGen发布算法</td>
+<td>1、对每个连续属性值的细分方案，应用指数机制从Nj中选择一种方案，得到y2种方案<br />2、分别与y1种离散属性组合，采用指数机制从这y1+y2种方案中选择一种<br />3、不断迭代循环，直到达到预定的细分次数</td>
+<td>没有充分利用给定的预算，加入了不必要的冗余噪声</td>
+</tr>
+<tr>
+<td>DiffGen-改</td>
+<td>每次细分迭代种。将所有连续属性细分方案乘以相应的权重后，和离散属性细分方案一起构成候选方案集，再调用指数机制进行选择</td>
+<td>减少了调用指数机制的次数，提高了预算的利用率</td>
+</tr>
+</tbody></table>
+<p><a name="FkBnT"></a></p>
+<h3 id="2-3-8-净化数据集发布方法"><a href="#2-3-8-净化数据集发布方法" class="headerlink" title="2.3.8 净化数据集发布方法"></a>2.3.8 净化数据集发布方法</h3><p>【定义】将学习理论引入到隐私保护当中来，当数据集的样本复杂度达到O(VC(C)&#x2F;a^2)时，对于任意查询f∈C，D中正例的比例与X中正例的比例误差在±a之内。</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>实现</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>差分隐私PAC定义</td>
+<td>可学习：<br />Pr(err(h)≤a)≥1-δ<br />不可知学习：<br />Pr(err(h)≤OPT+a)≥1-δ</td>
+<td>如果一个概念类别在无隐私保护要求和多项式样本复杂度下是可学习的，那么它在差分隐私保护条件下也是可学习的。</td>
+</tr>
+<tr>
+<td>Blum等人的研究</td>
+<td>略</td>
+<td>对于任意具有多项式VC维度的概念类别，不考虑计算复杂度，采用指数机制遍历整个数据域，最终找到满足差分隐私保护的数据集是可行的。</td>
+</tr>
+</tbody></table>
+<p><a name="oKVUb"></a></p>
+<h3 id="2-3-9-PPDR小结"><a href="#2-3-9-PPDR小结" class="headerlink" title="2.3.9 PPDR小结"></a>2.3.9 PPDR小结</h3><p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658904708309-21899ec7-2cbc-4e4d-a30d-e47d6853b09c.png#clientId=u0c1eab30-6d82-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u947e41f0&margin=%5Bobject%20Object%5D&name=22072702.png&originHeight=1196&originWidth=2610&originalType=binary&ratio=1&rotation=0&showTitle=true&size=539826&status=done&style=none&taskId=uca3fa9c1-de09-4f87-8629-c891b887dff&title=PPDR%E5%B0%8F%E7%BB%93" alt="22072702.png" title="PPDR小结"><br><a name="q06Tw"></a></p>
+<h2 id="2-4-基于差分隐私保护的数据挖掘"><a href="#2-4-基于差分隐私保护的数据挖掘" class="headerlink" title="2.4 基于差分隐私保护的数据挖掘"></a>2.4 基于差分隐私保护的数据挖掘</h2><p><a name="F29ox"></a></p>
+<h3 id="2-4-1-两种广泛应用的接口框架"><a href="#2-4-1-两种广泛应用的接口框架" class="headerlink" title="2.4.1 两种广泛应用的接口框架"></a>2.4.1 两种广泛应用的接口框架</h3><ol>
+<li>SuLQ框架：首先<strong>将单属性布尔查询定义为查询原语</strong>，然后以原语为基本操作，<strong>组合查询集合</strong>，实现更复杂的查询函数。将<strong>数据类型扩展到连续型数据</strong>，对原语<strong>设计提供隐私保护功能的复杂算法</strong>。</li>
+<li>PINQ框架：基于LINQ查询语言。由<strong>Partition算子将数据集分割成不相交的子集</strong>，然后利用<strong>差分隐私保护算法的并行组合</strong>性，提高隐私保护预算的<strong>利用率</strong>。<br><a name="YhEtO"></a><h3 id="2-4-2-接口模式下的分类算法"><a href="#2-4-2-接口模式下的分类算法" class="headerlink" title="2.4.2 接口模式下的分类算法"></a>2.4.2 接口模式下的分类算法</h3>【目标】：根据训练数据集建立分类器模型，用以推测新纪录的类标识。<br /><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658937898766-e11fc71c-9248-4caa-a96f-b2c7e4fd20ea.png#clientId=uee37c41f-650d-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u8d95019c&margin=%5Bobject%20Object%5D&name=22072801.png&originHeight=485&originWidth=1297&originalType=binary&ratio=1&rotation=0&showTitle=true&size=93915&status=done&style=none&taskId=u22f7803d-38f4-4f95-84bf-54f547eae69&title=%E5%87%A0%E7%A7%8D%E5%9F%BA%E4%BA%8E%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95" alt="22072801.png" title="几种基于接口的分类算法"><br><a name="lfMYi"></a><h3 id="2-4-3-接口模式下的聚类算法"><a href="#2-4-3-接口模式下的聚类算法" class="headerlink" title="2.4.3 接口模式下的聚类算法"></a>2.4.3 接口模式下的聚类算法</h3>【目标】将无类标识的记录划分到若干个簇中，使得簇内记录相似度高，簇间相似度低。此外，<strong>从数据集中删除任一记录时，要能保证每个聚类的质心以及记录数量所发生的改变不泄露隐私信息。</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>实现</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SuLQ框架下的k-means算法</td>
+<td>通过发布聚类质心和记录数据量的估计值来满足隐私保护的要求</td>
+<td>查询聚类质心的函数敏感度为聚类的最大直径，以此计算的噪声量偏大</td>
+</tr>
+<tr>
+<td>抽样—聚合框架</td>
+<td>1、从原始数据集D中随机抽样产生m个子集，分别带入函数f得到m个中间结果<br />2、然后选择一个局部敏感度低并容易计算的聚合函数g，对m个中间结果进行聚合运算，得到一个关于f(D)的期望值<br />3、再根据g的平滑敏感度向该期望值中添加噪声。</td>
+<td>对所有随机抽样生成的数据集进行聚类且输出的结果具备某种程度上的一致性是，算法才可能输出令人满意的结果</td>
+</tr>
+<tr>
+<td>基于核心集的方法</td>
+<td>给定一个d维空间里的点集G，样本容量为n，可以计算出一个带权重且容量为O(ka^(-d)logn)的点集Sg，用Sg代替G做聚类分析，得到一个近似结果。</td>
+<td>略</td>
+</tr>
+<tr>
+<td>基于预算分配的k-means差分隐私保护完善算法</td>
+<td>若算法迭代次数指定为u，则每次迭代的预算为ε&#x2F;u，添加的噪声服从Lap((d+1)u&#x2F;ε)分布；<br />若算法迭代次数不定，则第一次分配的预算为ε&#x2F;2，后面每次依次为前者的1&#x2F;2</td>
+<td>略</td>
+</tr>
+</tbody></table>
+<p><a name="TTWCe"></a></p>
+<h3 id="2-4-4-完全访问模式下的分类算法"><a href="#2-4-4-完全访问模式下的分类算法" class="headerlink" title="2.4.4 完全访问模式下的分类算法"></a>2.4.4 完全访问模式下的分类算法</h3><table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>实现</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>随机决策树</td>
+<td>1、去掉了构建模型过程中的剪纸步骤<br />2、取出全部叶节点中所有可能的类标签计数值，形成向量V<br />3、向V中加入Lap(1&#x2F;ε)噪声</td>
+<td>如果分类器中包含k棵树，那么构建每棵树所分配的预算为ε&#x2F;k</td>
+</tr>
+<tr>
+<td>logistic回归算法</td>
+<td>先将噪声加在目标函数的参数中，然后通过标准的logistic回归算法进行参数估计来获取模型</td>
+<td>相比直接利用拉普拉斯机制，具有更高的分类准确率</td>
+</tr>
+</tbody></table>
+<p><a name="oD1C4"></a></p>
+<h3 id="2-4-5-完全访问模式下的频繁项集挖掘"><a href="#2-4-5-完全访问模式下的频繁项集挖掘" class="headerlink" title="2.4.5 完全访问模式下的频繁项集挖掘"></a>2.4.5 完全访问模式下的频繁项集挖掘</h3><table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>实现</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>截断支持度</td>
+<td>1、利用传统挖掘算法，计算出格子的截断支持度s^<br />2、指数机制的FIM算法以s^为可用性函数K次调用指数机制；Laplace机制的FIM算法对预处理的每个s^添加噪声，再选支持度最大的K个项集<br />3、对选定的K个项集，为它们的真实支持度添加Laplace噪声，输出</td>
+<td>1、可以提供ε-差分隐私。以1-ρ的概率实现两个可用性要求<br />2、执行前必须预定义输出项集的长度l，不能根据中间结果自适应 l的值<br />3、K较小时结果较好，K较大时，性能和准确性会显著下降</td>
+</tr>
+<tr>
+<td>PrivBasis</td>
+<td>希望能够找到一个项集IB，使得最频繁的K个项集均为IB的子集，然后通过计算并利用IB中1-项集和2-项集的支持度，重构IB中所有子集的支持度，并添加相应的噪声</td>
+<td>1、可以避免遍历所有可能的项集，降低计算代价<br />2、K很大时，IB必将很大，不能从根本上解决问题</td>
+</tr>
+<tr>
+<td>θ-Basis Set</td>
+<td>任何一个支持度大于θ的项集都是某个IBi的子集</td>
+<td>在频繁项集漏报率和支持度误差两个方面都低于截断支持度方法</td>
+</tr>
+</tbody></table>
+<p><a name="AOwHV"></a></p>
+<h3 id="2-4-6-PPDM小结"><a href="#2-4-6-PPDM小结" class="headerlink" title="2.4.6 PPDM小结"></a>2.4.6 PPDM小结</h3><p><img src="https://cdn.nlark.com/yuque/0/2022/png/27569747/1658938487489-348e1bd5-41eb-4f77-a0ec-611956a7a4ae.png#clientId=uee37c41f-650d-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u56c428c9&margin=%5Bobject%20Object%5D&name=22072802.png&originHeight=739&originWidth=2623&originalType=binary&ratio=1&rotation=0&showTitle=true&size=262348&status=done&style=none&taskId=u9ea92c91-d8af-404c-8f66-e843fe27ff2&title=PPDM%E5%B0%8F%E7%BB%93" alt="22072802.png" title="PPDM小结"><br><a name="pM6Ku"></a></p>
+<h2 id="2-5-其他应用"><a href="#2-5-其他应用" class="headerlink" title="2.5 其他应用"></a>2.5 其他应用</h2><ol>
+<li>在推荐系统中的应用</li>
+<li>网络踪迹分析中的应用</li>
+<li>运输信息保护中的应用</li>
+<li>搜索日志保护中的应用</li>
+</ol>
+<p><a name="uVpj5"></a></p>
+<h1 id="三、总结疑问"><a href="#三、总结疑问" class="headerlink" title="三、总结疑问"></a>三、总结疑问</h1><p><a name="FtIJp"></a></p>
+<h2 id="3-1-判定值为负"><a href="#3-1-判定值为负" class="headerlink" title="3.1 判定值为负"></a>3.1 判定值为负</h2><p>在“<strong>2.2差分隐私保护模型</strong>”部分中，推导差分隐私模型的步骤中，存在一个问题：【如果<img src="https://cdn.nlark.com/yuque/__latex/6364206639a7119da20490c27cdf1d5c.svg#card=math&code=ln%5Cfrac%7Bp%28x%29%7D%7Bq%28x%29%7D&id=I7mjM">为负，该怎么判定呢？】笔者的一种可能的猜想：临近数据集的分布近似，符合对称性的规律，所以只需考虑一半的情况即可。<br><a name="V13G9"></a></p>
+<h2 id="3-2-概率密度函数与概率"><a href="#3-2-概率密度函数与概率" class="headerlink" title="3.2 概率密度函数与概率"></a>3.2 概率密度函数与概率</h2><p>在<strong>“2.2差分隐私保护模型”</strong>部分中，在诸多的推导、证明步骤中均涉及到了“连续模型的概率密度函数”与“离散模型的单个事件概率”的泛化问题。这里需要详细展开说明一下两者之间的关系。<br><a name="H00Kp"></a></p>
+<h2 id="3-3-诸多模型的理解"><a href="#3-3-诸多模型的理解" class="headerlink" title="3.3 诸多模型的理解"></a>3.3 诸多模型的理解</h2><p>对于在数据发布和数据挖掘里面的诸多模型，理解和分析还需要进一步的、更加具体的理解，需要结合给出的文献以及具体的公式来进行推导和判定。目前只是粗略理解了它们的实现过程。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"># 知识总结</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4/" rel="tag"># 隐私保护</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/21/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/" rel="prev" title="机器学习-第二章模型评估与选择">
+      <i class="fa fa-chevron-left"></i> 机器学习-第二章模型评估与选择
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AB%A0%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" rel="next" title="第三章-线性模型">
+      第三章-线性模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">2.2 差分隐私保护模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">2.2.1 相关概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81"><span class="nav-number">1.2.</span> <span class="nav-text">2.2.2 差分隐私</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E9%A2%84%E7%AE%97"><span class="nav-number">1.3.</span> <span class="nav-text">2.2.3 隐私保护预算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-4-%E6%95%8F%E6%84%9F%E5%BA%A6"><span class="nav-number">1.4.</span> <span class="nav-text">2.2.4 敏感度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-4-%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%BB%84%E5%90%88%E6%80%A7%E8%B4%A8"><span class="nav-number">1.5.</span> <span class="nav-text">2.2.4 差分隐私保护算法的组合性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-5-%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6"><span class="nav-number">1.6.</span> <span class="nav-text">2.2.5 实现机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-6-%E7%A0%94%E7%A9%B6%E6%96%B9%E5%90%91"><span class="nav-number">1.7.</span> <span class="nav-text">2.2.6 研究方向</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%9F%BA%E4%BA%8E%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8F%91%E5%B8%83"><span class="nav-number">2.</span> <span class="nav-text">2.3 基于差分隐私保护的数据发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E4%BA%A4%E4%BA%92%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%8F%91%E5%B8%83"><span class="nav-number">2.1.</span> <span class="nav-text">2.3.1 交互式数据发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%8F%91%E5%B8%83%E6%9C%BA%E5%88%B6%E7%A0%94%E7%A9%B6"><span class="nav-number">2.2.</span> <span class="nav-text">2.3.2 交互式发布机制研究</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-%E5%9F%BA%E4%BA%8E%E7%9B%B4%E6%96%B9%E5%9B%BE%E7%9A%84%E5%8F%91%E5%B8%83"><span class="nav-number">2.3.</span> <span class="nav-text">2.3.3 基于直方图的发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-%E9%9D%9E%E4%BA%A4%E4%BA%92%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%8F%91%E5%B8%83"><span class="nav-number">2.4.</span> <span class="nav-text">2.3.4 非交互式数据发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5-%E6%89%B9%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.5.</span> <span class="nav-text">2.3.5 批查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-6-%E5%88%97%E8%81%94%E8%A1%A8%E5%8F%91%E5%B8%83%E6%96%B9%E6%B3%95"><span class="nav-number">2.6.</span> <span class="nav-text">2.3.6 列联表发布方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-7-%E5%9F%BA%E4%BA%8E%E5%88%86%E7%BB%84%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8F%91%E5%B8%83%E6%96%B9%E6%B3%95"><span class="nav-number">2.7.</span> <span class="nav-text">2.3.7 基于分组的数据发布方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-8-%E5%87%80%E5%8C%96%E6%95%B0%E6%8D%AE%E9%9B%86%E5%8F%91%E5%B8%83%E6%96%B9%E6%B3%95"><span class="nav-number">2.8.</span> <span class="nav-text">2.3.8 净化数据集发布方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-9-PPDR%E5%B0%8F%E7%BB%93"><span class="nav-number">2.9.</span> <span class="nav-text">2.3.9 PPDR小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E5%9F%BA%E4%BA%8E%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98"><span class="nav-number">3.</span> <span class="nav-text">2.4 基于差分隐私保护的数据挖掘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-%E4%B8%A4%E7%A7%8D%E5%B9%BF%E6%B3%9B%E5%BA%94%E7%94%A8%E7%9A%84%E6%8E%A5%E5%8F%A3%E6%A1%86%E6%9E%B6"><span class="nav-number">3.1.</span> <span class="nav-text">2.4.1 两种广泛应用的接口框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-%E6%8E%A5%E5%8F%A3%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">2.4.2 接口模式下的分类算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-3-%E6%8E%A5%E5%8F%A3%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">2.4.3 接口模式下的聚类算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-4-%E5%AE%8C%E5%85%A8%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="nav-number">3.4.</span> <span class="nav-text">2.4.4 完全访问模式下的分类算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-5-%E5%AE%8C%E5%85%A8%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E9%A2%91%E7%B9%81%E9%A1%B9%E9%9B%86%E6%8C%96%E6%8E%98"><span class="nav-number">3.5.</span> <span class="nav-text">2.4.5 完全访问模式下的频繁项集挖掘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-6-PPDM%E5%B0%8F%E7%BB%93"><span class="nav-number">3.6.</span> <span class="nav-text">2.4.6 PPDM小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">2.5 其他应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%80%BB%E7%BB%93%E7%96%91%E9%97%AE"><span class="nav-number"></span> <span class="nav-text">三、总结疑问</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%88%A4%E5%AE%9A%E5%80%BC%E4%B8%BA%E8%B4%9F"><span class="nav-number">1.</span> <span class="nav-text">3.1 判定值为负</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0%E4%B8%8E%E6%A6%82%E7%8E%87"><span class="nav-number">2.</span> <span class="nav-text">3.2 概率密度函数与概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E8%AF%B8%E5%A4%9A%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">3.3 诸多模型的理解</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Joshua Jiang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Joshua Jiang</p>
+  <div class="site-description" itemprop="description">幸运值为E</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joshua Jiang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
