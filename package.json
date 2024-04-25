@@ -12,6 +12,7 @@
     "format": "biome format --write ./src",
     "lint": "biome check --apply ./src"
   },
+  "packageManager":"pnpm@9.0.6",
   "dependencies": {
     "@astrojs/check": "^0.5.9",
     "@astrojs/sitemap": "^3.1.2",
